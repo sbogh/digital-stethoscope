@@ -8,7 +8,6 @@
 import XCTest
 
 final class digital_stethoscopeUITestsLaunchTests: XCTestCase {
-
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true
     }

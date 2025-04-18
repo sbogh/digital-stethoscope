@@ -18,8 +18,11 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+
     - name: Resolve Swift package dependencies
-      run: xcodebuild -resolvePackageDependencies -project digital-stethoscope/digital-stethoscope.xcodeproj
+      working-directory: digital-stethoscope
+      run: xcodebuild -resolvePackageDependencies -project digital-stethoscope.xcodeproj
+
       # OR if using a workspace:
       # run: xcodebuild -resolvePackageDependencies -workspace YourWorkspaceName.xcworkspace -scheme YourSchemeName
 

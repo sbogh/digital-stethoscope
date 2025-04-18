@@ -17,8 +17,15 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+
+    - name: Resolve Swift package dependencies for Xcode
+      run: xcodebuild -resolvePackageDependencies -project YourProjectName.xcodeproj
+      # OR if using a workspace:
+      # run: xcodebuild -resolvePackageDependencies -workspace YourWorkspaceName.xcworkspace -scheme YourSchemeName
+
     - name: SwiftFormat
       run: swiftformat . --lint
+      
     - name: SwiftLint
       run: swiftlint lint --strict
 

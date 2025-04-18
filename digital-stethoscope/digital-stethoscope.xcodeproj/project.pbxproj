@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXContainerItemProxy section */
@@ -30,21 +30,9 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		39FF7B412DB2FDF100B695AC /* digital-stethoscope */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "digital-stethoscope";
-			sourceTree = "<group>";
-		};
-		39FF7B522DB2FDF200B695AC /* digital-stethoscopeTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "digital-stethoscopeTests";
-			sourceTree = "<group>";
-		};
-		39FF7B5C2DB2FDF200B695AC /* digital-stethoscopeUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "digital-stethoscopeUITests";
-			sourceTree = "<group>";
-		};
+		39FF7B412DB2FDF100B695AC /* digital-stethoscope */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "digital-stethoscope"; sourceTree = "<group>"; };
+		39FF7B522DB2FDF200B695AC /* digital-stethoscopeTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "digital-stethoscopeTests"; sourceTree = "<group>"; };
+		39FF7B5C2DB2FDF200B695AC /* digital-stethoscopeUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "digital-stethoscopeUITests"; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,6 +175,7 @@
 				};
 			};
 			buildConfigurationList = 39FF7B3A2DB2FDF100B695AC /* Build configuration list for PBXProject "digital-stethoscope" */;
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -195,7 +184,6 @@
 			);
 			mainGroup = 39FF7B362DB2FDF100B695AC;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
 			productRefGroup = 39FF7B402DB2FDF100B695AC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";

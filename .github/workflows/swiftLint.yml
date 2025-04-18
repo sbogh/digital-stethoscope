@@ -19,7 +19,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Resolve Swift package dependencies for Xcode
-      run: xcodebuild -resolvePackageDependencies -project YourProjectName.xcodeproj
+      run: xcodebuild -resolvePackageDependencies -project digital-stethoscope.xcodeproj
       # OR if using a workspace:
       # run: xcodebuild -resolvePackageDependencies -workspace YourWorkspaceName.xcworkspace -scheme YourSchemeName
 

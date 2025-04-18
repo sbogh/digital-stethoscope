@@ -18,6 +18,8 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Install SwiftLint
+      run: brew install swiftlint
 
     - name: Resolve Swift package dependencies
       working-directory: digital-stethoscope

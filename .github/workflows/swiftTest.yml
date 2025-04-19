@@ -3,8 +3,14 @@ name: Swift Tests
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'digital-stethoscope/**'
+      - '.github/workflows/swiftTest.yml'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'digital-stethoscope/**'
+      - '.github/workflows/swiftTest.yml'
 
 jobs:
   test:

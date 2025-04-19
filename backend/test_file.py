@@ -1,2 +1,6 @@
-"""Script to test backend logic."""
-print("Hello world")
+"""Placeholder script to test CI/CD."""
+
+
+def addition(x,y):
+    """Return the sum of x and y."""
+    return x + y

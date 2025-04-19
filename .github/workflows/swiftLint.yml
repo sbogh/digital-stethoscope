@@ -6,8 +6,14 @@ name: SwiftLint
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'digital-stethoscope/**'
+      - '.github/workflows/swift-lint.yml'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'digital-stethoscope/**'
+      - '.github/workflows/swift-lint.yml'
 
 jobs:
   build:

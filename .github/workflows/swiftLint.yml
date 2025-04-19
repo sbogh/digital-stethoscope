@@ -8,12 +8,12 @@ on:
     branches: [ "main" ]
     paths:
       - 'digital-stethoscope/**'
-      - '.github/workflows/swift-lint.yml'
+      - '.github/workflows/swiftLint.yml'
   pull_request:
     branches: [ "main" ]
     paths:
       - 'digital-stethoscope/**'
-      - '.github/workflows/swift-lint.yml'
+      - '.github/workflows/swiftLint.yml'
 
 jobs:
   build:

@@ -1,0 +1,36 @@
+name: Swift Tests
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'digital-stethoscope/**'
+      - '.github/workflows/swiftTest.yml'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'digital-stethoscope/**'
+      - '.github/workflows/swiftTest.yml'
+
+jobs:
+  test:
+    runs-on: macos-15
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Resolve Swift package dependencies
+      working-directory: digital-stethoscope
+      run: xcodebuild -resolvePackageDependencies -project digital-stethoscope.xcodeproj
+
+    - name: Run Unit Tests
+      working-directory: digital-stethoscope
+      run: |
+        xcodebuild \
+          -project digital-stethoscope.xcodeproj \
+          -scheme digital-stethoscope \
+          -sdk iphonesimulator \
+          -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+          test
+

@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct LoginView: View {
+struct LandingPage: View {
     var body: some View {
         // Aligns content in the middle vertically
-        VStack(alignment: .center, spacing: 2) {
+        VStack(alignment: .center) {
             // Heading
             Text("ScopeFace")
                 .font(
@@ -22,10 +22,11 @@ struct LoginView: View {
 
             // Tagline
             Text("Don’t miss a beat.")
-                .font(Font.custom("Roboto-ExtraBold", size: 22))
+                .font(Font.custom("Roboto-Regular", size: 22))
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color.CTA2)
                 .frame(width: 243, height: 35, alignment: .top)
+                .padding(.bottom, 20)
 
             // Logo
             Image("Logo")
@@ -78,5 +79,5 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView()
+    LandingPage()
 }

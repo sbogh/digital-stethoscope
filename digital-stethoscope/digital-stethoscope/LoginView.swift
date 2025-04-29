@@ -22,7 +22,7 @@ struct LoginView: View {
             //App Name
             Text("ScopeFace")
               .font(
-                Font.custom("Roboto", size: 50)
+                Font.custom("Roboto-ExtraBold", size: 40)
                   .weight(.heavy)
               )
               .multilineTextAlignment(.center)
@@ -31,7 +31,7 @@ struct LoginView: View {
             
             //Log in message
             Text("Log in below. Sound decisions await!")
-              .font(Font.custom("Roboto", size: 25))
+              .font(Font.custom("Roboto-Regular", size: 25))
               .multilineTextAlignment(.center)
               .foregroundColor(Color.CTA2)
               .lineLimit(nil)

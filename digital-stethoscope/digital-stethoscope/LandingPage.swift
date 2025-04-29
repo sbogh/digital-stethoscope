@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct LandingPage: View {
+    @State private var navLogin = false
+    @State private var navCreateAcc = false
+    
     var body: some View {
         // Aligns content in the middle vertically
         VStack(alignment: .center) {
@@ -22,7 +25,7 @@ struct LandingPage: View {
 
             // Tagline
             Text("Don’t miss a beat.")
-                .font(Font.custom("Roboto-Regular", size: 22))
+                .font(Font.custom("Roboto-Regular", size: 25))
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color.CTA2)
                 .frame(width: 243, height: 35, alignment: .top)
@@ -35,7 +38,7 @@ struct LandingPage: View {
 
             // Create Account button
             Button(action: {
-                // TODO: add route to create account page 1
+                navCreateAcc = true
             }) {
                 Text("Create Account")
                     .font(Font.custom("Roboto-ExtraBold", size: 20)
@@ -46,10 +49,14 @@ struct LandingPage: View {
                     .background(Color.CTA1)
                     .cornerRadius(10)
             }.padding(.bottom)
+            
+                .navigationDestination(isPresented: $navCreateAcc) {
+                    CreateAccountView()
+                }
 
             // Log in Button
             Button(action: {
-                // TODO: add route to login page 1
+                navLogin = true
             }) {
                 Text("Log In")
                     .font(Font.custom("Roboto-ExtraBold", size: 20))
@@ -62,6 +69,10 @@ struct LandingPage: View {
                             .stroke(Color.CTA1, lineWidth: 4)
                     )
             }.padding(.bottom)
+            
+            .navigationDestination(isPresented: $navLogin) {
+                    LoginView()
+                }
 
             // Learn More link
             Button(action: {

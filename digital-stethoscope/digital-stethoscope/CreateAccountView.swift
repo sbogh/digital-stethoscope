@@ -5,9 +5,11 @@
 //  Created by Siya Rajpal on 4/28/25.
 //
 
+// TODO: REGISTER NEW USER IN DB, CHECK DB FOR EMAIL, AUTHENTICATE USER
+
 import SwiftUI
 
-struct CreateAccount1View: View {
+struct CreateAccountView: View {
     
     //email format validation variables
     @State private var email: String = ""
@@ -146,10 +148,9 @@ struct CreateAccount1View: View {
                     .cornerRadius(10)
             }
             .padding(.bottom)
-            .disabled(!validNewAccount)
             
             .navigationDestination(isPresented: $validNewAccount) {
-                            SuccessView() // 🔁 Your destination screen
+                AccountSetupView()
             }
             
             // Learn More link
@@ -227,5 +228,5 @@ struct CreateAccount1View: View {
 }
 
 #Preview {
-    CreateAccount1View()
+    CreateAccountView()
 }

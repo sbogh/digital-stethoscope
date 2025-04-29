@@ -7,6 +7,7 @@
 
 // TODO: REGISTER NEW USER IN DB, CHECK DB FOR EMAIL, AUTHENTICATE USER
 
+
 import SwiftUI
 
 struct CreateAccountView: View {
@@ -20,10 +21,15 @@ struct CreateAccountView: View {
     @State private var isValidPWord = true
     
     
+    //passwords match validation variables
     @State private var confirmedPw: String = ""
     @State private var pWordsMatch = true
     
+    
     @State private var validNewAccount = false
+    var emptyField: Bool {
+        email.isEmpty || password.isEmpty || confirmedPw.isEmpty
+    }
     
     
     
@@ -74,7 +80,7 @@ struct CreateAccountView: View {
                         isValidPWord = validatePassword(password: newPWord)
                     }
                 
-                // Error message
+                // Error message if password/email invalid
                 if !isValidEmail || !isValidPWord {
                     HStack {
                         Text("Invalid Email or Password")
@@ -97,6 +103,7 @@ struct CreateAccountView: View {
                         pWordsMatch = validatePasswordsMatch(password: password, confirmedPw: newPWord)
                     }
                 
+                //Error message if passwords don't match
                 if !pWordsMatch {
                     HStack {
                         Text("Passwords do not match")
@@ -108,6 +115,18 @@ struct CreateAccountView: View {
                     }
                 }
                 
+                //Error message if any field is empty
+                if emptyField {
+                    HStack {
+                        Spacer()
+                        Spacer()
+                        Text("All fields are required")
+                            .font(Font.custom("Roboto-Regular", size: 12))
+                            .foregroundColor(.red)
+                            .padding(.horizontal)
+                            .multilineTextAlignment(.center)
+                    }
+                }
                 
                 // password instructions
                 HStack () {
@@ -134,6 +153,7 @@ struct CreateAccountView: View {
             Button(action: {
                 if (isValidEmail && isValidPWord && pWordsMatch) {
                     validNewAccount = true
+                    
                 }
                 
             }) {

@@ -9,7 +9,7 @@ import SwiftUI
 
 // TODO: Save information and send to DB
 
-// TODO: checking provider ID's - how
+// TODO: checking provider ID's - how, REQUIRE ID
 
 struct AccountSetupView: View {
     
@@ -152,6 +152,7 @@ struct AccountSetupView: View {
             .padding(.bottom)
             
             //TODO: route to correct page
+            // if providerID provided to DeviceQView, if not then straight to the addDeviceView
             .navigationDestination(isPresented: $cont) {
                 LandingPage()
             }

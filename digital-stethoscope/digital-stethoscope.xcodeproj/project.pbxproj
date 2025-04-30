@@ -11,6 +11,9 @@
 		39AF3A682DC046F90043C02E /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 39AF3A672DC046F90043C02E /* FirebaseAuth */; };
 		39AF3A6A2DC046F90043C02E /* FirebaseAuthCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 39AF3A692DC046F90043C02E /* FirebaseAuthCombine-Community */; };
 		39AF3A6C2DC046F90043C02E /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 39AF3A6B2DC046F90043C02E /* FirebaseCore */; };
+		39DB95FE2DC1BED200C4B187 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 39DB95FD2DC1BED200C4B187 /* FirebaseDatabase */; };
+		39DB96002DC1BED200C4B187 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 39DB95FF2DC1BED200C4B187 /* FirebaseFirestore */; };
+		39DB96022DC1BED200C4B187 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 39DB96012DC1BED200C4B187 /* FirebaseStorage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,10 +75,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39DB95FE2DC1BED200C4B187 /* FirebaseDatabase in Frameworks */,
 				39AF3A662DC046F90043C02E /* FirebaseAppCheck in Frameworks */,
 				39AF3A6A2DC046F90043C02E /* FirebaseAuthCombine-Community in Frameworks */,
 				39AF3A6C2DC046F90043C02E /* FirebaseCore in Frameworks */,
+				39DB96022DC1BED200C4B187 /* FirebaseStorage in Frameworks */,
 				39AF3A682DC046F90043C02E /* FirebaseAuth in Frameworks */,
+				39DB96002DC1BED200C4B187 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +146,9 @@
 				39AF3A672DC046F90043C02E /* FirebaseAuth */,
 				39AF3A692DC046F90043C02E /* FirebaseAuthCombine-Community */,
 				39AF3A6B2DC046F90043C02E /* FirebaseCore */,
+				39DB95FD2DC1BED200C4B187 /* FirebaseDatabase */,
+				39DB95FF2DC1BED200C4B187 /* FirebaseFirestore */,
+				39DB96012DC1BED200C4B187 /* FirebaseStorage */,
 			);
 			productName = "digital-stethoscope";
 			productReference = 390C87ED2DB307BB00FF152F /* digital-stethoscope.app */;
@@ -619,6 +628,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 39AF3A642DC046F90043C02E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCore;
+		};
+		39DB95FD2DC1BED200C4B187 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39AF3A642DC046F90043C02E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		39DB95FF2DC1BED200C4B187 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39AF3A642DC046F90043C02E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		39DB96012DC1BED200C4B187 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39AF3A642DC046F90043C02E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

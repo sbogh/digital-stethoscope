@@ -8,6 +8,7 @@
 import SwiftUI
 import FirebaseCore
 import FirebaseAuth
+import FirebaseDatabase
 
 
 class AppDelegate: NSObject, UIApplicationDelegate {
@@ -22,6 +23,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct digital_stethoscopeApp: App {
     //registers app delegate for Firebase setup
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    let ref = Database.database().reference()
+
     var body: some Scene {
         WindowGroup {
             NavigationStack {

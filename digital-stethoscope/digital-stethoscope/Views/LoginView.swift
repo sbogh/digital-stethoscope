@@ -5,73 +5,67 @@
 //  Created by Siya Rajpal on 4/28/25.
 //
 
-//TODO: Alter existing functions to query DB and ensure password is correct
-
+// TODO: Alter existing functions to query DB and ensure password is correct
 
 import SwiftUI
 
 struct LoginView: View {
-    
     @State private var email: String = ""
     @State private var isValidEmail = true
-    
-    
+
     @State private var password: String = ""
     @State private var isValidPWord = true
-    
-    
+
     var emptyField: Bool {
         email.isEmpty || password.isEmpty
     }
-    
+
     @State private var validAccount = false
-    
+
     var body: some View {
         VStack(spacing: 20) {
-            //Small Logo at Top
+            // Small Logo at Top
             Image("Logo")
                 .resizable()
-                .frame(width: 62.46876, height: 87 ,alignment: .top)
-            
-            //App Name
+                .frame(width: 62.46876, height: 87, alignment: .top)
+
+            // App Name
             Text("ScopeFace")
-              .font(
-                Font.custom("Roboto-ExtraBold", size: 40)
-                  .weight(.heavy)
-              )
-              .multilineTextAlignment(.center)
-              .foregroundColor(Color.CTA2)
-              .frame(width: 248, height: 60, alignment: .top)
-            
-            //Log in message
+                .font(
+                    Font.custom("Roboto-ExtraBold", size: 40)
+                        .weight(.heavy)
+                )
+                .multilineTextAlignment(.center)
+                .foregroundColor(Color.CTA2)
+                .frame(width: 248, height: 60, alignment: .top)
+
+            // Log in message
             Text("Log in below. Sound decisions await!")
-              .font(Font.custom("Roboto-Regular", size: 25))
-              .multilineTextAlignment(.center)
-              .foregroundColor(Color.CTA2)
-              .lineLimit(nil)
-            
+                .font(Font.custom("Roboto-Regular", size: 25))
+                .multilineTextAlignment(.center)
+                .foregroundColor(Color.CTA2)
+                .lineLimit(nil)
+
             // VStack = form itself
             VStack(spacing: 15) {
-                
-                //Email text field
+                // Email text field
                 TextField("Email", text: $email)
-                .padding()
-                .background(Color.primary)
-                .cornerRadius(10)
-                .onChange(of: email) { _,newEmail in
-                    isValidEmail = validateEmail(email: newEmail)
-                }
-                
-                
+                    .padding()
+                    .background(Color.primary)
+                    .cornerRadius(10)
+                    .onChange(of: email) { _, newEmail in
+                        isValidEmail = validateEmail(email: newEmail)
+                    }
+
                 // Password field
                 SecureField("Password", text: $password)
-                .padding()
-                .background(Color.primary)
-                .cornerRadius(10)
-                .onChange(of: password) { _,newPWord in
-                    isValidPWord = validatePassword(password: newPWord)
-                }
-                
+                    .padding()
+                    .background(Color.primary)
+                    .cornerRadius(10)
+                    .onChange(of: password) { _, newPWord in
+                        isValidPWord = validatePassword(password: newPWord)
+                    }
+
                 // Error message if password/email invalid
                 if !isValidEmail || !isValidPWord {
                     HStack {
@@ -83,8 +77,8 @@ struct LoginView: View {
                         Spacer()
                     }
                 }
-                
-                //Error message if any field is empty
+
+                // Error message if any field is empty
                 if emptyField {
                     HStack {
                         Spacer()
@@ -96,16 +90,16 @@ struct LoginView: View {
                             .multilineTextAlignment(.center)
                     }
                 }
-                
+
                 // forgot password button
                 HStack {
                     Spacer()
                     Button(action: {
                         // TODO: forgot password action
                     }) {
-                    Text("Forgot password?")
-                    .font(.footnote)
-                    .foregroundColor(.black)
+                        Text("Forgot password?")
+                            .font(.footnote)
+                            .foregroundColor(.black)
                     }
                 }
             }
@@ -113,12 +107,11 @@ struct LoginView: View {
             .background(Color.navColor)
             .cornerRadius(20)
             .padding(.horizontal)
-            
-            //login button
+
+            // login button
             Button(action: {
-                if (isValidEmail && isValidPWord ) {
+                if isValidEmail, isValidPWord {
                     validAccount = true
-                    
                 }
             }) {
                 Text("Log In")
@@ -131,12 +124,11 @@ struct LoginView: View {
                     .foregroundColor(Color.primary)
                     .cornerRadius(10)
             }.padding(.bottom)
-            
-                //TODO: change to correct page
+                // TODO: change to correct page
                 .navigationDestination(isPresented: $validAccount) {
                     LandingPage()
                 }
-            
+
             // Learn More link
             Button(action: {
                 // TODO: add route to learn more
@@ -151,7 +143,7 @@ struct LoginView: View {
         }
         Spacer()
     }
-    
+
     /// Validates user inputs a valid email
     ///
     /// - Parameters:
@@ -159,36 +151,35 @@ struct LoginView: View {
     /// - Returns: A Boolean value indicating whether input is valid (`true`) or invalid (`false`).
     func validateEmail(email: String) -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-        
-        if (email == ""){
+
+        if email == "" {
             return true
         }
-        
-        
+
         // Check email is in the right format
-        if (!(NSPredicate(format: "SELF MATCHES %@", emailRegEx).evaluate(with: email))) {
+        if !(NSPredicate(format: "SELF MATCHES %@", emailRegEx).evaluate(with: email)) {
             return false
         }
         return true
     }
-    
-    //TODO: validate that email not already in use w/ DB
-    
+
+    // TODO: validate that email not already in use w/ DB
+
     /// Validates user inputs a valid password
     ///
     /// - Parameters:
     ///   - password: The user's passwrod to validate.
     /// - Returns: A Boolean value indicating whether input is valid (`true`) or invalid (`false`).
     func validatePassword(password: String) -> Bool {
-        //Check if password satisfies all conditions
-        
+        // Check if password satisfies all conditions
+
         if password == "" {
             return true
         }
-        
+
         let passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$&*()_+=|<>?{}\\[\\]~-]).{8,}$"
-        
-        if (!(password.count >= 8 && NSPredicate(format: "SELF MATCHES %@", passwordRegex).evaluate(with: password))) {
+
+        if !(password.count >= 8 && NSPredicate(format: "SELF MATCHES %@", passwordRegex).evaluate(with: password)) {
             return false
         }
         return true

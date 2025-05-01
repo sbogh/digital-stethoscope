@@ -10,7 +10,7 @@ import SwiftUI
 struct LandingPage: View {
     @State private var navLogin = false
     @State private var navCreateAcc = false
-    
+
     var body: some View {
         // Aligns content in the middle vertically
         VStack(alignment: .center) {
@@ -49,7 +49,6 @@ struct LandingPage: View {
                     .background(Color.CTA1)
                     .cornerRadius(10)
             }.padding(.bottom)
-            
                 .navigationDestination(isPresented: $navCreateAcc) {
                     CreateAccountView()
                 }
@@ -69,8 +68,7 @@ struct LandingPage: View {
                             .stroke(Color.CTA1, lineWidth: 4)
                     )
             }.padding(.bottom)
-            
-            .navigationDestination(isPresented: $navLogin) {
+                .navigationDestination(isPresented: $navLogin) {
                     LoginView()
                 }
 

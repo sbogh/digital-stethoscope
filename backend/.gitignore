@@ -1,0 +1,7 @@
+# Firebase service account key
+backend/config/scopeface-10e9a-firebase-adminsdk-fbsvc-7feacaa080.json
+
+
+# Python cache files
+__pycache__/
+*.pyc

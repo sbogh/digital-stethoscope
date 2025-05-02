@@ -207,24 +207,25 @@ struct CreateAccountView: View {
         
         return true
     }
-    func authorizeNewUser(email: String, password: String) {
-        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-            if let error = error {
-                errorMessage = error.localizedDescription
-                authorized = false
-            } else {
-                errorMessage = ""
-                authorized = true
-                
-                authResult?.user.getIDToken { token, error in
-                    if let token = token {
-                        print("Got firebase token:", token)
-                        // TODO: Send token to backend
-                    }
-                }
-            }
-        }
-    }
+//    func authorizeNewUser(email: String, password: String) {
+//        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+//            if let error = error {
+//                errorMessage = error.localizedDescription
+//                authorized = false
+//            } else {
+//                errorMessage = ""
+//                authorized = true
+//                
+//                print("user authorized with email: ", userProfile.email)
+//                authResult?.user.getIDToken { token, error in
+//                    if let token = token {
+//                        print("Got firebase token:", token)
+//                        // TODO: Send token to backend
+//                    }
+//                }
+//            }
+//        }
+//    }
 }
 
 #Preview {

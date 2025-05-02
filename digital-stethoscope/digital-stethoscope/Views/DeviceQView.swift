@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct DeviceQView: View {
-    
     @State private var devPresent = false
-    
+
     var body: some View {
         VStack(spacing: 20) {
             // Small Logo at Top
@@ -36,7 +35,7 @@ struct DeviceQView: View {
                 .foregroundColor(Color.CTA2)
                 .lineLimit(nil)
 
-            //Have a device button
+            // Have a device button
             Button(action: {
                 devPresent = true
             }) {
@@ -50,12 +49,12 @@ struct DeviceQView: View {
                     .cornerRadius(10)
             }.padding(.bottom)
         }
-        
+
         .navigationDestination(isPresented: $devPresent) {
             RegisterDeviceView()
         }
 
-        //Do not have a device button
+        // Do not have a device button
         // TODO: have it go straight to registering a user
         Button(action: {
             // TODO: add code for

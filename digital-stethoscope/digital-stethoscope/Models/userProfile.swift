@@ -6,21 +6,16 @@
 //  Created by Siya Rajpal on 5/2/25.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 class UserProfile: ObservableObject {
-   
     @Published var email: String = ""
     @Published var password: String = ""
-    
-    
+
     @Published var firstName: String = ""
     @Published var timeZone: String = ""
-    
+
     @Published var deviceIds: [String] = []
     @Published var deviceNicknames: [String: String] = [:]
 }
-
-
-

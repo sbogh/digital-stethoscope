@@ -12,16 +12,13 @@ import SwiftUI
 // TODO: checking provider ID's - how, REQUIRE ID
 
 struct AccountSetupView: View {
-    
-    //user data object
+    // user data object
     @StateObject var userProfile = UserProfile()
-    
-    
+
     // handles changes in name
     var nameEmpty: Bool {
         userProfile.firstName.isEmpty
     }
-
 
     // TODO: We don't need PDT and PST, MST and MDT etc, we should choose based on time of year
     // handles time zone inputs
@@ -101,7 +98,7 @@ struct AccountSetupView: View {
             Button(action: {
                 if !nameEmpty, !zoneEmpty {
                     cont = true
-                    //print("going to device page with name: ", userProfile.firstName, "and time zone: ", userProfile.timeZone)
+                    // print("going to device page with name: ", userProfile.firstName, "and time zone: ", userProfile.timeZone)
                 }
 
             }) {
@@ -116,8 +113,7 @@ struct AccountSetupView: View {
                     .cornerRadius(10)
             }
             .padding()
-        
-            //route to next page, provided all info inputted
+            // route to next page, provided all info inputted
             .navigationDestination(isPresented: $cont) {
                 DeviceQView()
             }

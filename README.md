@@ -1,9 +1,9 @@
 # digital-stethoscope
 
-### Frontend - Backend Connection & Routes Information
-1. Take a look at ContentView.swift to get an idea of how everything works.
+### Frontend
+The digital-stethoscope contains the frontend. Do not rename or his will break things.
 
-#### Backend:
-1. Make sure to have Flask installed and FastAPI
+#### Backend
+1. Make sure to have FastAPI installed
 2. Take a look at main.py to get an idea of how everything works.
 

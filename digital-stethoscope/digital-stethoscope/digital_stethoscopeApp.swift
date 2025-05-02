@@ -23,11 +23,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct digital_stethoscopeApp: App {
     // registers app delegate for Firebase setup
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @StateObject var userProfile = UserProfile()
 
     var body: some Scene {
         WindowGroup {
             NavigationStack {
                 LandingPage()
+                    .environmentObject(userProfile)
             }
         }
     }

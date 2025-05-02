@@ -34,7 +34,6 @@ struct RegisterDeviceView: View {
             Image("Logo")
                 .resizable()
                 .frame(width: 62.46876, height: 87, alignment: .top)
-
             // App Name
             Text("ScopeFace")
                 .font(
@@ -44,7 +43,6 @@ struct RegisterDeviceView: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color.CTA2)
                 .frame(width: 248, height: 60, alignment: .top)
-
             // Message
             Text("Great. Let's register your device.")
                 .font(Font.custom("Roboto-Regular", size: 25))
@@ -65,7 +63,6 @@ struct RegisterDeviceView: View {
                     .padding()
                     .background(Color.primary)
                     .cornerRadius(10)
-
                 // Error message if any field is empty
                 if emptyField {
                     HStack {

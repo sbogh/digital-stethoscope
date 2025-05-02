@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		39DB97322DC4245E00C4B187 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 39DB97312DC4245E00C4B187 /* FirebaseAuth */; };
+		39DB97342DC4245E00C4B187 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 39DB97332DC4245E00C4B187 /* FirebaseFirestore */; };
+		39DB97362DC4245E00C4B187 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 39DB97352DC4245E00C4B187 /* FirebaseStorage */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		390C87FE2DB307BC00FF152F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -29,9 +35,22 @@
 		390C88072DB307BC00FF152F /* digital-stethoscopeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "digital-stethoscopeUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		39DB97392DC4311400C4B187 /* Exceptions for "digital-stethoscope" folder in "digital-stethoscope" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 390C87EC2DB307BB00FF152F /* digital-stethoscope */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		390C87EF2DB307BB00FF152F /* digital-stethoscope */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				39DB97392DC4311400C4B187 /* Exceptions for "digital-stethoscope" folder in "digital-stethoscope" target */,
+			);
 			path = "digital-stethoscope";
 			sourceTree = "<group>";
 		};
@@ -52,6 +71,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39DB97322DC4245E00C4B187 /* FirebaseAuth in Frameworks */,
+				39DB97342DC4245E00C4B187 /* FirebaseFirestore in Frameworks */,
+				39DB97362DC4245E00C4B187 /* FirebaseStorage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +134,9 @@
 			);
 			name = "digital-stethoscope";
 			packageProductDependencies = (
+				39DB97312DC4245E00C4B187 /* FirebaseAuth */,
+				39DB97332DC4245E00C4B187 /* FirebaseFirestore */,
+				39DB97352DC4245E00C4B187 /* FirebaseStorage */,
 			);
 			productName = "digital-stethoscope";
 			productReference = 390C87ED2DB307BB00FF152F /* digital-stethoscope.app */;
@@ -195,6 +220,9 @@
 			);
 			mainGroup = 390C87E42DB307BB00FF152F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				39DB97302DC4245E00C4B187 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 390C87EE2DB307BB00FF152F /* Products */;
 			projectDirPath = "";
@@ -303,6 +331,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -366,6 +395,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -398,6 +428,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"digital-stethoscope/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "digital-stethoscope/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -408,6 +439,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "ucsd-cse-237d.digital-stethoscope";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -426,6 +458,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"digital-stethoscope/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "digital-stethoscope/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -436,6 +469,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "ucsd-cse-237d.digital-stethoscope";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -552,6 +586,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		39DB97302DC4245E00C4B187 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.12.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		39DB97312DC4245E00C4B187 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39DB97302DC4245E00C4B187 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		39DB97332DC4245E00C4B187 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39DB97302DC4245E00C4B187 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		39DB97352DC4245E00C4B187 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39DB97302DC4245E00C4B187 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 390C87E52DB307BB00FF152F /* Project object */;
 }

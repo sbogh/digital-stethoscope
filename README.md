@@ -16,9 +16,11 @@
     4. Below that, will be a field Info.plist File. Ensure the path to the Info file in the cell. 
 5. Then you should be good to go!
 
+### Frontend
+The digital-stethoscope contains the frontend. Do not rename or his will break things.
 
-#### Backend:
-1. Make sure to have Flask installed and FastAPI
+#### Backend
+1. Make sure to have FastAPI installed
 2. Take a look at main.py to get an idea of how everything works.
 3. use ```uvicorn main:app --reload``` to run the server
 

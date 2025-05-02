@@ -4,3 +4,7 @@
 # Python cache files
 __pycache__/
 *.pyc
+
+
+# Swift files
+digital-stethoscope/digital-stethoscope/digital-stethoscope/Config/APIConfig.swift

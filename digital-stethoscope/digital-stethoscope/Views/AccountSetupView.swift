@@ -12,20 +12,21 @@ import SwiftUI
 // TODO: checking provider ID's - how, REQUIRE ID
 
 struct AccountSetupView: View {
+    
+    //user data object
+    @StateObject var userProfile = UserProfile()
+    
+    
     // handles changes in name
-    @State private var name: String = ""
     var nameEmpty: Bool {
-        name.isEmpty
+        userProfile.firstName.isEmpty
     }
 
-    // handles changes in provider ID
-    @State private var providerID: String = ""
 
     // handles time zone inputs
     var timeZones = ["PDT", "PST", "MST", "MDT", "CST", "CDT", "EST", "EDT", "HST", "HDT", "AKST", "AKDT"]
-    @State private var selectedZone = ""
     var zoneEmpty: Bool {
-        selectedZone.isEmpty
+        userProfile.timeZone.isEmpty
     }
 
     // determines if user can move to next page
@@ -58,7 +59,7 @@ struct AccountSetupView: View {
             // Account Info form
             VStack(spacing: 10) {
                 // Name text field
-                TextField("Name", text: $name)
+                TextField("Name", text: $userProfile.firstName)
                     .padding()
                     .background(Color.primary)
                     .cornerRadius(10)
@@ -79,15 +80,15 @@ struct AccountSetupView: View {
                 Menu {
                     ForEach(timeZones, id: \.self) { timezone in
                         Button(action: {
-                            selectedZone = timezone
+                            userProfile.timeZone = timezone
                         }) {
                             Text(timezone)
                         }
                     }
                 } label: {
                     HStack {
-                        Text(selectedZone.isEmpty ? "Timezone" : selectedZone)
-                            .foregroundColor(selectedZone.isEmpty ? .gray : .black)
+                        Text(userProfile.timeZone.isEmpty ? "Timezone" : userProfile.timeZone)
+                            .foregroundColor(userProfile.timeZone.isEmpty ? .gray : .black)
                         Spacer()
                         Image(systemName: "chevron.down")
                             .foregroundColor(.black)
@@ -108,12 +109,6 @@ struct AccountSetupView: View {
                         Spacer()
                     }
                 }
-
-                // Provider ID text field
-                TextField("ProviderID", text: $providerID)
-                    .padding()
-                    .background(Color.primary)
-                    .cornerRadius(10)
             }
             .padding()
             .background(Color.navColor)
@@ -124,9 +119,8 @@ struct AccountSetupView: View {
             Button(action: {
                 if !nameEmpty, !zoneEmpty {
                     cont = true
+                    //print("going to device page with name: ", userProfile.firstName, "and time zone: ", userProfile.timeZone)
                 }
-
-                // TODO: add check for provider ID if present
 
             }) {
                 Text("Continue")
@@ -140,10 +134,10 @@ struct AccountSetupView: View {
                     .cornerRadius(10)
             }
             .padding(.bottom)
-            // TODO: route to correct page
-            // if providerID provided to DeviceQView, if not then straight to the addDeviceView
+        
+            //route to next page, provided all info inputted
             .navigationDestination(isPresented: $cont) {
-                LandingPage()
+                DeviceQView()
             }
         }
         Spacer()

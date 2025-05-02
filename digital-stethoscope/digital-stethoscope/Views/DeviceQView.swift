@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct DeviceQView: View {
+    
+    @State private var devPresent = false
+    
     var body: some View {
         VStack(spacing: 20) {
             // Small Logo at Top
@@ -33,9 +36,9 @@ struct DeviceQView: View {
                 .foregroundColor(Color.CTA2)
                 .lineLimit(nil)
 
-            // Create Account button
+            //Have a device button
             Button(action: {
-                // TODO: add code to direct to proper page here
+                devPresent = true
             }) {
                 Text("Yes")
                     .font(Font.custom("Roboto-ExtraBold", size: 20)
@@ -47,8 +50,13 @@ struct DeviceQView: View {
                     .cornerRadius(10)
             }.padding(.bottom)
         }
+        
+        .navigationDestination(isPresented: $devPresent) {
+            RegisterDeviceView()
+        }
 
-        // Log in Button
+        //Do not have a device button
+        // TODO: have it go straight to registering a user
         Button(action: {
             // TODO: add code for
         }) {

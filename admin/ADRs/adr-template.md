@@ -2,7 +2,6 @@
 
 **Status**: [Proposed | Accepted | Deprecated | Superseded]  
 **Date**: [YYYY-MM-DD]  
-**ADR ID**: [Unique identifier or number]  
 
 ---
 

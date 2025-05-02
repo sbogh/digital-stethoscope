@@ -11,12 +11,14 @@ import SwiftUI
 import FirebaseAuth
 
 struct CreateAccountView: View {
+    
+    //user data object
+    @StateObject var userProfile = UserProfile()
+    
     // email format validation variables
-    @State private var email: String = ""
     @State private var isValidEmail = true
     
     // password format validation variables
-    @State private var password: String = ""
     @State private var isValidPWord = true
     
     // passwords match validation variables
@@ -26,15 +28,11 @@ struct CreateAccountView: View {
     // checks that all required fields are filled out and valid
     //@State private var validNewAccount = false
     var emptyField: Bool {
-        email.isEmpty || password.isEmpty || confirmedPw.isEmpty
+        userProfile.email.isEmpty || userProfile.password.isEmpty || confirmedPw.isEmpty
     }
     
-    //email db validation variable
-    @State private var emailExists = false
-    
     //signup validation variables
-    @State private var errorMessage = ""
-    @State private var authorized = false
+    @State private var continueSignup = false
     
     var body: some View {
         VStack(spacing: 10) {
@@ -63,20 +61,20 @@ struct CreateAccountView: View {
             // Create account form
             VStack(spacing: 5) {
                 // Email text field
-                TextField("Email", text: $email)
+                TextField("Email", text: $userProfile.email)
                     .padding()
                     .background(Color.primary)
                     .cornerRadius(10)
-                    .onChange(of: email) { _, newEmail in
+                    .onChange(of: userProfile.email) { _, newEmail in
                         isValidEmail = validateEmail(email: newEmail)
                     }
                 
                 // Password field
-                SecureField("Password", text: $password)
+                SecureField("Password", text: $userProfile.password)
                     .padding()
                     .background(Color.primary)
                     .cornerRadius(10)
-                    .onChange(of: password) { _, newPWord in
+                    .onChange(of: userProfile.password) { _, newPWord in
                         isValidPWord = validatePassword(password: newPWord)
                     }
                 
@@ -98,7 +96,7 @@ struct CreateAccountView: View {
                     .background(Color.primary)
                     .cornerRadius(10)
                     .onChange(of: confirmedPw) { _, newPWord in
-                        pWordsMatch = validatePasswordsMatch(password: password, confirmedPw: newPWord)
+                        pWordsMatch = validatePasswordsMatch(password: userProfile.password, confirmedPw: newPWord)
                     }
                 
                 // Error message if passwords don't match
@@ -148,8 +146,10 @@ struct CreateAccountView: View {
             
             // sign up button
             Button(action: {
-                if isValidEmail, isValidPWord, pWordsMatch {
-                    authorizeNewUser(email: email, password: password)
+                if isValidEmail, isValidPWord, pWordsMatch, !emptyField {
+                    continueSignup = true
+                    print("sigining up with email: ", userProfile.email)
+                    print("and password: ", userProfile.password)
                 }
                 
                 
@@ -165,7 +165,7 @@ struct CreateAccountView: View {
                     .cornerRadius(10)
             }
             .padding(.bottom)
-            .navigationDestination(isPresented: $authorized) {
+            .navigationDestination(isPresented: $continueSignup) {
                 AccountSetupView()
             }
             
@@ -203,8 +203,6 @@ struct CreateAccountView: View {
         return true
     }
     
-    // TODO: validate that email not already in use w/ DB
-    
     /// Validates user inputs a valid password
     ///
     /// - Parameters:
@@ -239,24 +237,25 @@ struct CreateAccountView: View {
         
         return true
     }
-    func authorizeNewUser(email: String, password: String) {
-        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-            if let error = error {
-                errorMessage = error.localizedDescription
-                authorized = false
-            } else {
-                errorMessage = ""
-                authorized = true
-                
-                authResult?.user.getIDToken { token, error in
-                    if let token = token {
-                        print("Got firebase token:", token)
-                        // TODO: Send token to backend
-                    }
-                }
-            }
-        }
-    }
+//    func authorizeNewUser(email: String, password: String) {
+//        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+//            if let error = error {
+//                errorMessage = error.localizedDescription
+//                authorized = false
+//            } else {
+//                errorMessage = ""
+//                authorized = true
+//                
+//                print("user authorized with email: ", userProfile.email)
+//                authResult?.user.getIDToken { token, error in
+//                    if let token = token {
+//                        print("Got firebase token:", token)
+//                        // TODO: Send token to backend
+//                    }
+//                }
+//            }
+//        }
+//    }
 }
 
 #Preview {

@@ -9,7 +9,7 @@ Includes CORS middleware for cross-origin frontend access.
 from fastapi import FastAPI, Request
 from auth_utils import verify_token
 from fastapi.middleware.cors import CORSMiddleware
-import create_user_crud
+import user_routes as user_routes
 
 # Create a new FastAPI application instance
 app = FastAPI()
@@ -30,7 +30,7 @@ async def register_user(request: Request):
      body = await request.json()
 
 
-     required_fields = ["email", "providerIDs", "currentDeviceID", "currentProviderID", "firstName", "timeZone"]
+     required_fields = ["email", "currentDeviceID", "firstName", "timeZone"]
      missing_field = []
      
      for field in required_fields:
@@ -43,13 +43,13 @@ async def register_user(request: Request):
      body.setdefault("deviceIDs", [])
      body.setdefault("deviceNicknames", [])
 
-     create_user_crud.create_new_user(user_id=user_id, data=body)
+     user_routes.create_new_user(user_id=user_id, data=body)
      return {"message": f"User {user_id} registered."}
 
 @app.get("/me")
 async def get_profile(request: Request):
     uid = verify_token(request)
-    profile = create_user_crud.get_user(uid)
+    profile = user_routes.get_user(uid)
     if not profile:
         return {"error": "Profile not found"}
     return profile     

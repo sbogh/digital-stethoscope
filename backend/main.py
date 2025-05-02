@@ -6,8 +6,10 @@ to verify that the server is running and accepting requests.
 Includes CORS middleware for cross-origin frontend access.
 """
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from auth_utils import verify_token
 from fastapi.middleware.cors import CORSMiddleware
+import create_user_crud
 
 # Create a new FastAPI application instance
 app = FastAPI()
@@ -22,13 +24,32 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Route: GET /ping
-@app.get("/ping")
-def ping():
-    """
-    Check endpoint to verify that the backend server is running.
+@app.post("/register")
+async def register_user(request: Request):
+     user_id = verify_token(request)
+     body = await request.json()
 
-    Returns:
-        dict: A JSON response containing a success message.
-    """
-    return {"message": "server started successfully"}
+
+     required_fields = ["email", "providerIDs", "currentDeviceID", "currentProviderID", "firstName", "timeZone"]
+     missing_field = []
+     
+     for field in required_fields:
+          if field not in body:
+              missing_field.push_back(field)
+    
+     if missing_field:
+        return {"error": f"Missing required fields: {missing_field}"}
+
+     body.setdefault("deviceIDs", [])
+     body.setdefault("deviceNicknames", [])
+
+     create_user_crud.create_new_user(user_id=user_id, data=body)
+     return {"message": f"User {user_id} registered."}
+
+@app.get("/me")
+async def get_profile(request: Request):
+    uid = verify_token(request)
+    profile = create_user_crud.get_user(uid)
+    if not profile:
+        return {"error": "Profile not found"}
+    return profile     

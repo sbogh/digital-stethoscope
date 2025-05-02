@@ -12,3 +12,13 @@ xcuserdata/
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
+# Firebase service account key
+/backend/config/serviceAccountKey.json
+
+# Python cache files
+__pycache__/
+*.pyc
+
+
+# Swift files
+digital-stethoscope/digital-stethoscope/digital-stethoscope/Config/APIConfig.swift

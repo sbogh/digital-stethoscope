@@ -35,9 +35,22 @@
 		390C88072DB307BC00FF152F /* digital-stethoscopeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "digital-stethoscopeUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		39DB98662DC5787300C4B187 /* Exceptions for "digital-stethoscope" folder in "digital-stethoscope" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 390C87EC2DB307BB00FF152F /* digital-stethoscope */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		390C87EF2DB307BB00FF152F /* digital-stethoscope */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				39DB98662DC5787300C4B187 /* Exceptions for "digital-stethoscope" folder in "digital-stethoscope" target */,
+			);
 			path = "digital-stethoscope";
 			sourceTree = "<group>";
 		};

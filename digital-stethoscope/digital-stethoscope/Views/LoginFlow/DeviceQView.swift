@@ -36,6 +36,10 @@ struct DeviceQView: View {
                     .cornerRadius(10)
             }.padding()
         }
+        
+        .navigationDestination(isPresented: $devPresent) {
+            RegisterDeviceView()
+        }
 
         .navigationDestination(isPresented: $devPresent) {
             RegisterDeviceView().environmentObject(userProfile)

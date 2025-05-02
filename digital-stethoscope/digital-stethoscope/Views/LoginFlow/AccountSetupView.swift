@@ -113,8 +113,8 @@ struct AccountSetupView: View {
                     .cornerRadius(10)
             }
             .padding()
-            // TODO: route to correct page
-            // if providerID provided to DeviceQView, if not then straight to the addDeviceView
+        
+            //route to next page, provided all info inputted
             .navigationDestination(isPresented: $cont) {
                 DeviceQView().environmentObject(userProfile)
             }

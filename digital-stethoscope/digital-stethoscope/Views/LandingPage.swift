@@ -10,6 +10,8 @@ import SwiftUI
 struct LandingPage: View {
     @State private var navLogin = false
     @State private var navCreateAcc = false
+    
+    @EnvironmentObject var userProfile: UserProfile
 
     var body: some View {
         // Aligns content in the middle vertically
@@ -50,7 +52,7 @@ struct LandingPage: View {
                     .cornerRadius(10)
             }.padding(.bottom)
                 .navigationDestination(isPresented: $navCreateAcc) {
-                    CreateAccountView()
+                    CreateAccountView().environmentObject(userProfile)
                 }
 
             // Log in Button
@@ -88,5 +90,5 @@ struct LandingPage: View {
 }
 
 #Preview {
-    LandingPage()
+    LandingPage().environmentObject(UserProfile())
 }

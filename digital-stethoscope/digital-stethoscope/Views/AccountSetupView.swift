@@ -13,7 +13,7 @@ import SwiftUI
 
 struct AccountSetupView: View {
     // user data object
-    @StateObject var userProfile = UserProfile()
+    @EnvironmentObject var userProfile: UserProfile
 
     // handles changes in name
     var nameEmpty: Bool {
@@ -133,7 +133,7 @@ struct AccountSetupView: View {
             .padding(.bottom)
             // route to next page, provided all info inputted
             .navigationDestination(isPresented: $cont) {
-                DeviceQView()
+                DeviceQView().environmentObject(userProfile)
             }
         }
         Spacer()
@@ -141,5 +141,5 @@ struct AccountSetupView: View {
 }
 
 #Preview {
-    AccountSetupView()
+    AccountSetupView().environmentObject(UserProfile())
 }

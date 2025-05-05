@@ -8,7 +8,7 @@ import SwiftUI
 
 struct CreateAccountView: View {
     // user data object
-    @StateObject var userProfile = UserProfile()
+    @EnvironmentObject var userProfile: UserProfile
 
     // email format validation variables
     @State private var isValidEmail = true
@@ -135,7 +135,7 @@ struct CreateAccountView: View {
             }
             .padding(.bottom)
             .navigationDestination(isPresented: $continueSignup) {
-                AccountSetupView()
+                AccountSetupView().environmentObject(userProfile)
             }
 
             // Learn More link
@@ -209,5 +209,5 @@ struct CreateAccountView: View {
 }
 
 #Preview {
-    CreateAccountView()
+    CreateAccountView().environmentObject(UserProfile())
 }

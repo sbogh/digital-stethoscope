@@ -9,6 +9,8 @@ import SwiftUI
 
 struct DeviceQView: View {
     @State private var devPresent = false
+    
+    @EnvironmentObject var userProfile: UserProfile
 
     var body: some View {
         VStack(spacing: 5) {
@@ -31,7 +33,7 @@ struct DeviceQView: View {
         }
 
         .navigationDestination(isPresented: $devPresent) {
-            RegisterDeviceView()
+            RegisterDeviceView().environmentObject(userProfile)
         }
 
         // Do not have a device button
@@ -56,5 +58,5 @@ struct DeviceQView: View {
 }
 
 #Preview {
-    DeviceQView()
+    DeviceQView().environmentObject(UserProfile())
 }

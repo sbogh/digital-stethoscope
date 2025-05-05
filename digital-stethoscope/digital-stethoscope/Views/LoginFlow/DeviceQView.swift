@@ -9,6 +9,8 @@ import SwiftUI
 
 struct DeviceQView: View {
     @State private var devPresent = false
+    
+    @EnvironmentObject var userProfile: UserProfile
 
     @EnvironmentObject var userProfile: UserProfile
 
@@ -38,7 +40,7 @@ struct DeviceQView: View {
         }
 
         .navigationDestination(isPresented: $devPresent) {
-            RegisterDeviceView()
+            RegisterDeviceView().environmentObject(userProfile)
         }
 
         .navigationDestination(isPresented: $devPresent) {

@@ -145,17 +145,17 @@ struct RegisterDeviceView: View {
     }
 
     func addDevices(deviceId: String, deviceName: String) {
-        print("user email: ", userProfile.email)
-        print("user pasword: ", userProfile.password)
-        print("user name", userProfile.firstName)
-        print("user timezone", userProfile.timeZone)
+//        print("user email: ", userProfile.email)
+//        print("user pasword: ", userProfile.password)
+//        print("user name", userProfile.firstName)
+//        print("user timezone", userProfile.timeZone)
         let trimmedId = deviceId.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedName = deviceName.trimmingCharacters(in: .whitespacesAndNewlines)
 
         userProfile.deviceIds.append(trimmedId)
         userProfile.deviceNicknames[trimmedId] = trimmedName
 
-        print("device registered with id: ", deviceID, "and name: ", deviceName)
+        //print("device registered with id: ", deviceID, "and name: ", deviceName)
     }
 }
 

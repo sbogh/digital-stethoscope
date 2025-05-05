@@ -154,7 +154,7 @@ struct RegisterDeviceView: View {
         userProfile.deviceIds.append(trimmedId)
         userProfile.deviceNicknames[trimmedId] = trimmedName
 
-        print("device registered with id: ", deviceID, "and name: ", deviceName)
+        //print("device registered with id: ", deviceID, "and name: ", deviceName)
     }
 }
 

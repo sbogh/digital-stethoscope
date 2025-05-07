@@ -94,7 +94,7 @@ struct RegisterDeviceView: View {
                 }
 
                 // once data validated, register user
-                auth_user(user: userProfile)
+                (errorMessage, querySuccess) = auth_user(user: userProfile)
 
             }) {
                 Text("Complete Sign up")
@@ -113,10 +113,9 @@ struct RegisterDeviceView: View {
                 PlaceholderView()
             }
             
-            //TODO: add error message if something goes wrong
             if querySuccess == false && buttonClick == true {
                 HStack {
-                    Text("Oops! Something went wrong.")
+                    Text("Oops! Something went wrong. Error: \(errorMessage)")
                         .font(Font.custom("Roboto-Regular", size: 12))
                         .foregroundColor(.red)
                         .padding(.horizontal)
@@ -140,55 +139,6 @@ struct RegisterDeviceView: View {
         userProfile.deviceNicknames[trimmedId] = trimmedName
 
         //print("device registered with id: ", deviceID, "and name: ", deviceName)
-    }
-
-    func auth_user(user: UserProfile) {
-        Auth.auth().createUser(withEmail: user.email, password: user.password) { authResult, error in
-            if let error = error {
-                print("Error in Firebase Auth createUser:", error.localizedDescription)
-                errorMessage = error.localizedDescription
-                querySuccess = false
-                return
-            }
-
-            authResult?.user.getIDToken { token, _ in
-                if let token = token {
-                    register_user(token: token)
-                    querySuccess = true
-                } else {
-                    print("Token was nil despite no error")
-                    errorMessage = "Registration Error Occured"
-                }
-                
-            }
-        }
-    }
-
-    func register_user(token: String) {
-        guard let url = URL(string: APIConfig.registerEndpoint) else { return }
-        
-        
-        var request = URLRequest(url: url)
-        
-        print("token: ", token)
-        
-        request.httpMethod = "POST"
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let body: [String: Any] = [
-            "email": userProfile.email,
-            "firstName": userProfile.firstName,
-            "timeZone": userProfile.timeZone,
-            "deviceIDs": userProfile.deviceIds,
-            "deviceNicknames": userProfile.deviceNicknames,
-            "currentDeviceID": ""
-        ]
-        
-        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
-        
-        URLSession.shared.dataTask(with: request).resume()
     }
 }
 

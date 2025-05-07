@@ -11,6 +11,10 @@ struct DeviceQView: View {
     @State private var devPresent = false
     
     @EnvironmentObject var userProfile: UserProfile
+    
+    @State private var errorMessage = ""
+    @State private var querySuccess = false
+    @State private var buttonClicked = false
 
     var body: some View {
         VStack(spacing: 20) {
@@ -59,7 +63,8 @@ struct DeviceQView: View {
         // Do not have a device button
         // TODO: have it go straight to registering a user
         Button(action: {
-            // TODO: add code for
+            (errorMessage, querySuccess) = auth_user(user: userProfile)
+            buttonClicked = true
         }) {
             Text("No")
                 .font(Font.custom("Roboto-ExtraBold", size: 20))
@@ -72,6 +77,21 @@ struct DeviceQView: View {
                         .stroke(Color.CTA1, lineWidth: 4)
                 )
         }.padding(.bottom)
+        // TODO: route to proper page
+        .navigationDestination(isPresented: $querySuccess) {
+            PlaceholderView()
+        }
+        
+        if querySuccess == false && buttonClicked == true {
+            HStack {
+                Text("Oops! Something went wrong. Error: \(errorMessage)")
+                    .font(Font.custom("Roboto-Regular", size: 12))
+                    .foregroundColor(.red)
+                    .padding(.horizontal)
+                    .multilineTextAlignment(.center)
+                Spacer()
+            }
+        }
 
         Spacer()
     }

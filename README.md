@@ -22,4 +22,5 @@ The digital-stethoscope contains the frontend. Do not rename or his will break t
 #### Backend
 1. Make sure to have FastAPI installed
 2. Take a look at main.py to get an idea of how everything works.
+3. use ```uvicorn main:app --reload``` to run the server
 

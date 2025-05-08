@@ -46,7 +46,7 @@ async def register_user(request: Request):
      user_routes.create_new_user(user_id=user_id, data=body)
      return {"message": f"User {user_id} registered."}
 
-@app.get("/me")
+@app.get("/login")
 async def get_profile(request: Request):
     uid = verify_token(request)
     profile = user_routes.get_user(uid)

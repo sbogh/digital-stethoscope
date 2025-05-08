@@ -22,12 +22,11 @@ struct RegisterDeviceView: View {
         deviceID.isEmpty || deviceName.isEmpty
     }
 
-    // validates that data was sent to backend successfully
+    // handles and validates backend call
     @State private var querySuccess = false
-
     @State private var errorMessage = ""
-    
     @State private var buttonClick = false
+    @State private var isLoading = false
 
     var body: some View {
         VStack(spacing: 15) {
@@ -88,13 +87,25 @@ struct RegisterDeviceView: View {
             Button(action: {
                 
                 buttonClick = true
+                isLoading = true
                 // checks if any fields are empty, & adds devices to user obj
                 if !emptyField {
                     addDevices(deviceId: deviceID, deviceName: deviceName)
                 }
 
                 // once data validated, register user
-                (errorMessage, querySuccess) = auth_user(user: userProfile)
+                Task {
+                    let (message, success) = await authRegister(user: userProfile)
+                    
+                    if success {
+                        querySuccess = true
+                        isLoading = false
+                    } else {
+                        querySuccess = false
+                        errorMessage = message
+                        isLoading = false
+                    }
+                }
 
             }) {
                 Text("Complete Sign up")
@@ -113,7 +124,13 @@ struct RegisterDeviceView: View {
                 PlaceholderView()
             }
             
-            if querySuccess == false && buttonClick == true {
+            // loading icon when processing sign up
+            if isLoading {
+                ProgressView("Please wait while your account is being created...")
+                    .padding()
+            }
+            
+            if !querySuccess, buttonClick, !isLoading {
                 HStack {
                     Text("Oops! Something went wrong. Error: \(errorMessage)")
                         .font(Font.custom("Roboto-Regular", size: 12))

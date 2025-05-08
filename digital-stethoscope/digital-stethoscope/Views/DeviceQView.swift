@@ -15,6 +15,7 @@ struct DeviceQView: View {
     @State private var errorMessage = ""
     @State private var querySuccess = false
     @State private var buttonClicked = false
+    @State private var isLoading = false
 
     var body: some View {
         VStack(spacing: 20) {
@@ -61,10 +62,24 @@ struct DeviceQView: View {
         }
 
         // Do not have a device button
-        // TODO: have it go straight to registering a user
         Button(action: {
-            (errorMessage, querySuccess) = auth_user(user: userProfile)
             buttonClicked = true
+            isLoading = true
+            
+            Task {
+                let (message, success) = await authRegister(user: userProfile)
+                
+                if success {
+                    querySuccess = true
+                    isLoading = false
+                } else {
+                    querySuccess = false
+                    errorMessage = message
+                    isLoading = false
+                }
+            }
+            
+                   
         }) {
             Text("No")
                 .font(Font.custom("Roboto-ExtraBold", size: 20))
@@ -82,7 +97,13 @@ struct DeviceQView: View {
             PlaceholderView()
         }
         
-        if querySuccess == false && buttonClicked == true {
+        // loading icon when processing sign up
+        if isLoading {
+            ProgressView("Please wait while your account is being created...")
+                .padding()
+        }
+        
+        if !querySuccess, buttonClicked, !isLoading  {
             HStack {
                 Text("Oops! Something went wrong. Error: \(errorMessage)")
                     .font(Font.custom("Roboto-Regular", size: 12))

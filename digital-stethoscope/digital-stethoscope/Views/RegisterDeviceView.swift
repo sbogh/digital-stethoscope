@@ -94,9 +94,8 @@ struct RegisterDeviceView: View {
 
                 // once data validated, register user
                 Task {
-                    print("calling authRegister with: \(userProfile.email)")
                     let (message, success) = await authRegister(user: userProfile)
-
+                    
                     if success {
                         querySuccess = true
                         isLoading = false
@@ -123,13 +122,11 @@ struct RegisterDeviceView: View {
             .navigationDestination(isPresented: $querySuccess) {
                 PlaceholderView()
             }
-
             // loading icon when processing sign up
             if isLoading {
                 ProgressView("Please wait while your account is being created...")
                     .padding()
             }
-
             if !querySuccess, buttonClick, !isLoading {
                 HStack {
                     Text("Oops! Something went wrong. Error: \(errorMessage)")

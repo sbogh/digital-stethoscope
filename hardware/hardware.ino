@@ -115,10 +115,17 @@ void writeWavHeader(File &file, uint32_t totalAudioLen) {
 }
 
 // ------- Initialize Buttons and LED -------
-void init_buttons() {
+void init_peripherals() {
   pinMode(BUTTON_PIN, INPUT_PULLDOWN);
-  pinMode(INTERNAL_LED, OUTPUT);
   attachInterrupt(BUTTON_PIN, onButtonPress, RISING);
+
+  #ifdef RGB_BUILTIN
+    pinMode(RGB_BUILTIN, OUTPUT);
+    rgbLedWrite(RGB_BUILTIN, 0, 0, 0);; // Ensure LED starts off
+    Serial.println("RGB LED initialized");
+  #else
+    Serial.println("RGB_BUILTIN not defined for this board");
+  #endif
 }
 
 // ------- Initialize WiFi -------
@@ -254,18 +261,22 @@ void main_audio(void *parameter) {
       Serial.println("Recording started...");
 
       // Turn on LED
-      digitalWrite(INTERNAL_LED, HIGH);
+      rgbLedWrite(RGB_BUILTIN, RGB_BRIGHTNESS, 0, 0);;
 
       // Get filename
       String filename = generate_filename();
 
       if (record_audio(filename)) {
         Serial.println("Recording saved to SD as " + filename + "\n");
-        transmit_audio(filename);
-      }
 
-      // Turn off LED
-      digitalWrite(INTERNAL_LED, LOW);
+        // Turn off LED
+        rgbLedWrite(RGB_BUILTIN, 0, 0, 0);
+
+        transmit_audio(filename);
+      } else {
+        // Turn off LED
+        rgbLedWrite(RGB_BUILTIN, 0, 0, 0);
+      }
 
       // Turn off recording flag
       startRecording = false;
@@ -279,7 +290,7 @@ void main_audio(void *parameter) {
 void setup() {
   Serial.begin(115200);
 
-  init_buttons();
+  init_peripherals();
 
   init_i2s();
 

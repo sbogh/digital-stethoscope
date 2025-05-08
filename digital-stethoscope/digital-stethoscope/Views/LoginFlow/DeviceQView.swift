@@ -15,6 +15,7 @@ struct DeviceQView: View {
     @State private var errorMessage = ""
     @State private var querySuccess = false
     @State private var buttonClicked = false
+    @State private var isLoading = false
 
     @EnvironmentObject var userProfile: UserProfile
 

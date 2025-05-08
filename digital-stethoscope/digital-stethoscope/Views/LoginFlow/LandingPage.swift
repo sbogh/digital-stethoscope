@@ -70,7 +70,7 @@ struct LandingPage: View {
                     )
             }.padding(.bottom)
                 .navigationDestination(isPresented: $navLogin) {
-                    LoginView()
+                    LoginView().environmentObject(userProfile)
                 }
 
             // Learn More link

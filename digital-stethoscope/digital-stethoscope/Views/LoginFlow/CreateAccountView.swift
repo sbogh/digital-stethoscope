@@ -1,53 +1,38 @@
 //
-//  LoginView.swift
+//  CreateAccountView.swift
 //  digital-stethoscope
 //
 //  Created by Siya Rajpal on 4/28/25.
 //
 
-// TODO: Alter existing functions to query DB and ensure password is correct
+// TODO: REGISTER NEW USER IN DB, CHECK DB FOR EMAIL, AUTHENTICATE USER
 
 import SwiftUI
 
-struct LoginView: View {
+struct CreateAccountView: View {
+    // email format validation variables
     @State private var email: String = ""
     @State private var isValidEmail = true
 
+    // password format validation variables
     @State private var password: String = ""
     @State private var isValidPWord = true
 
+    // passwords match validation variables
+    @State private var confirmedPw: String = ""
+    @State private var pWordsMatch = true
+
+    @State private var validNewAccount = false
     var emptyField: Bool {
-        email.isEmpty || password.isEmpty
+        email.isEmpty || password.isEmpty || confirmedPw.isEmpty
     }
 
-    @State private var validAccount = false
-
     var body: some View {
-        VStack(spacing: 20) {
-            // Small Logo at Top
-            Image("Logo")
-                .resizable()
-                .frame(width: 62.46876, height: 87, alignment: .top)
+        VStack(spacing: 5) {
+            LoginHeaderView(subtitle: "Sign up below\nto start listening")
 
-            // App Name
-            Text("ScopeFace")
-                .font(
-                    Font.custom("Roboto-ExtraBold", size: 40)
-                        .weight(.heavy)
-                )
-                .multilineTextAlignment(.center)
-                .foregroundColor(Color.CTA2)
-                .frame(width: 248, height: 60, alignment: .top)
-
-            // Log in message
-            Text("Log in below. Sound decisions await!")
-                .font(Font.custom("Roboto-Regular", size: 25))
-                .multilineTextAlignment(.center)
-                .foregroundColor(Color.CTA2)
-                .lineLimit(nil)
-
-            // VStack = form itself
-            VStack(spacing: 15) {
+            // Create account form
+            VStack(spacing: 5) {
                 // Email text field
                 TextField("Email", text: $email)
                     .padding()
@@ -78,6 +63,27 @@ struct LoginView: View {
                     }
                 }
 
+                // Confirm Password field
+                SecureField("Confirm Password", text: $confirmedPw)
+                    .padding()
+                    .background(Color.primary)
+                    .cornerRadius(10)
+                    .onChange(of: confirmedPw) { _, newPWord in
+                        pWordsMatch = validatePasswordsMatch(password: password, confirmedPw: newPWord)
+                    }
+
+                // Error message if passwords don't match
+                if !pWordsMatch {
+                    HStack {
+                        Text("Passwords do not match")
+                            .font(Font.custom("Roboto-Regular", size: 12))
+                            .foregroundColor(.red)
+                            .padding(.horizontal)
+                            .multilineTextAlignment(.center)
+                        Spacer()
+                    }
+                }
+
                 // Error message if any field is empty
                 if emptyField {
                     HStack {
@@ -91,16 +97,19 @@ struct LoginView: View {
                     }
                 }
 
-                // forgot password button
+                // password instructions
                 HStack {
-                    Spacer()
-                    Button(action: {
-                        // TODO: forgot password action
-                    }) {
-                        Text("Forgot password?")
-                            .font(.footnote)
+                    VStack(spacing: 0) {
+                        Text("Your password should include at least:")
+                            .font(Font.custom("Roboto-Regular", size: 16).weight(.heavy))
+                            .foregroundColor(.black)
+
+                        // TODO: fix this so it looks better
+                        Text("\n8 or more characters \nA lowercase letter \nAn uppercase letter \nA number (0-9) \nA special character")
+                            .font(Font.custom("Roboto_Regular", size: 16))
                             .foregroundColor(.black)
                     }
+                    Spacer()
                 }
             }
             .padding()
@@ -108,13 +117,14 @@ struct LoginView: View {
             .cornerRadius(20)
             .padding(.horizontal)
 
-            // login button
+            // sign up button
             Button(action: {
-                if isValidEmail, isValidPWord {
-                    validAccount = true
+                if isValidEmail, isValidPWord, pWordsMatch {
+                    validNewAccount = true
                 }
+
             }) {
-                Text("Log In")
+                Text("Sign Up")
                     .font(Font.custom("Roboto-ExtraBold", size: 22)
                     )
                     .fontWeight(.bold)
@@ -123,11 +133,11 @@ struct LoginView: View {
                     .background(Color.CTA1)
                     .foregroundColor(Color.primary)
                     .cornerRadius(10)
-            }.padding(.bottom)
-                // TODO: change to correct page
-                .navigationDestination(isPresented: $validAccount) {
-                    LandingPage()
-                }
+            }
+            .padding(.bottom)
+            .navigationDestination(isPresented: $validNewAccount) {
+                AccountSetupView()
+            }
 
             // Learn More link
             Button(action: {
@@ -184,8 +194,23 @@ struct LoginView: View {
         }
         return true
     }
+
+    /// Validates both passwords inputted by user matches
+    ///
+    /// - Parameters:
+    ///   - password: The user's passwrod to validate.
+    ///   - confirmedPw: The user's password, reentered.
+    /// - Returns: A Boolean value indicating whether input is valid (`true`) or invalid (`false`).
+    func validatePasswordsMatch(password: String, confirmedPw: String) -> Bool {
+        // Check if password and confirmed password are equal
+        if password != confirmedPw {
+            return false
+        }
+
+        return true
+    }
 }
 
 #Preview {
-    LoginView()
+    CreateAccountView()
 }

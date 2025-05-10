@@ -23,7 +23,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct digital_stethoscopeApp: App {
     // registers app delegate for Firebase setup
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    let ref = Database.database().reference()
+    
+    // TODO: hi siya I had to comment out the below b/c it was throwing errors
+    // let ref = Database.database().reference()
 
     var body: some Scene {
         WindowGroup {

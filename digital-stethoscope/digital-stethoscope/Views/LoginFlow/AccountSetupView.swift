@@ -21,6 +21,7 @@ struct AccountSetupView: View {
     // handles changes in provider ID
     @State private var providerID: String = ""
 
+    // TODO: We don't need PDT and PST, MST and MDT etc, we should choose based on time of year
     // handles time zone inputs
     var timeZones = ["PDT", "PST", "MST", "MDT", "CST", "CDT", "EST", "EDT", "HST", "HDT", "AKST", "AKDT"]
     @State private var selectedZone = ""
@@ -32,28 +33,8 @@ struct AccountSetupView: View {
     @State private var cont = false
 
     var body: some View {
-        VStack(spacing: 15) {
-            // Small Logo at Top
-            Image("Logo")
-                .resizable()
-                .frame(width: 62.46876, height: 87, alignment: .top)
-
-            // App Name
-            Text("ScopeFace")
-                .font(
-                    Font.custom("Roboto-ExtraBold", size: 40)
-                        .weight(.heavy)
-                )
-                .multilineTextAlignment(.center)
-                .foregroundColor(Color.CTA2)
-                .frame(width: 248, height: 60, alignment: .top)
-
-            // Welcome message
-            Text("Welcome to your new account!")
-                .font(Font.custom("Roboto-Regular", size: 25))
-                .multilineTextAlignment(.center)
-                .foregroundColor(Color.CTA2)
-                .lineLimit(nil)
+        VStack(spacing: 5) {
+            LoginHeaderView(subtitle: "Don’t miss a beat.")
 
             // Account Info form
             VStack(spacing: 10) {

@@ -6,6 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		921B874E2DCFDEBB004813B6 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 921B874D2DCFDEBB004813B6 /* FirebaseDatabase */; };
+		92D7754A2DCFD910002DF540 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 92D775492DCFD910002DF540 /* FirebaseAppCheck */; };
+		92D7754C2DCFD910002DF540 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 92D7754B2DCFD910002DF540 /* FirebaseAuth */; };
+		92D7754E2DCFD910002DF540 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 92D7754D2DCFD910002DF540 /* FirebaseCore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		390C87FE2DB307BC00FF152F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -29,9 +36,22 @@
 		390C88072DB307BC00FF152F /* digital-stethoscopeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "digital-stethoscopeUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		921B874C2DCFDE78004813B6 /* Exceptions for "digital-stethoscope" folder in "digital-stethoscope" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 390C87EC2DB307BB00FF152F /* digital-stethoscope */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		390C87EF2DB307BB00FF152F /* digital-stethoscope */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				921B874C2DCFDE78004813B6 /* Exceptions for "digital-stethoscope" folder in "digital-stethoscope" target */,
+			);
 			path = "digital-stethoscope";
 			sourceTree = "<group>";
 		};
@@ -52,6 +72,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92D7754A2DCFD910002DF540 /* FirebaseAppCheck in Frameworks */,
+				92D7754E2DCFD910002DF540 /* FirebaseCore in Frameworks */,
+				921B874E2DCFDEBB004813B6 /* FirebaseDatabase in Frameworks */,
+				92D7754C2DCFD910002DF540 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +136,10 @@
 			);
 			name = "digital-stethoscope";
 			packageProductDependencies = (
+				92D775492DCFD910002DF540 /* FirebaseAppCheck */,
+				92D7754B2DCFD910002DF540 /* FirebaseAuth */,
+				92D7754D2DCFD910002DF540 /* FirebaseCore */,
+				921B874D2DCFDEBB004813B6 /* FirebaseDatabase */,
 			);
 			productName = "digital-stethoscope";
 			productReference = 390C87ED2DB307BB00FF152F /* digital-stethoscope.app */;
@@ -195,6 +223,9 @@
 			);
 			mainGroup = 390C87E42DB307BB00FF152F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				92D775482DCFD833002DF540 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 390C87EE2DB307BB00FF152F /* Products */;
 			projectDirPath = "";
@@ -552,6 +583,40 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		92D775482DCFD833002DF540 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.12.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		921B874D2DCFDEBB004813B6 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 92D775482DCFD833002DF540 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		92D775492DCFD910002DF540 /* FirebaseAppCheck */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 92D775482DCFD833002DF540 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAppCheck;
+		};
+		92D7754B2DCFD910002DF540 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 92D775482DCFD833002DF540 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		92D7754D2DCFD910002DF540 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 92D775482DCFD833002DF540 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 390C87E52DB307BB00FF152F /* Project object */;
 }

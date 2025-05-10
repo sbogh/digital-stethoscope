@@ -24,7 +24,7 @@ struct LoginView: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            LoginHeaderView(subtitle: "Log in below. Sound decisions await!")
+            LoginHeaderView(subtitle: "Log in below.\nSound decisions await!")
 
             // VStack = form itself
             VStack(spacing: 15) {
@@ -50,7 +50,7 @@ struct LoginView: View {
                 if !isValidEmail || !isValidPWord {
                     HStack {
                         Text("Invalid Email or Password")
-                            .font(Font.custom("Roboto-Regular", size: 12))
+                            .font(Font.custom("Roboto-Regular", size: 13))
                             .foregroundColor(.red)
                             .padding(.horizontal)
                             .multilineTextAlignment(.center)
@@ -64,7 +64,7 @@ struct LoginView: View {
                         Spacer()
                         Spacer()
                         Text("All fields are required")
-                            .font(Font.custom("Roboto-Regular", size: 12))
+                            .font(Font.custom("Roboto-Regular", size: 13))
                             .foregroundColor(.red)
                             .padding(.horizontal)
                             .multilineTextAlignment(.center)

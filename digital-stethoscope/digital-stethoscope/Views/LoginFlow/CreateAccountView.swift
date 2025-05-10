@@ -55,7 +55,7 @@ struct CreateAccountView: View {
                 if !isValidEmail || !isValidPWord {
                     HStack {
                         Text("Invalid Email or Password")
-                            .font(Font.custom("Roboto-Regular", size: 12))
+                            .font(Font.custom("Roboto-Regular", size: 13))
                             .foregroundColor(.red)
                             .padding(.horizontal)
                             .multilineTextAlignment(.center)
@@ -76,7 +76,7 @@ struct CreateAccountView: View {
                 if !pWordsMatch {
                     HStack {
                         Text("Passwords do not match")
-                            .font(Font.custom("Roboto-Regular", size: 12))
+                            .font(Font.custom("Roboto-Regular", size: 13))
                             .foregroundColor(.red)
                             .padding(.horizontal)
                             .multilineTextAlignment(.center)
@@ -90,7 +90,7 @@ struct CreateAccountView: View {
                         Spacer()
                         Spacer()
                         Text("All fields are required")
-                            .font(Font.custom("Roboto-Regular", size: 12))
+                            .font(Font.custom("Roboto-Regular", size: 13))
                             .foregroundColor(.red)
                             .padding(.horizontal)
                             .multilineTextAlignment(.center)
@@ -100,13 +100,8 @@ struct CreateAccountView: View {
                 // password instructions
                 HStack {
                     VStack(spacing: 0) {
-                        Text("Your password should include at least:")
+                        Text("Your password should include at least:\n\t• 8 or more characters \n\t• A lowercase letter \n\t• An uppercase letter \n\t• A number (0-9) \n\t• A special character")
                             .font(Font.custom("Roboto-Regular", size: 16).weight(.heavy))
-                            .foregroundColor(.black)
-
-                        // TODO: fix this so it looks better
-                        Text("\n8 or more characters \nA lowercase letter \nAn uppercase letter \nA number (0-9) \nA special character")
-                            .font(Font.custom("Roboto_Regular", size: 16))
                             .foregroundColor(.black)
                     }
                     Spacer()

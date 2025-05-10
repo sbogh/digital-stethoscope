@@ -18,29 +18,8 @@ struct DeviceQView: View {
     @State private var isLoading = false
 
     var body: some View {
-        VStack(spacing: 20) {
-            // Small Logo at Top
-            Image("Logo")
-                .resizable()
-                .frame(width: 62.46876, height: 87, alignment: .top)
-
-            // App Name
-            Text("ScopeFace")
-                .font(
-                    Font.custom("Roboto-ExtraBold", size: 40)
-                        .weight(.heavy)
-                )
-                .multilineTextAlignment(.center)
-                .foregroundColor(Color.CTA2)
-                .frame(width: 248, height: 60, alignment: .top)
-
-            // Welcome message
-            // TODO: add personal touch -- user's hospital name
-            Text("Do you have a ScopeFace device?")
-                .font(Font.custom("Roboto-Regular", size: 25))
-                .multilineTextAlignment(.center)
-                .foregroundColor(Color.CTA2)
-                .lineLimit(nil)
+        VStack(spacing: 5) {
+            LoginHeaderView(subtitle: "Do you have\na ScopeFace device?")
 
             // Have a device button
             Button(action: {
@@ -54,7 +33,7 @@ struct DeviceQView: View {
                     .frame(width: 206, height: 50)
                     .background(Color.CTA1)
                     .cornerRadius(10)
-            }.padding(.bottom)
+            }.padding()
         }
 
         .navigationDestination(isPresented: $devPresent) {

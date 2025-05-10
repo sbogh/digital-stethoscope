@@ -15,7 +15,7 @@ struct LandingPage: View {
 
     var body: some View {
         // Aligns content in the middle vertically
-        VStack(alignment: .center) {
+        VStack(alignment: .center, spacing: 5) {
             // Heading
             Text("ScopeFace")
                 .font(
@@ -23,7 +23,7 @@ struct LandingPage: View {
                 )
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color.CTA2)
-                .frame(width: 248, height: 60, alignment: .top)
+                .frame(width: 248, alignment: .top)
 
             // Tagline
             Text("Don’t miss a beat.")
@@ -31,12 +31,11 @@ struct LandingPage: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color.CTA2)
                 .frame(width: 243, height: 35, alignment: .top)
-                .padding(.bottom, 20)
 
             // Logo
             Image("Logo")
                 .frame(width: 135, height: 188)
-                .padding(.bottom, 55)
+                .padding(.bottom, 30)
 
             // Create Account button
             Button(action: {

@@ -38,27 +38,7 @@ struct LoginView: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            // Small Logo at Top
-            Image("Logo")
-                .resizable()
-                .frame(width: 62.46876, height: 87, alignment: .top)
-
-            // App Name
-            Text("ScopeFace")
-                .font(
-                    Font.custom("Roboto-ExtraBold", size: 40)
-                        .weight(.heavy)
-                )
-                .multilineTextAlignment(.center)
-                .foregroundColor(Color.CTA2)
-                .frame(width: 248, height: 60, alignment: .top)
-
-            // Log in message
-            Text("Log in below. Sound decisions await!")
-                .font(Font.custom("Roboto-Regular", size: 25))
-                .multilineTextAlignment(.center)
-                .foregroundColor(Color.CTA2)
-                .lineLimit(nil)
+            LoginHeaderView(subtitle: "Log in below. Sound decisions await!")
 
             // VStack = form itself
             VStack(spacing: 15) {

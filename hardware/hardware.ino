@@ -1,12 +1,9 @@
 #include <Arduino.h>
-#include <FS.h>
-#include <SD.h>
-#include <SPI.h>
 #include <Firebase_ESP_Client.h>
 #include <addons/TokenHelper.h>
-#include <addons/SDHelper.h>
 #include <driver/i2s.h>
 #include <WiFi.h>
+//#include <esp_wpa2.h> // not needed unless using UCSD WiFi
 
 // ------- Definitions and Constants -------
 
@@ -25,10 +22,28 @@
 const uint32_t SAMPLE_RATE = 44100;
 const uint16_t BITS_PER_SAMPLE = 16;
 const uint16_t CHANNELS = 1;
+const uint16_t WAV_HEADER_BYTES = 44;
+
+const uint32_t AUDIO_BYTES = SAMPLE_RATE * RECORD_TIME * (BITS_PER_SAMPLE / 8);
+const uint32_t TOTAL_BYTES = WAV_HEADER_BYTES + AUDIO_BYTES;
 
 // ------- WiFi Definitions -------
+
 #define SSID "SpectrumSetup-53"
 #define wifiPW "desertmarble967"
+
+/*
+#define SSID "Amrita’s iPhone"
+#define wifiPW "ilovecabo"
+*/
+
+/*
+// not needed unless using UCSD WiFi
+#define EAP_IDENTITY "username@ucsd.edu"
+#define EAP_USERNAME "username@ucsd.edu"
+#define EAP_PASSWORD "YOUR PASSWORD HERE"
+const char *ssid = "eduroam";
+*/
 
 // ------- Firebase Definitions and Initializations -------
 #define API_KEY "AIzaSyC37GeX4Ag0h5THhOddu_a9h2ncl87UKzM"
@@ -45,6 +60,7 @@ FirebaseConfig config;
 
 // ------- Global Variables -------
 int16_t sBuffer[BUFFER_LEN];
+uint8_t *wavBuffer = nullptr;
 volatile bool startRecording = false;
 
 // ------- Button Press Functionality -------
@@ -87,50 +103,64 @@ void init_i2s() {
 }
 
 // ------- Write WAV Header -------
-void writeWavHeader(File &file, uint32_t totalAudioLen) {
+void writeWavHeader(uint8_t *buffer, uint32_t audioLen) {
   uint32_t byteRate = SAMPLE_RATE * CHANNELS * BITS_PER_SAMPLE / 8;
-  uint32_t totalDataLen = totalAudioLen + 36;
+  uint32_t totalDataLen = audioLen + 36;
 
-  byte header[44];
-
-  memcpy(header, "RIFF", 4);
-  memcpy(header + 4, &totalDataLen, 4);
-  memcpy(header + 8, "WAVE", 4);
-  memcpy(header + 12, "fmt ", 4);
+  memcpy(buffer, "RIFF", 4);
+  memcpy(buffer + 4, &totalDataLen, 4);
+  memcpy(buffer + 8, "WAVEfmt ", 8);
 
   uint32_t subchunk1Size = 16;
   uint16_t audioFormat = 1; // PCM
-  memcpy(header + 16, &subchunk1Size, 4);
-  memcpy(header + 20, &audioFormat, 2);
-  memcpy(header + 22, &CHANNELS, 2);
-  memcpy(header + 24, &SAMPLE_RATE, 4);
-  memcpy(header + 28, &byteRate, 4);
   uint16_t blockAlign = CHANNELS * BITS_PER_SAMPLE / 8;
-  memcpy(header + 32, &blockAlign, 2);
-  memcpy(header + 34, &BITS_PER_SAMPLE, 2);
-  memcpy(header + 36, "data", 4);
-  memcpy(header + 40, &totalAudioLen, 4);
 
-  file.write(header, 44);
+  memcpy(buffer + 16, &subchunk1Size, 4);
+  memcpy(buffer + 20, &audioFormat, 2);
+  memcpy(buffer + 22, &CHANNELS, 2);
+  memcpy(buffer + 24, &SAMPLE_RATE, 4);
+  memcpy(buffer + 28, &byteRate, 4);
+  memcpy(buffer + 32, &blockAlign, 2);
+  memcpy(buffer + 34, &BITS_PER_SAMPLE, 2);
+  memcpy(buffer + 36, "data", 4);
+  memcpy(buffer + 40, &audioLen, 4);
 }
 
 // ------- Initialize Buttons and LED -------
 void init_peripherals() {
+  // Initialize button and attach button press event to trigger flag
   pinMode(BUTTON_PIN, INPUT_PULLDOWN);
   attachInterrupt(BUTTON_PIN, onButtonPress, RISING);
 
+  // Initialize RGB light on board
   #ifdef RGB_BUILTIN
     pinMode(RGB_BUILTIN, OUTPUT);
-    rgbLedWrite(RGB_BUILTIN, 0, 0, 0);; // Ensure LED starts off
+    rgbLedWrite(RGB_BUILTIN, 0, 0, 0); // Ensure LED starts off
     Serial.println("RGB LED initialized");
   #else
     Serial.println("RGB_BUILTIN not defined for this board");
   #endif
+
+  // Check for PSRAM initialization
+  if (psramFound()) {
+    Serial.println("PSRAM is available.");
+    Serial.printf("Free PSRAM: %d bytes\n", ESP.getFreePsram());
+  } else {
+    Serial.println("PSRAM not detected.");
+  }
+
+  // Initialize WAV file buffer
+  wavBuffer = (uint8_t*) ps_malloc(TOTAL_BYTES);
+  if (!wavBuffer) {
+    Serial.println("Failed to allocate PSRAM buffer.");
+    while (true); // halt program
+  }
 }
 
 // ------- Initialize WiFi -------
 void init_WiFi() {
   WiFi.begin(SSID, wifiPW);
+
   Serial.print("Connecting to Wi-Fi");
   while (WiFi.status() != WL_CONNECTED) {
       Serial.print(".");
@@ -140,6 +170,29 @@ void init_WiFi() {
   Serial.println("\nWiFi connected. IP address: ");
   Serial.println(WiFi.localIP());
 }
+
+/*
+// not needed unless using UCSD WiFi
+void init_Eduroam() {
+  WiFi.mode(WIFI_STA);
+  esp_wifi_sta_wpa2_ent_enable();
+
+  esp_wifi_sta_wpa2_ent_set_identity((uint8_t *)EAP_IDENTITY, strlen(EAP_IDENTITY));
+  esp_wifi_sta_wpa2_ent_set_username((uint8_t *)EAP_USERNAME, strlen(EAP_USERNAME));
+  esp_wifi_sta_wpa2_ent_set_password((uint8_t *)EAP_PASSWORD, strlen(EAP_PASSWORD));
+
+  WiFi.begin(ssid);
+
+  Serial.print("Connecting to eduroam");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.print(".");
+  }
+
+  Serial.println("\nWiFi connected. IP address: ");
+  Serial.println(WiFi.localIP());
+}
+*/
 
 // ------- Initialize Firebase -------
 void init_Firebase() {
@@ -152,17 +205,8 @@ void init_Firebase() {
 
   config.token_status_callback = tokenStatusCallback;
   Firebase.reconnectNetwork(true);
-  fbdo.setBSSLBufferSize(4096, 1024);
+  fbdo.setBSSLBufferSize(8192, 2048); // previously 4096, 1024
   Firebase.begin(&config, &auth);
-}
-
-// ------- Initialize SD
-void init_SD() {
-  if (!SD.begin(SD_CS)) {
-    Serial.println("SD card initialization failed!");
-    while (1);
-  }
-  Serial.println("SD card initialized.");
 }
 
 // ------- Generate File Name Function
@@ -170,48 +214,7 @@ String generate_filename() {
   return "/" + String(DEVICE_ID) + "_" + String(random(100000)) + ".wav";
 }
 
-// ------- Record and Save Audio Task
-bool record_audio(String filename) {
-  // Open (create) file in SD card
-  File file = SD.open(filename, FILE_WRITE);
-  if (!file) {
-    Serial.println("Failed to open file for writing");
-    return false;
-  }
-
-  // Skip past WAV header location
-  file.seek(44);
-
-  // Record and write data to file
-  uint32_t bytesWritten = 0;
-  unsigned long starttime = millis(); // get start time
-
-  // record for 30 seconds
-  while (millis() - starttime < RECORD_TIME * 1000) {
-    size_t bytesRead = 0;
-    esp_err_t result = i2s_read(I2S_PORT, sBuffer, sizeof(sBuffer), &bytesRead, portMAX_DELAY);
-
-    // Check if valid result and then write
-    if (result == ESP_OK && bytesRead > 0) {
-      file.write((byte *)sBuffer, bytesRead);
-      bytesWritten += bytesRead;
-    } else {
-      file.close();
-      return false;
-    }
-  }
-
-  // Go back to start of file and write the WAV header
-  file.seek(0);
-  writeWavHeader(file, bytesWritten);
-
-  // Close file
-  file.close();
-
-  return true;
-}
-
-// ------- Send Audio Function and Helpers -------
+// ------- Audio Helpers -------
 void fcsUploadCallback(FCS_UploadStatusInfo info)
 {
     if (info.status == firebase_fcs_upload_status_init)
@@ -237,20 +240,61 @@ void fcsUploadCallback(FCS_UploadStatusInfo info)
     }
 }
 
-void transmit_audio(String filename) {
+// ------- Record Audio Task
+void record_and_transmit() {
+  // Create buffer
+  if (!wavBuffer) {return;}
+
+  // Write the WAV header to buffer
+  writeWavHeader(wavBuffer, AUDIO_BYTES);
+
+  // Turn on LED (red to show recording)
+  rgbLedWrite(RGB_BUILTIN, RGB_BRIGHTNESS, 0, 0);
+
+  // Record audio
+  Serial.println("Recording audio...");
+  unsigned long starttime = millis(); // get start time
+  uint32_t offset = 44;
+
+  // record for specified record time (seconds) or until buffer is full
+  while (millis() - starttime < RECORD_TIME * 1000 && offset + BUFFER_LEN * sizeof(int16_t) <= TOTAL_BYTES) {
+    size_t bytesRead;
+    if(i2s_read(I2S_PORT, sBuffer, sizeof(sBuffer), &bytesRead, portMAX_DELAY) == ESP_OK && bytesRead > 0) {
+      memcpy(wavBuffer + offset, sBuffer, bytesRead);
+      offset += bytesRead;
+    } else {
+      Serial.println("I2S read error or buffer overflow.");
+      free(wavBuffer);
+      return;
+    }
+  }
+
+  Serial.println("Recording complete. Uploading...");
+
+  // Change light color to GREEN (to show upload in progress)
+  rgbLedWrite(RGB_BUILTIN, 0, RGB_BRIGHTNESS, 0);
+
+  // Get filename
+  String path = generate_filename();
+
   if (!Firebase.ready()) {return;}
 
   if (!Firebase.Storage.upload(
     &fbdo,
     STORAGE_BUCKET,
-    filename,
-    mem_storage_type_sd,
-    filename,
+    wavBuffer,
+    offset,
+    path,
     "audio/wav",
     fcsUploadCallback)) {
 
     Serial.println("Firebase Upload Failed: " + fbdo.errorReason());
   }
+
+  // Turn off LED (to show upload complete)
+  rgbLedWrite(RGB_BUILTIN, 0, 0, 0);
+
+  return;
 }
 
 // ------- Record Audio Task -------
@@ -258,25 +302,8 @@ void main_audio(void *parameter) {
   while (true) {
     // Wait for button press
     if (startRecording) {
-      Serial.println("Recording started...");
-
-      // Turn on LED
-      rgbLedWrite(RGB_BUILTIN, RGB_BRIGHTNESS, 0, 0);;
-
-      // Get filename
-      String filename = generate_filename();
-
-      if (record_audio(filename)) {
-        Serial.println("Recording saved to SD as " + filename + "\n");
-
-        // Turn off LED
-        rgbLedWrite(RGB_BUILTIN, 0, 0, 0);
-
-        transmit_audio(filename);
-      } else {
-        // Turn off LED
-        rgbLedWrite(RGB_BUILTIN, 0, 0, 0);
-      }
+      // Record and transmit task
+      record_and_transmit();
 
       // Turn off recording flag
       startRecording = false;
@@ -295,10 +322,9 @@ void setup() {
   init_i2s();
 
   init_WiFi();
+  //init_Eduroam(); // not needed unless using UCSD WiFi
 
   init_Firebase();
-
-  init_SD();
 
   xTaskCreatePinnedToCore(main_audio, "AudioPipeline", 8192, NULL, 1, NULL, 1);
 }

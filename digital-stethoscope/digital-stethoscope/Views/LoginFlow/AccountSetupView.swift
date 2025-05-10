@@ -33,6 +33,7 @@ struct AccountSetupView: View {
     var body: some View {
         VStack(spacing: 5) {
             LoginHeaderView(subtitle: "Don’t miss a beat.")
+                .padding(.bottom)
 
             // Account Info form
             VStack(spacing: 10) {

@@ -32,6 +32,7 @@ struct CreateAccountView: View {
     var body: some View {
         VStack(spacing: 5) {
             LoginHeaderView(subtitle: "Sign up below\nto start listening")
+                .padding(.bottom)
 
             // Create account form
             VStack(spacing: 5) {

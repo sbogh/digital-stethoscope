@@ -103,7 +103,7 @@ struct LoginView: View {
                     .background(Color.CTA1)
                     .foregroundColor(Color.primary)
                     .cornerRadius(10)
-            }.padding(.bottom)
+            }.padding()
                 // TODO: change to correct page
                 .navigationDestination(isPresented: $validAccount) {
                     LandingPage()

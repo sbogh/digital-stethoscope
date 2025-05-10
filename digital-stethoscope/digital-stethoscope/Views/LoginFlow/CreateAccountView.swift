@@ -30,6 +30,7 @@ struct CreateAccountView: View {
     var body: some View {
         VStack(spacing: 5) {
             LoginHeaderView(subtitle: "Sign up below\nto start listening")
+                .padding(.bottom)
 
             // Create account form
             VStack(spacing: 5) {
@@ -129,7 +130,7 @@ struct CreateAccountView: View {
                     .foregroundColor(Color.primary)
                     .cornerRadius(10)
             }
-            .padding(.bottom)
+            .padding()
             .navigationDestination(isPresented: $validNewAccount) {
                 AccountSetupView()
             }

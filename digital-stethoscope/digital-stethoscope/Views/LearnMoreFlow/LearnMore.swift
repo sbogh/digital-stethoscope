@@ -9,7 +9,10 @@ import SwiftUI
 
 struct LearnMore: View {
     var body: some View {
-        LoginHeaderView(subtitle: "Don’t miss a beat.")
+        VStack{
+            LoginHeaderView(subtitle: "Don’t miss a beat.")
+        }
+        Spacer()
     }
 }
 

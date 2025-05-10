@@ -35,6 +35,7 @@ struct AccountSetupView: View {
     var body: some View {
         VStack(spacing: 5) {
             LoginHeaderView(subtitle: "Don’t miss a beat.")
+                .padding(.bottom)
 
             // Account Info form
             VStack(spacing: 10) {
@@ -120,7 +121,7 @@ struct AccountSetupView: View {
                     .foregroundColor(Color.primary)
                     .cornerRadius(10)
             }
-            .padding(.bottom)
+            .padding()
             // TODO: route to correct page
             // if providerID provided to DeviceQView, if not then straight to the addDeviceView
             .navigationDestination(isPresented: $cont) {

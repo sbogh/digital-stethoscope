@@ -11,6 +11,7 @@ struct DeviceQView: View {
     var body: some View {
         VStack(spacing: 5) {
             LoginHeaderView(subtitle: "Do you have\na ScopeFace device?")
+                .padding(.bottom)
 
             // Create Account button
             Button(action: {

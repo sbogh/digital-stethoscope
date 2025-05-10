@@ -46,7 +46,7 @@ struct AccountSetupView: View {
                 if nameEmpty {
                     HStack {
                         Text("Name is required")
-                            .font(Font.custom("Roboto-Regular", size: 12))
+                            .font(Font.custom("Roboto-Regular", size: 13))
                             .foregroundColor(.red)
                             .padding(.horizontal)
                             .multilineTextAlignment(.center)
@@ -80,7 +80,7 @@ struct AccountSetupView: View {
                 if zoneEmpty {
                     HStack {
                         Text("Time Zone is required")
-                            .font(Font.custom("Roboto-Regular", size: 12))
+                            .font(Font.custom("Roboto-Regular", size: 13))
                             .foregroundColor(.red)
                             .padding(.horizontal)
                             .multilineTextAlignment(.center)

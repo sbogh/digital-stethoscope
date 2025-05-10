@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		39DB97322DC4245E00C4B187 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 39DB97312DC4245E00C4B187 /* FirebaseAuth */; };
-		39DB97342DC4245E00C4B187 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 39DB97332DC4245E00C4B187 /* FirebaseFirestore */; };
-		39DB97362DC4245E00C4B187 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 39DB97352DC4245E00C4B187 /* FirebaseStorage */; };
+		921B874E2DCFDEBB004813B6 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 921B874D2DCFDEBB004813B6 /* FirebaseDatabase */; };
+		92D7754A2DCFD910002DF540 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 92D775492DCFD910002DF540 /* FirebaseAppCheck */; };
+		92D7754C2DCFD910002DF540 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 92D7754B2DCFD910002DF540 /* FirebaseAuth */; };
+		92D7754E2DCFD910002DF540 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 92D7754D2DCFD910002DF540 /* FirebaseCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +37,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		39DB98662DC5787300C4B187 /* Exceptions for "digital-stethoscope" folder in "digital-stethoscope" target */ = {
+		921B874C2DCFDE78004813B6 /* Exceptions for "digital-stethoscope" folder in "digital-stethoscope" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -49,7 +50,7 @@
 		390C87EF2DB307BB00FF152F /* digital-stethoscope */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				39DB98662DC5787300C4B187 /* Exceptions for "digital-stethoscope" folder in "digital-stethoscope" target */,
+				921B874C2DCFDE78004813B6 /* Exceptions for "digital-stethoscope" folder in "digital-stethoscope" target */,
 			);
 			path = "digital-stethoscope";
 			sourceTree = "<group>";
@@ -71,9 +72,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				39DB97322DC4245E00C4B187 /* FirebaseAuth in Frameworks */,
-				39DB97342DC4245E00C4B187 /* FirebaseFirestore in Frameworks */,
-				39DB97362DC4245E00C4B187 /* FirebaseStorage in Frameworks */,
+				92D7754A2DCFD910002DF540 /* FirebaseAppCheck in Frameworks */,
+				92D7754E2DCFD910002DF540 /* FirebaseCore in Frameworks */,
+				921B874E2DCFDEBB004813B6 /* FirebaseDatabase in Frameworks */,
+				92D7754C2DCFD910002DF540 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,9 +136,10 @@
 			);
 			name = "digital-stethoscope";
 			packageProductDependencies = (
-				39DB97312DC4245E00C4B187 /* FirebaseAuth */,
-				39DB97332DC4245E00C4B187 /* FirebaseFirestore */,
-				39DB97352DC4245E00C4B187 /* FirebaseStorage */,
+				92D775492DCFD910002DF540 /* FirebaseAppCheck */,
+				92D7754B2DCFD910002DF540 /* FirebaseAuth */,
+				92D7754D2DCFD910002DF540 /* FirebaseCore */,
+				921B874D2DCFDEBB004813B6 /* FirebaseDatabase */,
 			);
 			productName = "digital-stethoscope";
 			productReference = 390C87ED2DB307BB00FF152F /* digital-stethoscope.app */;
@@ -221,7 +224,7 @@
 			mainGroup = 390C87E42DB307BB00FF152F;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				39DB97302DC4245E00C4B187 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				92D775482DCFD833002DF540 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 390C87EE2DB307BB00FF152F /* Products */;
@@ -588,9 +591,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		39DB97302DC4245E00C4B187 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+		92D775482DCFD833002DF540 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 11.12.0;
@@ -599,20 +602,25 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		39DB97312DC4245E00C4B187 /* FirebaseAuth */ = {
+		921B874D2DCFDEBB004813B6 /* FirebaseDatabase */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 39DB97302DC4245E00C4B187 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 92D775482DCFD833002DF540 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		92D775492DCFD910002DF540 /* FirebaseAppCheck */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 92D775482DCFD833002DF540 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAppCheck;
+		};
+		92D7754B2DCFD910002DF540 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 92D775482DCFD833002DF540 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
 		};
-		39DB97332DC4245E00C4B187 /* FirebaseFirestore */ = {
+		92D7754D2DCFD910002DF540 /* FirebaseCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 39DB97302DC4245E00C4B187 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseFirestore;
-		};
-		39DB97352DC4245E00C4B187 /* FirebaseStorage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 39DB97302DC4245E00C4B187 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseStorage;
+			package = 92D775482DCFD833002DF540 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

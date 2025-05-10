@@ -30,28 +30,8 @@ struct CreateAccountView: View {
     @State private var continueSignup = false
 
     var body: some View {
-        VStack(spacing: 10) {
-            // Small Logo at Top
-            Image("Logo")
-                .resizable()
-                .frame(width: 62.46876, height: 87, alignment: .top)
-
-            // App Name
-            Text("ScopeFace")
-                .font(
-                    Font.custom("Roboto-ExtraBold", size: 40)
-                        .weight(.heavy)
-                )
-                .multilineTextAlignment(.center)
-                .foregroundColor(Color.CTA2)
-                .frame(width: 248, height: 60, alignment: .top)
-
-            // Sign up message
-            Text("Sign up below to start listening.")
-                .font(Font.custom("Roboto-Regular", size: 25))
-                .multilineTextAlignment(.center)
-                .foregroundColor(Color.CTA2)
-                .lineLimit(nil)
+        VStack(spacing: 5) {
+            LoginHeaderView(subtitle: "Sign up below\nto start listening")
 
             // Create account form
             VStack(spacing: 5) {

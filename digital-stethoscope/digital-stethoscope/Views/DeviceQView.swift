@@ -9,9 +9,9 @@ import SwiftUI
 
 struct DeviceQView: View {
     @State private var devPresent = false
-    
+
     @EnvironmentObject var userProfile: UserProfile
-    
+
     @State private var errorMessage = ""
     @State private var querySuccess = false
     @State private var buttonClicked = false
@@ -65,10 +65,10 @@ struct DeviceQView: View {
         Button(action: {
             buttonClicked = true
             isLoading = true
-            
+
             Task {
                 let (message, success) = await authRegister(user: userProfile)
-                
+
                 if success {
                     querySuccess = true
                     isLoading = false
@@ -78,8 +78,7 @@ struct DeviceQView: View {
                     isLoading = false
                 }
             }
-            
-                   
+
         }) {
             Text("No")
                 .font(Font.custom("Roboto-ExtraBold", size: 20))
@@ -92,18 +91,18 @@ struct DeviceQView: View {
                         .stroke(Color.CTA1, lineWidth: 4)
                 )
         }.padding(.bottom)
-        // TODO: route to proper page
-        .navigationDestination(isPresented: $querySuccess) {
-            PlaceholderView()
-        }
-        
+            // TODO: route to proper page
+            .navigationDestination(isPresented: $querySuccess) {
+                PlaceholderView()
+            }
+
         // loading icon when processing sign up
         if isLoading {
             ProgressView("Please wait while your account is being created...")
                 .padding()
         }
-        
-        if !querySuccess, buttonClicked, !isLoading  {
+
+        if !querySuccess, buttonClicked, !isLoading {
             HStack {
                 Text("Oops! Something went wrong. Error: \(errorMessage)")
                     .font(Font.custom("Roboto-Regular", size: 12))

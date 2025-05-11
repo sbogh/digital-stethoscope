@@ -14,3 +14,10 @@ def get_user(user_id: str):
         return data.to_dict()
     
     return None
+
+def update_current_user_device(user_id: str, device: str):
+    user_reference = users.document(user_id)
+    curr_data = user_reference.get()
+
+    if curr_data.exists:
+        user_reference.update({"currentDeviceID": device})

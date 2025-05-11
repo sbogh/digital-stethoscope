@@ -9,19 +9,18 @@
 
 import FirebaseAuth
 import SwiftUI
-import FirebaseAuth
 
 struct LoginView: View {
     @State private var email: String = ""
     @State private var isValidEmail = true
-    
+
     @State private var password: String = ""
     @State private var isValidPWord = true
-    
+
     var emptyField: Bool {
         email.isEmpty || password.isEmpty
     }
-    
+
     @State private var validAccount = false
     @State private var buttonClicked = false
     @State private var isLoading = false
@@ -50,7 +49,7 @@ struct LoginView: View {
                     .onChange(of: email) { _, newEmail in
                         isValidEmail = validateEmail(email: newEmail)
                     }
-                
+
                 // Password field
                 SecureField("Password", text: $password)
                     .padding()
@@ -59,7 +58,7 @@ struct LoginView: View {
                     .onChange(of: password) { _, newPWord in
                         isValidPWord = validatePassword(password: newPWord)
                     }
-                
+
                 // Error message if password/email invalid
                 if !isValidEmail || !isValidPWord {
                     HStack {
@@ -71,7 +70,7 @@ struct LoginView: View {
                         Spacer()
                     }
                 }
-                
+
                 // Error message if any field is empty
                 if emptyField {
                     HStack {
@@ -84,7 +83,7 @@ struct LoginView: View {
                             .multilineTextAlignment(.center)
                     }
                 }
-                
+
                 // forgot password button
                 HStack {
                     Spacer()
@@ -149,7 +148,7 @@ struct LoginView: View {
                     .background(Color.CTA1)
                     .foregroundColor(Color.primary)
                     .cornerRadius(10)
-            }.padding()
+            }.padding(.bottom)
                 // TODO: change to correct page
                 .navigationDestination(isPresented: $validAccount) {
                     DeviceSelectionView().environmentObject(userProfile)
@@ -186,7 +185,7 @@ struct LoginView: View {
         }
         Spacer()
     }
-    
+
     /// Validates user inputs a valid email
     ///
     /// - Parameters:
@@ -194,11 +193,11 @@ struct LoginView: View {
     /// - Returns: A Boolean value indicating whether input is valid (`true`) or invalid (`false`).
     func validateEmail(email: String) -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-        
+
         if email == "" {
             return true
         }
-        
+
         // Check email is in the right format
         if !(NSPredicate(format: "SELF MATCHES %@", emailRegEx).evaluate(with: email)) {
             return false
@@ -212,13 +211,13 @@ struct LoginView: View {
     /// - Returns: A Boolean value indicating whether input is valid (`true`) or invalid (`false`).
     func validatePassword(password: String) -> Bool {
         // Check if password satisfies all conditions
-        
+
         if password == "" {
             return true
         }
-        
+
         let passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$&*()_+=|<>?{}\\[\\]~-]).{8,}$"
-        
+
         if !(password.count >= 8 && NSPredicate(format: "SELF MATCHES %@", passwordRegex).evaluate(with: password)) {
             return false
         }

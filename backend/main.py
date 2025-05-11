@@ -98,15 +98,3 @@ async def update_device(request: Request):
 
     user_routes.update_current_user_device(uid, body["currentDeviceID"])
     return {"message": "Current device updated successfully"}
-
-@app.post("/user/update-device")
-async def update_device(request: Request):
-    uid = verify_token(request)
-    body = await request.json()
-
-    if "currentDeviceID" not in body:
-        raise HTTPException(status_code=400, detail="Missing currentDeviceID")
-    
-
-    user_routes.update_current_user_device(uid, body["currentDeviceID"])
-    return {"message": "Current device updated successfully"}

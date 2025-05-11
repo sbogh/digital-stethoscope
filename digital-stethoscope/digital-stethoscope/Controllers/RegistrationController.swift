@@ -1,5 +1,5 @@
 //
-//  SignUpHelper.swift
+//  RegistrationController.swift
 //  digital-stethoscope
 //
 //  Created by Siya Rajpal on 5/6/25.
@@ -7,19 +7,17 @@
 
 import FirebaseAuth
 
-
-
 func authRegister(user: UserProfile) async -> (String, Bool) {
     do {
-            let authResult = try await Auth.auth().createUser(withEmail: user.email, password: user.password)
-            let token = try await authResult.user.getIDTokenResult().token
+        let authResult = try await Auth.auth().createUser(withEmail: user.email, password: user.password)
+        let token = try await authResult.user.getIDTokenResult().token
 
-            let (message, success) = try await registerUser(token: token, user: user)
-            return (message, success)
-        } catch {
-            print("Error in Firebase Auth createUser:", error.localizedDescription)
-            return (error.localizedDescription, false)
-        }
+        let (message, success) = try await registerUser(token: token, user: user)
+        return (message, success)
+    } catch {
+        print("Error in Firebase Auth createUser:", error.localizedDescription)
+        return (error.localizedDescription, false)
+    }
 }
 
 func registerUser(token: String, user: UserProfile) async throws -> (String, Bool) {
@@ -38,7 +36,7 @@ func registerUser(token: String, user: UserProfile) async throws -> (String, Boo
         "timeZone": user.timeZone,
         "deviceIDs": user.deviceIds,
         "deviceNicknames": user.deviceNicknames,
-        "currentDeviceID": ""
+        "currentDeviceID": "",
     ]
 
     request.httpBody = try? JSONSerialization.data(withJSONObject: body)
@@ -47,7 +45,7 @@ func registerUser(token: String, user: UserProfile) async throws -> (String, Boo
         let (_, response) = try await URLSession.shared.data(for: request)
 
         if let httpResponse = response as? HTTPURLResponse {
-            if (200...299).contains(httpResponse.statusCode) {
+            if (200 ... 299).contains(httpResponse.statusCode) {
                 return ("Registration successful", true)
             } else {
                 return ("Server responded with status code \(httpResponse.statusCode)", false)

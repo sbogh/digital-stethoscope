@@ -10,7 +10,7 @@ import SwiftUI
 struct LandingPage: View {
     @State private var navLogin = false
     @State private var navCreateAcc = false
-    
+
     @EnvironmentObject var userProfile: UserProfile
 
     var body: some View {

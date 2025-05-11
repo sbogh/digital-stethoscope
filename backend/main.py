@@ -6,7 +6,7 @@ to verify that the server is running and accepting requests.
 Includes CORS middleware for cross-origin frontend access.
 """
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException
 from auth_utils import verify_token
 from fastapi.middleware.cors import CORSMiddleware
 import user_routes as user_routes
@@ -30,18 +30,19 @@ async def register_user(request: Request):
      body = await request.json()
 
 
-     required_fields = ["email", "currentDeviceID", "firstName", "timeZone"]
+     required_fields = ["email", "firstName", "timeZone"]
      missing_field = []
      
      for field in required_fields:
           if field not in body:
-              missing_field.push_back(field)
+              missing_field.append(field)
     
      if missing_field:
         return {"error": f"Missing required fields: {missing_field}"}
 
      body.setdefault("deviceIDs", [])
-     body.setdefault("deviceNicknames", [])
+     body.setdefault("deviceNicknames", {})
+     body.setdefault("currentDeviceID", "")
 
      user_routes.create_new_user(user_id=user_id, data=body)
      return {"message": f"User {user_id} registered."}
@@ -53,3 +54,15 @@ async def get_profile(request: Request):
     if not profile:
         return {"error": "Profile not found"}
     return profile     
+
+@app.post("/user/update-device")
+async def update_device(request: Request):
+    uid = verify_token(request)
+    body = await request.json()
+
+    if "currentDeviceID" not in body:
+        raise HTTPException(status_code=400, detail="Missing currentDeviceID")
+    
+
+    user_routes.update_current_user_device(uid, body["currentDeviceID"])
+    return {"message": "Current device updated successfully"}

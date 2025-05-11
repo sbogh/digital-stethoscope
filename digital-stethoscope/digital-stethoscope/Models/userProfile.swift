@@ -18,4 +18,6 @@ class UserProfile: ObservableObject {
 
     @Published var deviceIds: [String] = []
     @Published var deviceNicknames: [String: String] = [:]
+
+    @Published var currentDeviceID: String = ""
 }

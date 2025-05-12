@@ -19,5 +19,5 @@ def verify_token(request: Request) -> str:
     try:
         decoded_token = auth.verify_id_token(curr_token)
         return decoded_token["uid"]
-    except Exception:
-        raise HTTPException(status_code=401, detail="Invalid Firebase ID token")
+    except Exception as exc:
+        raise HTTPException(status_code=401, detail="Invalid Firebase ID token") from exc

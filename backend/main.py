@@ -9,7 +9,7 @@ Includes CORS middleware for cross-origin frontend access.
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from auth_utils import verify_token
-import user_routes as user_routes
+import user_routes
 
 # Create a new FastAPI application instance
 app = FastAPI()

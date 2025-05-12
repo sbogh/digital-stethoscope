@@ -17,5 +17,6 @@ extension Color {
 }
 
 extension Image {
-    static let logo = Image("Logo")
+//    static let logo = Image("Logo")
+    static let portable = Image("portable")
 }

@@ -11,6 +11,8 @@ struct LandingPage: View {
     @State private var navLogin = false
     @State private var navCreateAcc = false
 
+    @EnvironmentObject var userProfile: UserProfile
+
     var body: some View {
         // Aligns content in the middle vertically
         VStack(alignment: .center, spacing: 5) {
@@ -49,7 +51,7 @@ struct LandingPage: View {
                     .cornerRadius(10)
             }.padding(.bottom)
                 .navigationDestination(isPresented: $navCreateAcc) {
-                    CreateAccountView()
+                    CreateAccountView().environmentObject(userProfile)
                 }
 
             // Log in Button
@@ -68,7 +70,7 @@ struct LandingPage: View {
                     )
             }.padding(.bottom)
                 .navigationDestination(isPresented: $navLogin) {
-                    LoginView()
+                    LoginView().environmentObject(userProfile)
                 }
 
             // Learn More link
@@ -87,5 +89,5 @@ struct LandingPage: View {
 }
 
 #Preview {
-    LandingPage()
+    LandingPage().environmentObject(UserProfile())
 }

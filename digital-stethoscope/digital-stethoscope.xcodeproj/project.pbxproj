@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		39CB4CDB2DD2887800D8B950 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 39CB4CDA2DD2887800D8B950 /* FirebaseFirestore */; };
 		921B874E2DCFDEBB004813B6 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 921B874D2DCFDEBB004813B6 /* FirebaseDatabase */; };
 		92D7754A2DCFD910002DF540 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 92D775492DCFD910002DF540 /* FirebaseAppCheck */; };
 		92D7754C2DCFD910002DF540 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 92D7754B2DCFD910002DF540 /* FirebaseAuth */; };
@@ -75,6 +76,7 @@
 				92D7754A2DCFD910002DF540 /* FirebaseAppCheck in Frameworks */,
 				92D7754E2DCFD910002DF540 /* FirebaseCore in Frameworks */,
 				921B874E2DCFDEBB004813B6 /* FirebaseDatabase in Frameworks */,
+				39CB4CDB2DD2887800D8B950 /* FirebaseFirestore in Frameworks */,
 				92D7754C2DCFD910002DF540 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -140,6 +142,7 @@
 				92D7754B2DCFD910002DF540 /* FirebaseAuth */,
 				92D7754D2DCFD910002DF540 /* FirebaseCore */,
 				921B874D2DCFDEBB004813B6 /* FirebaseDatabase */,
+				39CB4CDA2DD2887800D8B950 /* FirebaseFirestore */,
 			);
 			productName = "digital-stethoscope";
 			productReference = 390C87ED2DB307BB00FF152F /* digital-stethoscope.app */;
@@ -334,6 +337,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -397,6 +401,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -428,7 +433,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"digital-stethoscope/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "digital-stethoscope/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -439,7 +445,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "ucsd-cse-237d.digital-stethoscope";
+				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = ucsd237d.digitalstethoscope;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -456,7 +463,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"digital-stethoscope/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "digital-stethoscope/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -467,7 +475,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "ucsd-cse-237d.digital-stethoscope";
+				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = ucsd237d.digitalstethoscope;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -596,6 +605,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		39CB4CDA2DD2887800D8B950 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FirebaseFirestore;
+		};
 		921B874D2DCFDEBB004813B6 /* FirebaseDatabase */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 92D775482DCFD833002DF540 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

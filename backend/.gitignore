@@ -1,7 +1,0 @@
-# Firebase service account key
-config/serviceAccountKey.json
-
-
-# Python cache files
-__pycache__/
-*.pyc

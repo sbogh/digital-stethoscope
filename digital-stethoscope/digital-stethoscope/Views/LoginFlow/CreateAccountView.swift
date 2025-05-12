@@ -4,28 +4,30 @@
 //
 //  Created by Siya Rajpal on 4/28/25.
 //
-
-// TODO: REGISTER NEW USER IN DB, CHECK DB FOR EMAIL, AUTHENTICATE USER
-
 import SwiftUI
 
 struct CreateAccountView: View {
+    // user data object
+    @EnvironmentObject var userProfile: UserProfile
+
     // email format validation variables
-    @State private var email: String = ""
     @State private var isValidEmail = true
 
     // password format validation variables
-    @State private var password: String = ""
     @State private var isValidPWord = true
 
     // passwords match validation variables
     @State private var confirmedPw: String = ""
     @State private var pWordsMatch = true
 
-    @State private var validNewAccount = false
+    // checks that all required fields are filled out and valid
+    // @State private var validNewAccount = false
     var emptyField: Bool {
-        email.isEmpty || password.isEmpty || confirmedPw.isEmpty
+        userProfile.email.isEmpty || userProfile.password.isEmpty || confirmedPw.isEmpty
     }
+
+    // signup validation variables
+    @State private var continueSignup = false
 
     var body: some View {
         VStack(spacing: 5) {
@@ -35,20 +37,20 @@ struct CreateAccountView: View {
             // Create account form
             VStack(spacing: 5) {
                 // Email text field
-                TextField("Email", text: $email)
+                TextField("Email", text: $userProfile.email)
                     .padding()
                     .background(Color.primary)
                     .cornerRadius(10)
-                    .onChange(of: email) { _, newEmail in
+                    .onChange(of: userProfile.email) { _, newEmail in
                         isValidEmail = validateEmail(email: newEmail)
                     }
 
                 // Password field
-                SecureField("Password", text: $password)
+                SecureField("Password", text: $userProfile.password)
                     .padding()
                     .background(Color.primary)
                     .cornerRadius(10)
-                    .onChange(of: password) { _, newPWord in
+                    .onChange(of: userProfile.password) { _, newPWord in
                         isValidPWord = validatePassword(password: newPWord)
                     }
 
@@ -70,7 +72,7 @@ struct CreateAccountView: View {
                     .background(Color.primary)
                     .cornerRadius(10)
                     .onChange(of: confirmedPw) { _, newPWord in
-                        pWordsMatch = validatePasswordsMatch(password: password, confirmedPw: newPWord)
+                        pWordsMatch = validatePasswordsMatch(password: userProfile.password, confirmedPw: newPWord)
                     }
 
                 // Error message if passwords don't match
@@ -115,8 +117,9 @@ struct CreateAccountView: View {
 
             // sign up button
             Button(action: {
-                if isValidEmail, isValidPWord, pWordsMatch {
-                    validNewAccount = true
+                if isValidEmail, isValidPWord, pWordsMatch, !emptyField {
+                    continueSignup = true
+                    // print("sigining up with email: ", userProfile.email)
                 }
 
             }) {
@@ -130,9 +133,9 @@ struct CreateAccountView: View {
                     .foregroundColor(Color.primary)
                     .cornerRadius(10)
             }
-            .padding()
-            .navigationDestination(isPresented: $validNewAccount) {
-                AccountSetupView()
+            .padding(.bottom)
+            .navigationDestination(isPresented: $continueSignup) {
+                AccountSetupView().environmentObject(userProfile)
             }
 
             // Learn More link
@@ -168,8 +171,6 @@ struct CreateAccountView: View {
         }
         return true
     }
-
-    // TODO: validate that email not already in use w/ DB
 
     /// Validates user inputs a valid password
     ///
@@ -208,5 +209,5 @@ struct CreateAccountView: View {
 }
 
 #Preview {
-    CreateAccountView()
+    CreateAccountView().environmentObject(UserProfile())
 }

@@ -11,6 +11,7 @@ struct LandingPage: View {
     @State private var navLogin = false
     @State private var navCreateAcc = false
 
+    @State private var navLearnMore = false
     @EnvironmentObject var userProfile: UserProfile
 
     var body: some View {
@@ -75,15 +76,18 @@ struct LandingPage: View {
 
             // Learn More link
             Button(action: {
-                // TODO: add route to learn more
+                navLearnMore = true
             }) {
                 Text("Learn More")
-                    .font(Font.custom("Roboto-ExtraBold", size: 18)
-                    )
+                    .font(Font.custom("Roboto-ExtraBold", size: 18))
                     .fontWeight(.bold)
                     .foregroundColor(Color.CTA1)
                     .underline(true, color: .CTA1)
-            }.padding(.bottom)
+            }
+            .padding(.bottom)
+            .navigationDestination(isPresented: $navLearnMore) {
+                LearnMore()
+            }
         }
     }
 }

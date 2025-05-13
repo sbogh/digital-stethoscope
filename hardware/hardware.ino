@@ -5,6 +5,21 @@
 #include <WiFi.h>
 //#include <esp_wpa2.h> // not needed unless using UCSD WiFi
 
+/*
+Don't forget to add back in these things when running code:
+
+WiFi SSID (line 36)
+WiFi Password (line 37)
+API Key (line 54)
+
+If using UCSD WiFi:
+- Uncomment include for esp_wpa2.h (line 6)
+- Uncomment WPA2 block (lines 44-50)
+- Uncomment Enterprise WiFi initialization function (line 180-201)
+- Comment out code to initialize normal WiFi (line 332)
+- Uncomment line to initialize Enterprise WiFi (line 333)
+*/
+
 // ------- Definitions and Constants -------
 
 // ------- Pin Definitions -------
@@ -12,8 +27,6 @@
 #define I2S_SD 5
 #define I2S_SCK 4
 #define BUTTON_PIN 21
-#define INTERNAL_LED 48
-#define SD_CS 10
 
 // ------- I2S Definitions and Constants -------
 #define I2S_PORT I2S_NUM_0
@@ -29,13 +42,8 @@ const uint32_t TOTAL_BYTES = WAV_HEADER_BYTES + AUDIO_BYTES;
 
 // ------- WiFi Definitions -------
 
-#define SSID "SpectrumSetup-53"
-#define wifiPW "desertmarble967"
-
-/*
-#define SSID "Amrita’s iPhone"
-#define wifiPW "ilovecabo"
-*/
+#define SSID "WIFI SSID"
+#define wifiPW "PASSWORD"
 
 /*
 // not needed unless using UCSD WiFi
@@ -46,7 +54,7 @@ const char *ssid = "eduroam";
 */
 
 // ------- Firebase Definitions and Initializations -------
-#define API_KEY "AIzaSyC37GeX4Ag0h5THhOddu_a9h2ncl87UKzM"
+#define API_KEY "API KEY HERE"
 #define USER_EMAIL "stethy.mcscopeface@gmail.com"
 #define USER_PW "scopeface237"
 #define STORAGE_BUCKET "scopeface-10e9a.firebasestorage.app"
@@ -69,6 +77,9 @@ void IRAM_ATTR onButtonPress() {
 }
 
 // ------- I2S Set Up Functions -------
+/*
+* This function installs the I2S protocol on the designated pins
+*/
 void i2s_install() {
   const i2s_config_t i2s_config = {
     .mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_RX),
@@ -86,6 +97,10 @@ void i2s_install() {
   i2s_driver_install(I2S_PORT, &i2s_config, 0, NULL);
 }
 
+/*
+* This function sets the pins for the I2S protocol. This includes setting the serial clock (SCK), 
+* word select (WS), and serial data (SD).
+*/
 void i2s_setpin() {
   const i2s_pin_config_t pin_config = {
     .bck_io_num = I2S_SCK,
@@ -96,6 +111,9 @@ void i2s_setpin() {
   i2s_set_pin(I2S_PORT, &pin_config);
 }
 
+/*
+* This is the callable function that initializes the I2S protocol for the digital microphone.
+*/
 void init_i2s() {
   i2s_install();
   i2s_setpin();
@@ -103,6 +121,9 @@ void init_i2s() {
 }
 
 // ------- Write WAV Header -------
+/*
+* This function writes the WAV header to the buffer. See WAV file documentation for WAV header standard.
+*/
 void writeWavHeader(uint8_t *buffer, uint32_t audioLen) {
   uint32_t byteRate = SAMPLE_RATE * CHANNELS * BITS_PER_SAMPLE / 8;
   uint32_t totalDataLen = audioLen + 36;
@@ -127,6 +148,10 @@ void writeWavHeader(uint8_t *buffer, uint32_t audioLen) {
 }
 
 // ------- Initialize Buttons and LED -------
+/*
+* This function initializes all peripheral components of the hardware. This includes the push button, 
+* the RGB light, PSRAM (for buffer store), and the WAV file buffer.
+*/
 void init_peripherals() {
   // Initialize button and attach button press event to trigger flag
   pinMode(BUTTON_PIN, INPUT_PULLDOWN);
@@ -158,6 +183,9 @@ void init_peripherals() {
 }
 
 // ------- Initialize WiFi -------
+/*
+* This function initializes WiFi connection.
+*/
 void init_WiFi() {
   WiFi.begin(SSID, wifiPW);
 
@@ -173,6 +201,7 @@ void init_WiFi() {
 
 /*
 // not needed unless using UCSD WiFi
+// This function is an alternative to init_WiFi() that initializes an authenticated WiFi connection (eduroam).
 void init_Eduroam() {
   WiFi.mode(WIFI_STA);
   esp_wifi_sta_wpa2_ent_enable();
@@ -195,6 +224,9 @@ void init_Eduroam() {
 */
 
 // ------- Initialize Firebase -------
+/*
+* This function initializes and authenticates the Firebase Client connection. 
+*/
 void init_Firebase() {
   Serial.printf("Firebase Client v%s\n\n", FIREBASE_CLIENT_VERSION);
   Serial.println("Initializing app...");
@@ -210,11 +242,17 @@ void init_Firebase() {
 }
 
 // ------- Generate File Name Function
+/*
+* This function generates a filename for use on the Firebase Storage side. The identifier uses the format {device_id}_{random_num}.
+*/
 String generate_filename() {
   return "/" + String(DEVICE_ID) + "_" + String(random(100000)) + ".wav";
 }
 
 // ------- Audio Helpers -------
+/*
+* This is a callback function provided from the Firebase library that provides detailed information about errors, upload status, and completion messages.
+*/
 void fcsUploadCallback(FCS_UploadStatusInfo info)
 {
     if (info.status == firebase_fcs_upload_status_init)
@@ -241,8 +279,11 @@ void fcsUploadCallback(FCS_UploadStatusInfo info)
 }
 
 // ------- Record Audio Task
+/*
+* This is the main function to record and transmit audio from the microphone.
+*/
 void record_and_transmit() {
-  // Create buffer
+  // Check if buffer has been initialized
   if (!wavBuffer) {return;}
 
   // Write the WAV header to buffer
@@ -277,8 +318,10 @@ void record_and_transmit() {
   // Get filename
   String path = generate_filename();
 
+  // If the Firebase connection fails return
   if (!Firebase.ready()) {return;}
 
+  // If the Firebase upload fails print the error message and return
   if (!Firebase.Storage.upload(
     &fbdo,
     STORAGE_BUCKET,
@@ -298,6 +341,9 @@ void record_and_transmit() {
 }
 
 // ------- Record Audio Task -------
+/*
+* Main code that runs full audio pipeline. Task is pinned to core and waits for flag to be triggered to begin pipeline.
+*/
 void main_audio(void *parameter) {
   while (true) {
     // Wait for button press
@@ -326,10 +372,12 @@ void setup() {
 
   init_Firebase();
 
+  // Pin the audio pipeline task to core 1 and provide with specified stack size (expanded)
   xTaskCreatePinnedToCore(main_audio, "AudioPipeline", 8192, NULL, 1, NULL, 1);
 }
 
 void loop() {
+  // Make sure the async Firebase connection stays alive
   Firebase.ready();
   delay(100);
 }

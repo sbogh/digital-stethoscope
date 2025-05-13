@@ -59,5 +59,9 @@ Additional considerations included:
 
 N/A
 
+## 6. Related Decisions
+MCU Decision
+[https://github.com/sbogh/digital-stethoscope/blob/main/admin/ADRs/040725-MCU-Decision.md]
 
-## 6. References
+Mic Selection
+[https://github.com/sbogh/digital-stethoscope/blob/main/admin/ADRs/040825-MicSelection.md]

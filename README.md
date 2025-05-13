@@ -1,4 +1,4 @@
-# digital-stethoscope
+# ScopeFace: Digital Stethoscope
 
 ### Frontend
 The digital-stethoscope contains the frontend. Do not rename or his will break things.

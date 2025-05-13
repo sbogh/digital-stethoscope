@@ -1,7 +1,7 @@
 ---
 name: Custom issue template
 about: Describe this issue template's purpose here.
-title: Issue title here
+title: "[{HW/SW}{Deliverable #}{M (Milestone)/D (Deliverable)} - Task Description"
 labels: ''
 assignees: ''
 

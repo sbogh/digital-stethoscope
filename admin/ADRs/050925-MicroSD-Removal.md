@@ -1,7 +1,7 @@
 # Architecture Decision Record: Removal of microSD Dependency Using PSRAM
 
 **Status**: Accepted  
-**Date**: 2025-04-06  
+**Date**: 2025-05-07
 
 ---
 

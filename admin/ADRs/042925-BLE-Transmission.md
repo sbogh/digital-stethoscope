@@ -39,7 +39,7 @@ For the timer-based recording, this simplifies our firmware logic so that we can
 
 Potential pivots based on iOS BLE connection limitations:  Have ESP32 connect either directly to a cloud server gateway or use the app as an authentication gateway to make connection with cloud server and have data transmitted directly there rather than to the iPhone.
 
-## 6. Related Decisions
+## 6. References
 Guide for MicroSD Card Module using Arduino IDE
 [https://randomnerdtutorials.com/esp32-microsd-card-arduino/]
 

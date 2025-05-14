@@ -8,16 +8,16 @@
 /*
 Don't forget to add back in these things when running code:
 
-WiFi SSID (line 36)
-WiFi Password (line 37)
-API Key (line 54)
+WiFi SSID (line 45)
+WiFi Password (line 46)
+API Key (line 57)
 
 If using UCSD WiFi:
 - Uncomment include for esp_wpa2.h (line 6)
-- Uncomment WPA2 block (lines 44-50)
-- Uncomment Enterprise WiFi initialization function (line 180-201)
-- Comment out code to initialize normal WiFi (line 332)
-- Uncomment line to initialize Enterprise WiFi (line 333)
+- Uncomment WPA2 block (lines 48-54)
+- Uncomment Enterprise WiFi initialization function (line 202-224)
+- Comment out code to initialize normal WiFi (line 370)
+- Uncomment line to initialize Enterprise WiFi (line 371)
 */
 
 // ------- Definitions and Constants -------

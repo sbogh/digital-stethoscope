@@ -6,41 +6,32 @@
 //#include <esp_wpa2.h> // not needed unless using UCSD WiFi
 
 /*
-Pins for ESP32-S3-DevKitC-1-N16R8
-#define I2S_WS 6
-#define I2S_SD 5
-#define I2S_SCK 4
-#define BUTTON_PIN 21
-
-Can use RGB here
-
 Pins for XIAO ESP32-S3
 #define I2S_WS 6
 #define I2S_SD 5
 #define I2S_SCK 4
 #define BUTTON_PIN 1
 
-No RGB only internal LED
-
+Internal LED
 */
 
 /*
 Don't forget to add back in these things when running code:
 
-WiFi SSID (line 68)
-WiFi Password (line 69)
-API Key (line 80)
+WiFi SSID
+WiFi Password
+API Key
 
 Also, add in your authentication information:
-- User Email (line 81)
-- User PW (line 82)
+- User Email
+- User PW
 
 If using UCSD WiFi:
-- Uncomment include for esp_wpa2.h (line 6)
-- Uncomment WPA2 block (lines 71-77)
-- Uncomment Enterprise WiFi initialization function (line 231-253)
-- Comment out code to initialize normal WiFi (line 406)
-- Uncomment line to initialize Enterprise WiFi (line 407)
+- Uncomment include for esp_wpa2.h
+- Uncomment WPA2 block
+- Uncomment Enterprise WiFi initialization function (init_eduroam)
+- Comment out code to initialize normal WiFi in setup
+- Uncomment line to initialize Enterprise WiFi in setup
 */
 
 // ------- Definitions and Constants -------
@@ -49,7 +40,7 @@ If using UCSD WiFi:
 #define I2S_WS 6
 #define I2S_SD 5
 #define I2S_SCK 4
-#define BUTTON_PIN 1
+#define BUTTON_PIN 2
 
 // ------- I2S Definitions and Constants -------
 #define I2S_PORT I2S_NUM_0
@@ -63,13 +54,18 @@ const uint16_t WAV_HEADER_BYTES = 44;
 const uint32_t AUDIO_BYTES = SAMPLE_RATE * RECORD_TIME * (BITS_PER_SAMPLE / 8);
 const uint32_t TOTAL_BYTES = WAV_HEADER_BYTES + AUDIO_BYTES;
 
+// ------- Deep Sleep Vars -------
+unsigned long lastActiveTime = 0;
+#define INACTIVITY_TIMEOUT (5 * 60 * 1000)  // 5 minutes in ms
+#define WAKEUP_MASK 0X4 // GPIO Pin 2 so 2^2 in hex
+
 // ------- WiFi Definitions -------
 
 #define SSID "WIFI SSID"
 #define wifiPW "PASSWORD"
 
 /*
-// not needed unless using UCSD WiFi
+// not needed unless using UCSD WiFi (WPA2 Block)
 #define EAP_IDENTITY "username@ucsd.edu"
 #define EAP_USERNAME "username@ucsd.edu"
 #define EAP_PASSWORD "YOUR PASSWORD HERE"
@@ -180,18 +176,7 @@ void init_peripherals() {
   pinMode(BUTTON_PIN, INPUT_PULLDOWN);
   attachInterrupt(BUTTON_PIN, onButtonPress, RISING);
 
-  // Initialize RGB light on board (only on ESP32-S3-DevKitC-1-N16R8)
-  /*
-  #ifdef RGB_BUILTIN
-    pinMode(RGB_BUILTIN, OUTPUT);
-    rgbLedWrite(RGB_BUILTIN, 0, 0, 0); // Ensure LED starts off
-    Serial.println("RGB LED initialized");
-  #else
-    Serial.println("RGB_BUILTIN not defined for this board");
-  #endif
-  */
-
-  // For internal LED on XIAO ESP32-S3
+  // Initialize internal LED on XIAO ESP32-S3
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH); // ensure LED is off in start state
 
@@ -209,6 +194,9 @@ void init_peripherals() {
     Serial.println("Failed to allocate PSRAM buffer.");
     while (true); // halt program
   }
+
+  // Initialize the last active time
+  lastActiveTime = millis();
 }
 
 // ------- Initialize WiFi -------
@@ -226,6 +214,27 @@ void init_WiFi() {
 
   Serial.println("\nWiFi connected. IP address: ");
   Serial.println(WiFi.localIP());
+}
+
+// ------- Timeout Check Function -------
+/*
+* This function checks how long the device has been inactive and puts the device into deep sleep
+* if it has been more than the inactivity time time.
+*/
+void timeout_check() {
+  // Check if the elapsed time since activity is longer than the timeout
+  if (millis() - lastActiveTime >= INACTIVITY_TIMEOUT) {
+    Serial.println("Inactivity timeout reached. Entering deep sleep...");
+
+    // Configure EXT1 wakeup (wake on HIGH from GPIO 2)
+    esp_sleep_enable_ext1_wakeup(WAKEUP_MASK, ESP_EXT1_WAKEUP_ANY_HIGH);
+
+    // Properly close WiFi connection
+    WiFi.disconnect();
+
+    // Actually go to sleep
+    esp_deep_sleep_start();
+  }
 }
 
 /*
@@ -318,9 +327,6 @@ void record_and_transmit() {
   // Write the WAV header to buffer
   writeWavHeader(wavBuffer, AUDIO_BYTES);
 
-  // Turn on LED (red to show recording)
-  //rgbLedWrite(RGB_BUILTIN, RGB_BRIGHTNESS, 0, 0);
-
   // Turn on LED (LOW == ON)
   digitalWrite(LED_BUILTIN, LOW);
 
@@ -344,10 +350,6 @@ void record_and_transmit() {
 
   Serial.println("Recording complete. Uploading...");
 
-  // Change light color to GREEN (to show upload in progress)
-  //rgbLedWrite(RGB_BUILTIN, 0, RGB_BRIGHTNESS, 0);
-  // can't do this on XIAO ESP32-S3
-
   // Get filename
   String path = generate_filename();
 
@@ -367,9 +369,6 @@ void record_and_transmit() {
     Serial.println("Firebase Upload Failed: " + fbdo.errorReason());
   }
 
-  // Turn off LED (to show upload complete)
-  //rgbLedWrite(RGB_BUILTIN, 0, 0, 0);
-
   // Turn off LED (HIGH == OFF)
   digitalWrite(LED_BUILTIN, HIGH);
 
@@ -384,8 +383,14 @@ void main_audio(void *parameter) {
   while (true) {
     // Wait for button press
     if (startRecording) {
+      // Reset inactivity time to ensure deep sleep doesn't happen mid recording
+      lastActiveTime = millis();
+
       // Record and transmit task
       record_and_transmit();
+
+      // Reset inactivity time to after recording and upload finish
+      lastActiveTime = millis();
 
       // Turn off recording flag
       startRecording = false;
@@ -399,14 +404,14 @@ void main_audio(void *parameter) {
 void setup() {
   Serial.begin(115200);
 
-  init_peripherals();
-
   init_i2s();
 
   init_WiFi();
   //init_Eduroam(); // not needed unless using UCSD WiFi
 
   init_Firebase();
+
+  init_peripherals();
 
   // Pin the audio pipeline task to core 1 and provide with specified stack size (expanded)
   xTaskCreatePinnedToCore(main_audio, "AudioPipeline", 8192, NULL, 1, NULL, 1);
@@ -416,4 +421,7 @@ void loop() {
   // Make sure the async Firebase connection stays alive
   Firebase.ready();
   delay(100);
+
+  // Check for timeout at every loop iteration
+  timeout_check();
 }

@@ -6,11 +6,34 @@
 //#include <esp_wpa2.h> // not needed unless using UCSD WiFi
 
 /*
+Pins for ESP32-S3-DevKitC-1-N16R8
+#define I2S_WS 6
+#define I2S_SD 5
+#define I2S_SCK 4
+#define BUTTON_PIN 21
+
+Can use RGB here
+
+Pins for XIAO ESP32-S3
+#define I2S_WS 6
+#define I2S_SD 5
+#define I2S_SCK 4
+#define BUTTON_PIN 1
+
+No RGB only internal LED
+
+*/
+
+/*
 Don't forget to add back in these things when running code:
 
 WiFi SSID (line 45)
 WiFi Password (line 46)
 API Key (line 57)
+
+Also, add in your authentication information:
+- User Email (line 61)
+- User PW (line 63)
 
 If using UCSD WiFi:
 - Uncomment include for esp_wpa2.h (line 6)
@@ -26,7 +49,7 @@ If using UCSD WiFi:
 #define I2S_WS 6
 #define I2S_SD 5
 #define I2S_SCK 4
-#define BUTTON_PIN 21
+#define BUTTON_PIN 1
 
 // ------- I2S Definitions and Constants -------
 #define I2S_PORT I2S_NUM_0
@@ -157,7 +180,8 @@ void init_peripherals() {
   pinMode(BUTTON_PIN, INPUT_PULLDOWN);
   attachInterrupt(BUTTON_PIN, onButtonPress, RISING);
 
-  // Initialize RGB light on board
+  // Initialize RGB light on board (only on ESP32-S3-DevKitC-1-N16R8)
+  /*
   #ifdef RGB_BUILTIN
     pinMode(RGB_BUILTIN, OUTPUT);
     rgbLedWrite(RGB_BUILTIN, 0, 0, 0); // Ensure LED starts off
@@ -165,6 +189,11 @@ void init_peripherals() {
   #else
     Serial.println("RGB_BUILTIN not defined for this board");
   #endif
+  */
+
+  // For internal LED on XIAO ESP32-S3
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH); // ensure LED is off in start state
 
   // Check for PSRAM initialization
   if (psramFound()) {
@@ -290,7 +319,10 @@ void record_and_transmit() {
   writeWavHeader(wavBuffer, AUDIO_BYTES);
 
   // Turn on LED (red to show recording)
-  rgbLedWrite(RGB_BUILTIN, RGB_BRIGHTNESS, 0, 0);
+  //rgbLedWrite(RGB_BUILTIN, RGB_BRIGHTNESS, 0, 0);
+
+  // Turn on LED (LOW == ON)
+  digitalWrite(LED_BUILTIN, LOW);
 
   // Record audio
   Serial.println("Recording audio...");
@@ -313,7 +345,8 @@ void record_and_transmit() {
   Serial.println("Recording complete. Uploading...");
 
   // Change light color to GREEN (to show upload in progress)
-  rgbLedWrite(RGB_BUILTIN, 0, RGB_BRIGHTNESS, 0);
+  //rgbLedWrite(RGB_BUILTIN, 0, RGB_BRIGHTNESS, 0);
+  // can't do this on XIAO ESP32-S3
 
   // Get filename
   String path = generate_filename();
@@ -335,7 +368,10 @@ void record_and_transmit() {
   }
 
   // Turn off LED (to show upload complete)
-  rgbLedWrite(RGB_BUILTIN, 0, 0, 0);
+  //rgbLedWrite(RGB_BUILTIN, 0, 0, 0);
+
+  // Turn off LED (HIGH == OFF)
+  digitalWrite(LED_BUILTIN, HIGH);
 
   return;
 }

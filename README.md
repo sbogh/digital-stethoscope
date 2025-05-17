@@ -36,6 +36,6 @@ The frontend is contained in /digital-stethoscope. Please do not change the file
 
 ### Hardware Operation
 1. Wait for upload to complete and check for initialization success (serial monitor will display WiFi connected, Firebase connected)
-2. Press button to record 30 seconds of audio (onboard RGB will be red)
-3. Wait for Firebase upload to complete (onboard RGB will be green)
+2. Press button to record 30 seconds of audio (onboard LED will be on)
+3. Wait for Firebase upload to complete (onboard LED will be on)
 4. Navigate to Firebase to playback audio

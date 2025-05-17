@@ -28,7 +28,7 @@ The frontend is contained in /digital-stethoscope. Please do not change the file
 ## Hardware
 
 ### Hardware Setup
-1. Using the Arduino IDE, plug in your ESP32-S3-DevKitC-1-N16R8
+1. Using the Arduino IDE, plug in your XIAO ESP32-S3
 2. Go to Tools -> PSRAM and enable "OPI PSRAM"
 3. Add WiFi SSID and Password Information where specified in instruction comments
 4. Add Firebase API Key and double check bucket and user authentication information

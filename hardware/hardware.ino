@@ -27,20 +27,20 @@ No RGB only internal LED
 /*
 Don't forget to add back in these things when running code:
 
-WiFi SSID (line 45)
-WiFi Password (line 46)
-API Key (line 57)
+WiFi SSID (line 68)
+WiFi Password (line 69)
+API Key (line 80)
 
 Also, add in your authentication information:
-- User Email (line 61)
-- User PW (line 63)
+- User Email (line 81)
+- User PW (line 82)
 
 If using UCSD WiFi:
 - Uncomment include for esp_wpa2.h (line 6)
-- Uncomment WPA2 block (lines 48-54)
-- Uncomment Enterprise WiFi initialization function (line 202-224)
-- Comment out code to initialize normal WiFi (line 370)
-- Uncomment line to initialize Enterprise WiFi (line 371)
+- Uncomment WPA2 block (lines 71-77)
+- Uncomment Enterprise WiFi initialization function (line 231-253)
+- Comment out code to initialize normal WiFi (line 406)
+- Uncomment line to initialize Enterprise WiFi (line 407)
 */
 
 // ------- Definitions and Constants -------

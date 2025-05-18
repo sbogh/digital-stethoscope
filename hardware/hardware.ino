@@ -41,6 +41,8 @@ If using UCSD WiFi:
 #define I2S_SD 5
 #define I2S_SCK 4
 #define BUTTON_PIN 2
+#define RED 9
+#define GREEN 8
 
 // ------- I2S Definitions and Constants -------
 #define I2S_PORT I2S_NUM_0
@@ -176,9 +178,13 @@ void init_peripherals() {
   pinMode(BUTTON_PIN, INPUT_PULLDOWN);
   attachInterrupt(BUTTON_PIN, onButtonPress, RISING);
 
-  // Initialize internal LED on XIAO ESP32-S3
-  pinMode(LED_BUILTIN, OUTPUT);
-  digitalWrite(LED_BUILTIN, HIGH); // ensure LED is off in start state
+  // Initialize RGB LED
+  pinMode(RED, OUTPUT);
+  pinMode(GREEN, OUTPUT);
+
+  // Ensure RGB LED is OFF
+  digitalWrite(RED, 0);
+  digitalWrite(GREEN, 0);
 
   // Check for PSRAM initialization
   if (psramFound()) {
@@ -223,7 +229,7 @@ void init_WiFi() {
 */
 void timeout_check() {
   // Check if the elapsed time since activity is longer than the timeout
-  if (millis() - lastActiveTime >= INACTIVITY_TIMEOUT) {
+  if ((millis() - lastActiveTime >= INACTIVITY_TIMEOUT) && !startRecording) {
     Serial.println("Inactivity timeout reached. Entering deep sleep...");
 
     // Configure EXT1 wakeup (wake on HIGH from GPIO 2)
@@ -327,8 +333,8 @@ void record_and_transmit() {
   // Write the WAV header to buffer
   writeWavHeader(wavBuffer, AUDIO_BYTES);
 
-  // Turn on LED (LOW == ON)
-  digitalWrite(LED_BUILTIN, LOW);
+  // Turn RGB RED
+  digitalWrite(RED, 255);
 
   // Record audio
   Serial.println("Recording audio...");
@@ -350,6 +356,10 @@ void record_and_transmit() {
 
   Serial.println("Recording complete. Uploading...");
 
+  // Turn RGB GREEN
+  digitalWrite(RED, 0);
+  digitalWrite(GREEN, 255);
+
   // Get filename
   String path = generate_filename();
 
@@ -369,8 +379,8 @@ void record_and_transmit() {
     Serial.println("Firebase Upload Failed: " + fbdo.errorReason());
   }
 
-  // Turn off LED (HIGH == OFF)
-  digitalWrite(LED_BUILTIN, HIGH);
+  // Turn off RGB
+  digitalWrite(GREEN, 0);
 
   return;
 }

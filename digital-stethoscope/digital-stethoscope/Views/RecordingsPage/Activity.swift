@@ -10,6 +10,7 @@
 
 
 import SwiftUI
+import AVKit // TODO: (FOR SIYA) idk if we will need this lol
 
 struct RecordingInfo: Identifiable {
     let id: String // unique recording ID from database, must be included or it will break
@@ -33,38 +34,116 @@ let NewRecordings: [RecordingInfo] = [
 
 // replace this with viewed recordings
 let ViewedRecordings: [RecordingInfo] = [
-    RecordingInfo(id: "r3", sessionDate: "5/16/24", sessionTime: "3:47pm", viewed: true, sessionTitle: "Shelby Myrman", notes: "wow this heartbeat is awesome I think she will live forever"),
+    RecordingInfo(id: "r3", sessionDate: "5/16/24", sessionTime: "3:47pm", viewed: true, sessionTitle: "Shelby Myrman", notes: "wow this heartbeat is awesome I think is invincible"),
     RecordingInfo(id: "r4", sessionDate: "5/14/24", sessionTime: "8:12am", viewed: true, sessionTitle: "Jack Frost", notes: "his heart is frozen!!!!!! I hope he doesn't die lol"),
 ]
 
+
+// TODO: (for Siya) I messed around with an audio player view just based on some stuff I found online + chatgpt, I have literally no idea if this will work so feel free to change LOL
+// I think in theory we'll put the waveform view in here? It looks like there are some libraries that can accomplish this
+struct AudioPlayerView: View {
+    let wavFileURL: URL
+
+    var body: some View {
+        Button("Play") {
+            let player = AVPlayer(url: wavFileURL)
+            player.play()
+        }
+        .font(.custom("Roboto-Regular", size: 14))
+        .padding(8)
+        .background(Color.CTA1)
+        .foregroundColor(Color.primary)
+        .cornerRadius(6)
+    }
+}
+
 struct SessionOverview: View {
-    var sessionTitle: String
-    var sessionDate: String
-    var sessionTime: String
+    @State private var isExpanded = false
+    @State private var editedTitle: String
+    @State private var notes: String
+
+    var recording: RecordingInfo
+    var defaultTitle: String
+
+    init(sessionTitle: String, recording: RecordingInfo) {
+        self.recording = recording
+        self.defaultTitle = sessionTitle
+        _editedTitle = State(initialValue: sessionTitle)
+        _notes = State(initialValue: recording.notes)
+    }
     
     var body: some View {
         VStack {
             HStack {
-                Text(sessionTitle)
+                // TODO: (FOR SIYA) we need to send the editedTitle to the database. In theory we'll do this once they're done editing, ig we can add a save button tho if needed?
+                TextField("Session Title", text: $editedTitle)
+                    .font(.custom("Roboto-Medium", size: 18))
+                    .foregroundColor(.CTA2)
+                Spacer()
+                
+                Button(action: { withAnimation { isExpanded.toggle() } }) {
+                    Image(systemName: isExpanded ? "xmark" : "chevron.down")
+                        .foregroundColor(.CTA2)
+                }
+            }
+            
+            HStack {
+                Text(recording.sessionTime)
                     .font(
-                        Font.custom("Roboto-Medium", size: 18)
+                        Font.custom("Roboto", size: 16)
+                    )
+                    .foregroundColor(.CTA2)
+                Text(recording.sessionDate)
+                    .font(
+                        Font.custom("Roboto", size: 16)
                     )
                     .foregroundColor(.CTA2)
                 Spacer()
             }
             
-            HStack {
-                Text(sessionTime)
-                    .font(
-                        Font.custom("Roboto", size: 16)
-                    )
-                    .foregroundColor(.CTA2)
-                Text(sessionDate)
-                    .font(
-                        Font.custom("Roboto", size: 16)
-                    )
-                    .foregroundColor(.CTA2)
-                Spacer()
+            if isExpanded {
+                Divider()
+
+                // Audio Player Placeholder
+                // TODO: (FOR SIYA) idk how this is actually going to look once the file is in here so we might want to edit this, just lmk if it looks weird and i can help fix
+                if let url = recording.wavFileURL {
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text("Recording:")
+                                .font(.custom("Roboto-Medium", size: 16))
+                                .foregroundColor(.CTA2)
+                            
+                            Spacer()
+                        }
+
+                        // TODO: (FORE SIYA) Replace with waveform visualization if needed
+                        AudioPlayerView(wavFileURL: url)
+                            .frame(height: 50)
+                            .padding(.vertical, 5)
+                    }
+                } else {
+                    HStack {
+                        Text("No audio available.")
+                            .font(.footnote)
+                            .foregroundColor(.gray)
+                        Spacer()
+                    }
+                    .padding(.bottom, 2)
+                }
+                
+                HStack {
+                    Text("Session Notes:")
+                        .font(.custom("Roboto-Medium", size: 14))
+                        .foregroundColor(.CTA2)
+                    Spacer()
+                }
+
+                // TODO: (FOR SIYA) we need to send the updated notes text to the database. It'd be cool if we could just do this immediately but we could add a save button if needed too
+                TextEditor(text: $notes)
+                    .frame(height: 80)
+                    .padding(5)
+                    .background(Color.primary.opacity(0.1))
+                    .cornerRadius(8)
             }
             
         }
@@ -102,9 +181,9 @@ struct RecordingsView: View {
         
         ForEach(recordings) { recording in
             if recording.sessionTitle == "" {
-                recording.viewed ? SessionOverview(sessionTitle: "Viewed Session", sessionDate: recording.sessionDate, sessionTime: recording.sessionTime) : SessionOverview(sessionTitle: "New Session", sessionDate: recording.sessionDate, sessionTime: recording.sessionTime)
+                recording.viewed ? SessionOverview(sessionTitle: "Viewed Session", recording: recording) : SessionOverview(sessionTitle: "New Session", recording: recording)
             } else {
-                SessionOverview(sessionTitle: recording.sessionTitle, sessionDate: recording.sessionDate, sessionTime: recording.sessionTime)
+                SessionOverview(sessionTitle: recording.sessionTitle, recording: recording)
             }
         }
     }

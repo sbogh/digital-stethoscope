@@ -12,25 +12,29 @@
 import SwiftUI
 
 struct RecordingInfo: Identifiable {
-    let id: String // recording ID from database
-    let sessionTitle: String // this doesnt exist in db, for now we'll call them untitled but I think we should give user ability to change session name since we're not linking patients
-    let sessionDate: String // might need to change data type
-    let sessionTime: String // might need to change data type
+    let id: String // unique recording ID from database, must be included or it will break
+    let sessionDate: String // everything works a lot better if we convert this to string on backend and pass in as string here
+    let sessionTime: String // same as above
+    var viewed: Bool
+    var sessionTitle: String = "" // optional, don't include for new sessions but do include for viewed sessions
+    var notes: String = "" // optional
+    var wavFileURL: URL? = nil // might need to change
 }
 
 // TODO: (FOR SIYA) REPLACE HARDCODED LISTs BELOW WITH FETCH FROM BACKEND
 // replace this with new recordings
 // make sure to include the id or it will break
 // also a note I think we should force users to have a device so we don't have to build acct view, I will txt u but adding this here in case I forget
+// we'll have to have something in the db to denote whether a session is new or viewed so we can handle this in the backend
 let NewRecordings: [RecordingInfo] = [
-    RecordingInfo(id: "r1", sessionTitle: "Unassigned Session 2", sessionDate: "5/20/24", sessionTime: "12:59pm"),
-    RecordingInfo(id: "r2", sessionTitle: "Unassigned Session 1", sessionDate: "5/20/24", sessionTime: "11:02am")
+    RecordingInfo(id: "r1", sessionDate: "5/20/24", sessionTime: "12:59pm", viewed: false),
+    RecordingInfo(id: "r2", sessionDate: "5/20/24", sessionTime: "11:02am", viewed: false)
 ]
 
 // replace this with viewed recordings
 let ViewedRecordings: [RecordingInfo] = [
-    RecordingInfo(id: "r3", sessionTitle: "Jane Doe", sessionDate: "5/16/24", sessionTime: "3:47pm"),
-    RecordingInfo(id: "r4", sessionTitle: "Jack Frost", sessionDate: "5/14/24", sessionTime: "8:12am"),
+    RecordingInfo(id: "r3", sessionDate: "5/16/24", sessionTime: "3:47pm", viewed: true, sessionTitle: "Shelby Myrman", notes: "wow this heartbeat is awesome I think she will live forever"),
+    RecordingInfo(id: "r4", sessionDate: "5/14/24", sessionTime: "8:12am", viewed: true, sessionTitle: "Jack Frost", notes: "his heart is frozen!!!!!! I hope he doesn't die lol"),
 ]
 
 struct SessionOverview: View {
@@ -95,8 +99,13 @@ struct RecordingsView: View {
         }
         .frame(maxWidth: .infinity)
         
+        
         ForEach(recordings) { recording in
-            SessionOverview(sessionTitle: recording.sessionTitle, sessionDate: recording.sessionDate, sessionTime: recording.sessionTime)
+            if recording.sessionTitle == "" {
+                recording.viewed ? SessionOverview(sessionTitle: "Viewed Session", sessionDate: recording.sessionDate, sessionTime: recording.sessionTime) : SessionOverview(sessionTitle: "New Session", sessionDate: recording.sessionDate, sessionTime: recording.sessionTime)
+            } else {
+                SessionOverview(sessionTitle: recording.sessionTitle, sessionDate: recording.sessionDate, sessionTime: recording.sessionTime)
+            }
         }
     }
 }

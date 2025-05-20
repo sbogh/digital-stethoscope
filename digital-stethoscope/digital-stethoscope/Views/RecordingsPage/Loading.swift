@@ -5,6 +5,8 @@
 //  Created by Shelby Myrman on 5/19/25.
 //
 
+
+// TODO: go to activity screen once recordings are loaded
 import SwiftUI
 
 struct Loading: View {

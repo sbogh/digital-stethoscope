@@ -28,8 +28,9 @@ struct digital_stethoscopeApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack {
-                LandingPage()
-                    .environmentObject(userProfile)
+                TestWAVPlayback()
+                /*LandingPage()
+                    .environmentObject(userProfile)*/
             }
         }
     }

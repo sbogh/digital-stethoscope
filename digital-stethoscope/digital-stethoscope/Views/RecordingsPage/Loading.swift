@@ -31,7 +31,7 @@ struct Loading: View {
                 .foregroundColor(Color.CTA2)
                 .lineLimit(nil)
             
-            // TODO: should we leave this spinny thing? i think it looks
+            // TODO: (FOR SIYA) should we leave this spinny thing? i think it looks
             // good but idk if we should choose that or the image
             ProgressView()
                 .progressViewStyle(CircularProgressViewStyle(tint: Color.secondary))

@@ -6,7 +6,7 @@
 //
 
 
-// TODO: go to activity screen once recordings are loaded
+// TODO: (FOR SIYA) Once recordings are loaded, we'll want to go to the activity page. We may even want to set some sort of timer that waits like 2 mins if no new recordings are appearing, since it can take a while to get the data from the device? Idk up to you what the best way to handle it is
 import SwiftUI
 
 struct Loading: View {

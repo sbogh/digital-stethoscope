@@ -30,45 +30,59 @@ let ViewedRecordings: [RecordingInfo] = [
 ]
 
 struct Activity: View {
+    @State private var goToLoading = false
+
     var body: some View {
-        ScrollView{
-            VStack(spacing: 5) {
-                Image("Logo")
-                    .resizable()
-                    .frame(width: 62.46876, height: 87, alignment: .top)
+        NavigationStack {
+            VStack {
+                ScrollView {
+                    VStack(spacing: 5) {
+                        Image("Logo")
+                            .resizable()
+                            .frame(width: 62.46876, height: 87, alignment: .top)
+                            .padding(.top)
+
+                        Text("Activity")
+                            .font(Font.custom("Roboto-ExtraBold", size: 40).weight(.heavy))
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(Color.CTA2)
+                            .frame(width: 248, alignment: .top)
+
+                        Text("Unassigned sessions will clear after 24 hours.")
+                            .font(Font.custom("Roboto-Regular", size: 16))
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(Color.CTA2)
+
+                        if NewRecordings.count > 0 {
+                            RecordingsView(type: "New", recordings: NewRecordings)
+                        }
+
+                        if ViewedRecordings.count > 0 {
+                            RecordingsView(type: "Viewed", recordings: ViewedRecordings)
+                        }
+                    }
                     .padding(.top)
-                
-                Text("Activity")
-                    .font(
-                        Font.custom("Roboto-ExtraBold", size: 40)
-                            .weight(.heavy)
-                    )
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(Color.CTA2)
-                    .frame(width: 248, alignment: .top)
-                
-                Text("Unassigned sessions will clear after 24 hours.")
-                    .font(Font.custom("Roboto-Regular", size: 16))
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(Color.CTA2)
-                    .lineLimit(nil)
-                
-                if NewRecordings.count > 0 {
-                    RecordingsView(type: "New", recordings: NewRecordings)
+                    .background(Color.primary)
                 }
-                
-                
-                if ViewedRecordings.count > 0 {
-                    RecordingsView(type: "Viewed", recordings: ViewedRecordings)
+
+                // TODO: (FOR SIYA) so in theory I have this going to the loading page but like idk if we want to do that?? Maybe we just load on this screen instead? idk up to u
+                Button(action: {
+                    goToLoading = true
+                }) {
+                    Text("Load New Sessions")
+                        .font(Font.custom("Roboto-Bold", size: 18))
+                        .padding()
+                        .background(Color.CTA1)
+                        .foregroundColor(Color.primary)
+                        .cornerRadius(12)
+                        .padding([.horizontal, .bottom])
                 }
-                
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-            .padding(.top)
             .background(Color.primary)
+            .navigationDestination(isPresented: $goToLoading) {
+                Loading()
+            }
         }
-        .background(Color.primary)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

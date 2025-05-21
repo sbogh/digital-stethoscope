@@ -8,6 +8,12 @@
 // TODO: (FOR SIYA) in this file you're going to write to firebase a lot i think 
 import SwiftUI
 
+/*
+ This takes in individual recording sessions and displays
+ title, notes, date, time, waveform, and play button.
+ Title and notes are editable. Once edited we will send
+ the title and notes to the database.
+ */
 struct SessionOverview: View {
     @State private var isExpanded = false
     @State private var editedTitle: String
@@ -57,6 +63,7 @@ struct SessionOverview: View {
                 Divider()
 
                 // TODO: (FOR SIYA) ok so I tested this and this should work as long as we have the correct data type in here
+                // Look at TestWAVPlayback struct in audioplayer file to see correct formatting
                 if let url = recording.wavFileURL {
                     VStack(alignment: .leading) {
                         AudioPlayerView(wavFileURL: url)
@@ -105,6 +112,9 @@ struct SessionOverview: View {
     }
 }
 
+// This takes in a list of recordings and turns them into sessionoverviews.
+// The input for these should be separated into a list of
+// viewed sessions and a list of new sessions. Don't input them together
 struct RecordingsView: View {
     var type: String
     var recordings: [RecordingInfo]

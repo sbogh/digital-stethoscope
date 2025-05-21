@@ -15,7 +15,7 @@ import SwiftUI
 
 // TODO: (FOR SIYA) REPLACE HARDCODED LISTs BELOW WITH FETCH FROM BACKEND
 // Pls look at the recordingInfo in the models folder bc there's more that goes into these than what's below and I explain it better there
-// replace this with new recordings
+// replace this with new recordings pulled from db
 // make sure to include the id or it will break
 // we'll have to have something in the db to denote whether a session is new or viewed so we can handle this in the backend
 let NewRecordings: [RecordingInfo] = [
@@ -23,7 +23,7 @@ let NewRecordings: [RecordingInfo] = [
     RecordingInfo(id: "r2", sessionDate: "5/20/24", sessionTime: "11:02am", viewed: false)
 ]
 
-// replace this with viewed recordings
+// replace this with viewed recordings pulled from db
 let ViewedRecordings: [RecordingInfo] = [
     RecordingInfo(id: "r3", sessionDate: "5/16/24", sessionTime: "3:47pm", viewed: true, sessionTitle: "Shelby Myrman", notes: "wow this heartbeat is soooo awesome I think she is invincible"),
     RecordingInfo(id: "r4", sessionDate: "5/14/24", sessionTime: "8:12am", viewed: true, sessionTitle: "Jack Frost", notes: "his heart is frozen!!!!!! I hope he doesn't die lol"),

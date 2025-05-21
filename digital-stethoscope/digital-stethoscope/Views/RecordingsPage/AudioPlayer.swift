@@ -99,6 +99,7 @@ struct AudioPlayerView: View {
         }
     }
 
+    // plays audio obviously lol
     private func playAudio() {
         let player = AVPlayer(url: wavFileURL)
         self.player = player
@@ -106,6 +107,9 @@ struct AudioPlayerView: View {
         trackProgress()
     }
 
+    // this is so that we know where we are with our little
+    // rectangle guy and so that we can drag it accross the
+    // waveform
     private func trackProgress() {
         guard let player = player else { return }
 
@@ -120,6 +124,9 @@ struct AudioPlayerView: View {
         }
     }
 
+    // This displays the waveform. I know we get a warning
+    // for this but I could not figure out how to make it
+    // work without getting a warning so... here we are
     private func loadWaveform() {
         let asset = AVURLAsset(url: wavFileURL)
 

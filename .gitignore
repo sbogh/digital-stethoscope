@@ -22,4 +22,3 @@ __pycache__/
 
 # Swift files
 digital-stethoscope/digital-stethoscope/digital-stethoscope/Config/APIConfig.swift
-backend/config/serviceAccountKey.json

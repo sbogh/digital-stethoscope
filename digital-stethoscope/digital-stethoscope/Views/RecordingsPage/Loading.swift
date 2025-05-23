@@ -10,6 +10,13 @@
 import SwiftUI
 
 struct Loading: View {
+    
+    @EnvironmentObject var userProfile: UserProfile
+    @Binding var newRecordings: [RecordingInfo]
+    @Binding var viewedRecordings: [RecordingInfo]
+    @Binding var goBack: Bool
+    
+    
     var body: some View {
         VStack(spacing: 5) {
             Image("Logo")
@@ -44,10 +51,47 @@ struct Loading: View {
                        height: 150,
                        alignment: .top)
                 .padding(.top)
+            
+            
+            
+        }
+        .onAppear {
+            Task {
+                await loadAndReturn()
+            }
+        }
+    }
+    
+    func loadAndReturn() async {
+        
+        
+        do {
+            let token = try await getFirebaseToken()
+            //print(" [LOAD AND RETURN] token recieved")
+            let (recordings, error) = await fetchRecordings(token: token)
+            //print(" [LOAD AND RETURN]  recordings recieved")
+            
+            DispatchQueue.main.async {
+                if let error = error {
+                    print(" [LOAD AND RETURN] Fetch error:", error)
+                } else {
+                    newRecordings = recordings.filter { !$0.viewed }
+                    viewedRecordings = recordings.filter { $0.viewed }
+                    goBack = false
+                }
+            }
+            
+        } catch {
+            print("[LOAD AND RETURN] Auth error:", error.localizedDescription)
         }
     }
 }
 
 #Preview {
-    Loading()
+    Loading(
+            newRecordings: .constant([]),
+            viewedRecordings: .constant([]),
+            goBack: .constant(true)
+        )
+        .environmentObject(UserProfile())
 }

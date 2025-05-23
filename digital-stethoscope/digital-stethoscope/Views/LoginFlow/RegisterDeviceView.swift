@@ -121,7 +121,7 @@ struct RegisterDeviceView: View {
             .padding(.bottom)
             // TODO: route to proper page
             .navigationDestination(isPresented: $querySuccess) {
-                PlaceholderView()
+                Activity().environmentObject(userProfile)
             }
 
             // loading icon when processing sign up

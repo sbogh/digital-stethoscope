@@ -21,6 +21,9 @@ struct SessionOverview: View {
 
     var recording: RecordingInfo
     var defaultTitle: String
+    
+    @State private var messageTitle = ""
+    @State private var successTitle = false
 
     init(sessionTitle: String, recording: RecordingInfo) {
         self.recording = recording
@@ -36,10 +39,31 @@ struct SessionOverview: View {
                 TextField("Session Title", text: $editedTitle)
                     .font(.custom("Roboto-Medium", size: 18))
                     .foregroundColor(.CTA2)
+                    .onChange(of: editedTitle) { _, newTitle in
+                    Task {
+                        await changeTitle(recordingID: recording.id, newTitle: newTitle)
+                    }
+                            //TODO: add more error checking/a message for when there was an error with the update
+                    }
                 Spacer()
                 
                 // TODO: (FOR SIYA) when the user engages with this button for the first time, we should mark it as viewed and send that to DB. Or we could do it a different way where if they press the play button we mark it as viewed? Idk but I think going based on this button would be easiest
-                Button(action: { withAnimation { isExpanded.toggle() } }) {
+                Button(action: {
+                    
+                    withAnimation {
+                        isExpanded.toggle()
+                    }
+                    if recording.viewed == false {
+                        
+                        Task {
+                            await changeView(recordingID: recording.id, viewBool: true)
+                        }
+                        
+                        
+                    }
+                    
+                    
+                }) {
                     Image(systemName: isExpanded ? "xmark" : "chevron.down")
                         .foregroundColor(.CTA2)
                 }
@@ -89,12 +113,18 @@ struct SessionOverview: View {
                     Spacer()
                 }
 
-                // TODO: (FOR SIYA) we need to send the updated notes text to the database. It'd be cool if we could just do this immediately but we could add a save button if needed too
                 TextEditor(text: $notes)
                     .frame(height: 80)
                     .padding(5)
                     .background(Color.primary.opacity(0.1))
                     .cornerRadius(8)
+                    .onChange(of: notes) { _, newNotes in
+                        Task {
+                            await changeNote(recordingID: recording.id, newNote: newNotes)
+                        }
+                        
+                        //TODO: more robust error checking??
+                    }
             }
             
         }
@@ -109,6 +139,72 @@ struct SessionOverview: View {
         .frame(maxWidth: .infinity)
         .padding(.horizontal)
         .padding(.bottom, 3)
+    }
+    
+    func changeTitle(recordingID: String, newTitle: String) async {
+        do {
+            let token = try await getFirebaseToken()
+            //print("[CHANGE TITLE] Got token: \(token)")
+            let (message, success) = await updateRecordingTitle(
+                token: token,
+                recordingID: recordingID,
+                newTitle: newTitle
+            )
+            //print("[CHANGE TITLE] got response: \(message), \(success)")
+            DispatchQueue.main.async {
+                if success {
+                    print("Title updated: \(message)")
+                } else {
+                    print("Failed to update: \(message)")
+
+                }
+            }
+        } catch {
+           print("Auth error: \(error.localizedDescription)")
+        }
+    }
+    func changeNote(recordingID: String, newNote: String) async {
+        do {
+            let token = try await getFirebaseToken()
+            //print("[CHANGE Note] Got token: \(token)")
+            let (message, success) = await updateRecordingNote(
+                token: token,
+                recordingID: recordingID,
+                newNote: newNote
+            )
+            //print("[CHANGE NOTE] got response: \(message), \(success)")
+            DispatchQueue.main.async {
+                if success {
+                    print("Note updated: \(message)")
+                } else {
+                    print("Failed to update: \(message)")
+
+                }
+            }
+        } catch {
+           print("Auth error: \(error.localizedDescription)")
+        }
+    }
+    func changeView(recordingID: String, viewBool: Bool) async {
+        do {
+            let token = try await getFirebaseToken()
+            print("[CHANGE VIEW BOOL] Got token: \(token)")
+            let (message, success) = await updateRecordingView(
+                token: token,
+                recordingID: recordingID,
+                viewBool: viewBool)
+            print("[CHANGE VIEW BOOL] got response: \(message), \(success)")
+            DispatchQueue.main.async {
+                if success {
+                    print("View Bool updated: \(message)")
+                } else {
+                    print("Failed to update: \(message)")
+
+                }
+            }
+        } catch {
+           print("Auth error: \(error.localizedDescription)")
+        }
     }
 }
 

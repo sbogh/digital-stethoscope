@@ -115,7 +115,7 @@ struct AccountSetupView: View {
             .padding()
             // route to next page, provided all info inputted
             .navigationDestination(isPresented: $cont) {
-                DeviceQView().environmentObject(userProfile)
+                RegisterDeviceView().environmentObject(userProfile)
             }
         }
         Spacer()

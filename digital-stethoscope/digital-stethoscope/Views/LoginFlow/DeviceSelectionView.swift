@@ -122,8 +122,7 @@ struct DeviceSelectionView: View {
         .padding(.bottom)
         // route to next page, provided all info inputted
         .navigationDestination(isPresented: $cont) {
-            // TODO: nav to correct view
-            PlaceholderView()
+            Activity().environmentObject(userProfile)
         }
 
         // loading icon when processing backend call

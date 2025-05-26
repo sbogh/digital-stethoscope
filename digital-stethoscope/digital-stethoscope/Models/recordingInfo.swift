@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-struct RecordingInfo: Identifiable, Codable {
+struct RecordingInfo: Identifiable, Codable, Equatable {
     
     let id: String // unique recording ID from database, must be included or it will break
     var deviceID: String = ""

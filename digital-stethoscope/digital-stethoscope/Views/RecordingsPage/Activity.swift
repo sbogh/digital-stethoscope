@@ -5,8 +5,6 @@
 //  Created by Shelby Myrman on 5/19/25.
 //
 
-// TODO: (FOR SHELBY) need to add button that goes back to loading screen to listen for new recordings
-
 import SwiftUI
 
 struct Activity: View {
@@ -37,7 +35,18 @@ struct Activity: View {
                             .foregroundColor(Color.CTA2)
 
                         if NewRecordings.count > 0 {
-                            RecordingsView(type: "New", recordings: NewRecordings)
+                            RecordingsView(
+                            type: "New",
+                            recordings: NewRecordings,
+                            onPlay: { recording in
+                                   if let index = NewRecordings.firstIndex(of: recording) {
+                                       var updated = recording
+                                       updated.viewed = true
+                                       NewRecordings.remove(at: index)
+                                       ViewedRecordings.append(updated)
+                                   }
+                               }
+                            )
                         }
 
                         if ViewedRecordings.count > 0 {

@@ -121,12 +121,12 @@ func updateRecordingView(token: String, recordingID: String, viewBool: Bool) asy
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
-        print("[UPDATE VIEW] Request happened")
+        //print("[UPDATE VIEW] Request happened")
         
         
         if let httpResponse = response as? HTTPURLResponse {
             if (200...299).contains(httpResponse.statusCode) {
-                print("[UPDATE VIEW] success")
+                //print("[UPDATE VIEW] success")
                 return ("View updated successfully", true)
             } else {
                 let errorResponse = String(data: data, encoding: .utf8) ?? "Unknown error"
@@ -183,4 +183,6 @@ func fetchRecordings(token: String) async -> ([RecordingInfo], String?) {
     
     return ([], "Internal failure")
 }
+
+
 

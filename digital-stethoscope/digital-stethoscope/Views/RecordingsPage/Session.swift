@@ -24,10 +24,14 @@ struct SessionOverview: View {
     
     @State private var messageTitle = ""
     @State private var successTitle = false
+    @State private var hasTriggeredOnPlay = false
+    
+    var onPlay: (() -> Void)? = nil
 
-    init(sessionTitle: String, recording: RecordingInfo) {
+    init(sessionTitle: String, recording: RecordingInfo, onPlay: (() -> Void)? = nil) {
         self.recording = recording
         self.defaultTitle = sessionTitle
+        self.onPlay = onPlay
         _editedTitle = State(initialValue: sessionTitle)
         _notes = State(initialValue: recording.notes)
     }
@@ -51,15 +55,14 @@ struct SessionOverview: View {
                 Button(action: {
                     
                     withAnimation {
-                        isExpanded.toggle()
-                    }
-                    if recording.viewed == false {
                         
-                        Task {
-                            await changeView(recordingID: recording.id, viewBool: true)
+                        if isExpanded && !recording.viewed {
+                            Task {
+                                await changeView(recordingID: recording.id, viewBool: true)
+                            }
+                            onPlay?()
                         }
-                        
-                        
+                        isExpanded.toggle()
                     }
                     
                     
@@ -214,6 +217,7 @@ struct SessionOverview: View {
 struct RecordingsView: View {
     var type: String
     var recordings: [RecordingInfo]
+    var onPlay: ((RecordingInfo) -> Void)? = nil
     
     var body: some View {
         HStack {
@@ -230,11 +234,17 @@ struct RecordingsView: View {
         
         
         ForEach(recordings) { recording in
-            if recording.sessionTitle == "" {
-                recording.viewed ? SessionOverview(sessionTitle: "Viewed Session", recording: recording) : SessionOverview(sessionTitle: "New Session", recording: recording)
-            } else {
-                SessionOverview(sessionTitle: recording.sessionTitle, recording: recording)
-            }
+            let sessionTitle = recording.sessionTitle.isEmpty
+            ? (recording.viewed ? "Viewed Session" : "New Session")
+                    : recording.sessionTitle
+            
+            SessionOverview(
+                    sessionTitle: sessionTitle,
+                    recording: recording,
+                    onPlay: {
+                        onPlay?(recording)
+                    }
+                )
         }
     }
 }

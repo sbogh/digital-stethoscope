@@ -8,6 +8,59 @@
 import SwiftUI
 import AVFoundation
 import AVKit
+import FirebaseStorage
+
+struct FirebaseAudioPlayer: View {
+    @State private var localFileURL: URL?
+    @State private var isLoading = true
+    @State private var error: Error?
+
+    var firebasePath: URL? // e.g. "audio/frontend-test-heartbeat.wav"
+
+    var body: some View {
+        VStack {
+            if isLoading {
+                ProgressView("Loading audio...")
+            } else if let url = localFileURL {
+                AudioPlayerView(wavFileURL: url)
+            } else if let error = error {
+                Text("Failed to load: \(error.localizedDescription)")
+                    .foregroundColor(.red)
+            }
+        }
+        .onAppear {
+            if let firebaseURL = firebasePath {
+                    downloadFromFirebase(url: firebaseURL)
+                } else {
+                    self.error = NSError(domain: "FirebaseAudioPlayer", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid Firebase URL"])
+                    self.isLoading = false
+                }
+            }
+    }
+
+    func downloadFromFirebase(url: URL) {
+        let storage = Storage.storage()
+        
+        // Create a reference from the gs:// or https:// URL
+        let storageRef = storage.reference(forURL: url.absoluteString)
+
+        let tmpDir = FileManager.default.temporaryDirectory
+        let localURL = tmpDir.appendingPathComponent(UUID().uuidString + ".wav")
+
+        storageRef.write(toFile: localURL) { url, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.error = error
+                    self.isLoading = false
+                } else {
+                    self.localFileURL = localURL
+                    self.isLoading = false
+                }
+            }
+        }
+    }
+
+}
 
 struct AudioPlayerView: View {
     let wavFileURL: URL
@@ -171,7 +224,7 @@ struct AudioPlayerView: View {
                 sampleData.append(contentsOf: samples)
             }
 
-            // Downsample to ~300 bars (adjust for your screen width)
+            // Downsample to ~300 bars
             let downsampleFactor = max(1, sampleData.count / 300)
             let downsampled = stride(from: 0, to: sampleData.count, by: downsampleFactor).map { i -> CGFloat in
                 let slice = sampleData[i..<min(i + downsampleFactor, sampleData.count)]
@@ -197,7 +250,6 @@ struct AudioPlayerView: View {
     }
 }
 
-// TODO: (FOR SIYA) not rly a todo but this format below might be helpful to see the format that gets the waveforms to play
 struct TestWAVPlayback: View {
     var body: some View {
         VStack {

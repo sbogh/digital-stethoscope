@@ -93,7 +93,7 @@ struct SessionOverview: View {
                 // Look at TestWAVPlayback struct in audioplayer file to see correct formatting
                 if let url = recording.wavFileURL {
                     VStack(alignment: .leading) {
-                        AudioPlayerView(wavFileURL: url)
+                        FirebaseAudioPlayer(firebasePath: url)
                             .frame(height: 50)
                             .padding(.vertical, 5)
                     }

@@ -113,5 +113,5 @@ struct Activity: View {
 }
 
 #Preview {
-    Activity()
+    Activity().environmentObject(UserProfile())
 }

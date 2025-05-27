@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		39CB4CDB2DD2887800D8B950 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 39CB4CDA2DD2887800D8B950 /* FirebaseFirestore */; };
 		921B874E2DCFDEBB004813B6 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 921B874D2DCFDEBB004813B6 /* FirebaseDatabase */; };
+		921B8AFF2DE6472B004813B6 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 921B8AFE2DE6472B004813B6 /* FirebaseStorage */; };
 		92D7754A2DCFD910002DF540 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 92D775492DCFD910002DF540 /* FirebaseAppCheck */; };
 		92D7754C2DCFD910002DF540 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 92D7754B2DCFD910002DF540 /* FirebaseAuth */; };
 		92D7754E2DCFD910002DF540 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 92D7754D2DCFD910002DF540 /* FirebaseCore */; };
@@ -78,6 +79,7 @@
 				921B874E2DCFDEBB004813B6 /* FirebaseDatabase in Frameworks */,
 				39CB4CDB2DD2887800D8B950 /* FirebaseFirestore in Frameworks */,
 				92D7754C2DCFD910002DF540 /* FirebaseAuth in Frameworks */,
+				921B8AFF2DE6472B004813B6 /* FirebaseStorage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,6 +145,7 @@
 				92D7754D2DCFD910002DF540 /* FirebaseCore */,
 				921B874D2DCFDEBB004813B6 /* FirebaseDatabase */,
 				39CB4CDA2DD2887800D8B950 /* FirebaseFirestore */,
+				921B8AFE2DE6472B004813B6 /* FirebaseStorage */,
 			);
 			productName = "digital-stethoscope";
 			productReference = 390C87ED2DB307BB00FF152F /* digital-stethoscope.app */;
@@ -613,6 +616,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 92D775482DCFD833002DF540 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseDatabase;
+		};
+		921B8AFE2DE6472B004813B6 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 92D775482DCFD833002DF540 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
 		};
 		92D775492DCFD910002DF540 /* FirebaseAppCheck */ = {
 			isa = XCSwiftPackageProductDependency;

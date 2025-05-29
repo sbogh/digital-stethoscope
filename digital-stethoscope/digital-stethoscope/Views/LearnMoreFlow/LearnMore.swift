@@ -40,6 +40,7 @@ struct LearnMore: View {
                                     .fontWeight(.heavy)
                                     .foregroundColor(Color.CTA2)
                                     .multilineTextAlignment(.center)
+                                    .accessibilityLabel("LearnMoreTitle")
 
                                 Image(page.imageName)
                                     .resizable()

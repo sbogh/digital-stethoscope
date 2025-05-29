@@ -43,6 +43,7 @@ struct SessionOverview: View {
                 TextField("Session Title", text: $editedTitle)
                     .font(.custom("Roboto-Medium", size: 18))
                     .foregroundColor(.CTA2)
+                    .accessibilityIdentifier("SessionTitle")
                     .onChange(of: editedTitle) { _, newTitle in
                     Task {
                         await changeTitle(recordingID: recording.id, newTitle: newTitle)
@@ -70,6 +71,7 @@ struct SessionOverview: View {
                     Image(systemName: isExpanded ? "xmark" : "chevron.down")
                         .foregroundColor(.CTA2)
                 }
+                .accessibilityIdentifier("ExpandSessionButton")
             }
             
             HStack {
@@ -96,6 +98,7 @@ struct SessionOverview: View {
                         FirebaseAudioPlayer(firebasePath: url)
                             .frame(height: 50)
                             .padding(.vertical, 5)
+                            .accessibilityIdentifier("FirebaseAudioPlayer")
                     }
                     .padding(.bottom)
                     .padding(.top)
@@ -104,6 +107,7 @@ struct SessionOverview: View {
                         Text("No audio available.")
                             .font(.footnote)
                             .foregroundColor(.gray)
+                            .accessibilityIdentifier("FirebaseAudioPlayer")
                         Spacer()
                     }
                     .padding(.bottom, 2)
@@ -112,11 +116,13 @@ struct SessionOverview: View {
                 HStack {
                     Text("Session Notes:")
                         .font(.custom("Roboto-Medium", size: 14))
+                        .accessibilityIdentifier("NoteHeader")
                         .foregroundColor(.CTA2)
                     Spacer()
                 }
 
                 TextEditor(text: $notes)
+                    .accessibilityIdentifier("NoteField")
                     .frame(height: 80)
                     .padding(5)
                     .background(Color.primary.opacity(0.1))

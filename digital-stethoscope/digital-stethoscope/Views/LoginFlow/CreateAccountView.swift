@@ -41,6 +41,7 @@ struct CreateAccountView: View {
                     .padding()
                     .background(Color.primary)
                     .cornerRadius(10)
+                    .accessibilityIdentifier("CAEmail")
                     .onChange(of: userProfile.email) { _, newEmail in
                         isValidEmail = validateEmail(email: newEmail)
                     }
@@ -50,6 +51,7 @@ struct CreateAccountView: View {
                     .padding()
                     .background(Color.primary)
                     .cornerRadius(10)
+                    .accessibilityIdentifier("CAPassword")
                     .onChange(of: userProfile.password) { _, newPWord in
                         isValidPWord = validatePassword(password: newPWord)
                     }
@@ -71,6 +73,7 @@ struct CreateAccountView: View {
                     .padding()
                     .background(Color.primary)
                     .cornerRadius(10)
+                    .accessibilityIdentifier("CAConfirmPassword")
                     .onChange(of: confirmedPw) { _, newPWord in
                         pWordsMatch = validatePasswordsMatch(password: userProfile.password, confirmedPw: newPWord)
                     }
@@ -134,6 +137,7 @@ struct CreateAccountView: View {
                     .cornerRadius(10)
             }
             .padding(.bottom)
+            .accessibilityIdentifier("SignupButton")
             .navigationDestination(isPresented: $continueSignup) {
                 AccountSetupView().environmentObject(userProfile)
             }

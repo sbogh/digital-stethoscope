@@ -24,6 +24,14 @@ struct digital_stethoscopeApp: App {
     // registers app delegate for Firebase setup
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject var userProfile = UserProfile()
+    
+    init() {
+            if ProcessInfo.processInfo.arguments.contains("--uitest") {
+                userProfile.firstName = "TestUser"
+                userProfile.deviceNicknames = ["abc123": "Stethy's Device", "xyz456": "Test Device B"]
+                userProfile.currentDeviceID = "Stethy's Device"
+            }
+        }
 
     var body: some Scene {
         WindowGroup {

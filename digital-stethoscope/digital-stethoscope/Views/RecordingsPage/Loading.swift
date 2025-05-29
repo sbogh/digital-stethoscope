@@ -31,6 +31,7 @@ struct Loading: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color.CTA2)
                 .frame(width: 248, alignment: .top)
+                .accessibilityIdentifier("LoadingTitle")
 
             Text("Please wait, this can take\n up to 2 minutes.")
                 .font(Font.custom("Roboto-Regular", size: 25))
@@ -63,7 +64,9 @@ struct Loading: View {
     }
     
     func loadAndReturn() async {
-        
+        if isUITestMode() {
+            try? await Task.sleep(nanoseconds: 5_000_000_000)
+        }
         
         do {
             let token = try await getFirebaseToken()

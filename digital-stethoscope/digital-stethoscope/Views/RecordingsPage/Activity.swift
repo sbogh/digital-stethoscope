@@ -22,17 +22,20 @@ struct Activity: View {
                             .resizable()
                             .frame(width: 62.46876, height: 87, alignment: .top)
                             .padding(.top)
+                            .accessibilityIdentifier("ActivityLogo")
 
                         Text("Activity")
                             .font(Font.custom("Roboto-ExtraBold", size: 40).weight(.heavy))
                             .multilineTextAlignment(.center)
                             .foregroundColor(Color.CTA2)
                             .frame(width: 248, alignment: .top)
+                            .accessibilityLabel("ActivityTitle")
 
                         Text("Unassigned sessions will clear after 24 hours.")
                             .font(Font.custom("Roboto-Regular", size: 16))
                             .multilineTextAlignment(.center)
                             .foregroundColor(Color.CTA2)
+                            .accessibilityIdentifier("ActivitySubtitle")
 
                         if NewRecordings.count > 0 {
                             RecordingsView(
@@ -55,10 +58,14 @@ struct Activity: View {
                     }
                     .padding(.top)
                     .background(Color.primary)
+                    .accessibilityElement(children: .contain)
                 }
                 .onAppear {
-                    Task {
-                        await loadRecordings()
+                    if isUITestMode() {
+                        NewRecordings = [RecordingInfo.mock(id: "1", title: "Mock Session", viewed: false)]
+                        ViewedRecordings = []
+                    } else {
+                        Task { await loadRecordings() }
                     }
                 }
                 
@@ -74,6 +81,7 @@ struct Activity: View {
                         .padding([.horizontal, .bottom])
                 }
             }
+            .accessibilityElement(children: .contain)
             .background(Color.primary)
             .navigationDestination(isPresented: $goToLoading) {
                 Loading(

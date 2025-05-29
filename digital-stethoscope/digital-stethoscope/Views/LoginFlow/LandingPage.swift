@@ -25,6 +25,7 @@ struct LandingPage: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color.CTA2)
                 .frame(width: 248, alignment: .top)
+                .accessibilityIdentifier("LandingTitle")
 
             // Tagline
             Text("Don’t miss a beat.")
@@ -32,11 +33,13 @@ struct LandingPage: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color.CTA2)
                 .frame(width: 243, height: 35, alignment: .top)
+                .accessibilityIdentifier("LandingTagline")
 
             // Logo
             Image("Logo")
                 .frame(width: 135, height: 188)
                 .padding(.bottom, 30)
+                .accessibilityIdentifier("LandingLogo")
 
             // Create Account button
             Button(action: {
@@ -50,7 +53,9 @@ struct LandingPage: View {
                     .frame(width: 206, height: 50)
                     .background(Color.CTA1)
                     .cornerRadius(10)
-            }.padding(.bottom)
+            }
+                .padding(.bottom)
+                .accessibilityIdentifier("CreateAccountButton")
                 .navigationDestination(isPresented: $navCreateAcc) {
                     CreateAccountView().environmentObject(userProfile)
                 }
@@ -69,7 +74,9 @@ struct LandingPage: View {
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(Color.CTA1, lineWidth: 4)
                     )
-            }.padding(.bottom)
+            }
+                .padding(.bottom)
+                .accessibilityIdentifier("LandingLoginButton")
                 .navigationDestination(isPresented: $navLogin) {
                     LoginView().environmentObject(userProfile)
                 }
@@ -85,6 +92,7 @@ struct LandingPage: View {
                     .underline(true, color: .CTA1)
             }
             .padding(.bottom)
+            .accessibilityIdentifier("LearnMoreButton")
             .navigationDestination(isPresented: $navLearnMore) {
                 LearnMore()
             }

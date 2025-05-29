@@ -59,12 +59,14 @@ struct RegisterDeviceView: View {
                     .padding()
                     .background(Color.primary)
                     .cornerRadius(10)
+                    .accessibilityLabel("DeviceID")
 
                 // Device nametext field
                 TextField("Device Name", text: $deviceName)
                     .padding()
                     .background(Color.primary)
                     .cornerRadius(10)
+                    .accessibilityLabel("DeviceName")
 
                 // Error message if any field is empty
                 if emptyField {
@@ -94,17 +96,21 @@ struct RegisterDeviceView: View {
 
                 // once data validated, register user
                 Task {
-                    print("calling authRegister with: \(userProfile.email)")
-                    let (message, success) = await authRegister(user: userProfile)
+                    //print("calling authRegister with: \(userProfile.email)")
 
-                    if success {
-                        querySuccess = true
-                        isLoading = false
-                    } else {
-                        querySuccess = false
-                        errorMessage = message
-                        isLoading = false
-                    }
+                    if isUITestMode() {
+                            await MainActor.run {
+                                querySuccess = true
+                                isLoading = false
+                            }
+                        } else {
+                            let (message, success) = await authRegister(user: userProfile)
+                            await MainActor.run {
+                                querySuccess = success
+                                errorMessage = message
+                                isLoading = false
+                            }
+                        }
                 }
 
             }) {
@@ -119,6 +125,7 @@ struct RegisterDeviceView: View {
                     .cornerRadius(10)
             }
             .padding(.bottom)
+            .accessibilityIdentifier("SignupCompleteButton")
             // TODO: route to proper page
             .navigationDestination(isPresented: $querySuccess) {
                 Activity().environmentObject(userProfile)
@@ -154,6 +161,7 @@ struct RegisterDeviceView: View {
 
         userProfile.deviceIds.append(trimmedId)
         userProfile.deviceNicknames[trimmedId] = trimmedName
+        userProfile.currentDeviceID = trimmedName
 
         print("device registered with id: ", deviceID, "and name: ", deviceName)
     }

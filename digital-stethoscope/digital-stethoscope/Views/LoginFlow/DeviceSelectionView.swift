@@ -71,7 +71,10 @@ struct DeviceSelectionView: View {
                     .padding()
                     .background(Color.primary)
                     .cornerRadius(10)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Device Dropdown")
                 }
+                .accessibilityIdentifier("DeviceDropdown")
 
                 // Error handling if no device is selected
                 if noDeviceSelected {
@@ -120,6 +123,7 @@ struct DeviceSelectionView: View {
                 .cornerRadius(10)
         }
         .padding(.bottom)
+        .accessibilityIdentifier("ContinueButton")
         // route to next page, provided all info inputted
         .navigationDestination(isPresented: $cont) {
             Activity().environmentObject(userProfile)

@@ -28,4 +28,23 @@ struct RecordingInfo: Identifiable, Codable, Equatable {
             formatter.timeStyle = .short
             return formatter.string(from: sessionDateTime)
         }
+    
+    static func mock(
+        id: String = UUID().uuidString,
+        title: String = "Mock Session",
+        notes: String = "Test notes",
+        viewed: Bool = false,
+        date: Date = Date(),
+        wavFileURL: URL? = nil
+    ) -> RecordingInfo {
+        return RecordingInfo(
+            id: id,
+            deviceID: "TestDevice",
+            notes: notes,
+            sessionDateTime: date,
+            sessionTitle: title,
+            viewed: viewed,
+            wavFileURL: wavFileURL
+        )
+    }
 }

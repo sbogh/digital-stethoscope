@@ -68,8 +68,6 @@ def get_current_user_device(user_id: str):
     curr_data = user_reference.get()
 
     if curr_data.exists:
-        data = curr_data.to_dict() 
+        data = curr_data.to_dict()
         return data.get("currentDeviceID")
-    
     return None
-

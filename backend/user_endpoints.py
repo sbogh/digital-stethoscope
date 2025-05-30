@@ -5,7 +5,7 @@ Defines all fast API routes for all user functions necessary
 """
 
 from fastapi import APIRouter, Request, HTTPException
-from auth_utils import verify_token 
+from auth_utils import verify_token
 import user_routes
 
 router = APIRouter()
@@ -15,7 +15,6 @@ async def register_user(request: Request):
     """
     Registers a new user in Firestore using the provided data and Firebase Auth token.
     """
-    
     user_id = verify_token(request)
     body = await request.json()
 

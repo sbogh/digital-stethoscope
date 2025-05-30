@@ -23,7 +23,7 @@ def get_unviewed_recordings(device_id: str):
     results = query.stream()
     return  [
         {**doc.to_dict(), "id": doc.id}
-        for doc in results 
+        for doc in results
         ]
 
 def update_recording_title(recording_id: str, new_title: str):
@@ -40,7 +40,7 @@ def update_recording_title(recording_id: str, new_title: str):
     if curr_data.exists:
         recording_ref.update({"sessionTitle": new_title})
 
-def update_recording_view(recording_id: str, viewBool: bool):
+def update_recording_view(recording_id: str, view_bool: bool):
     """
     Given recording id, updates viewed to true
 
@@ -51,7 +51,7 @@ def update_recording_view(recording_id: str, viewBool: bool):
     curr_data = recording_ref.get()
 
     if curr_data.exists:
-        recording_ref.update({"viewed": True})
+        recording_ref.update({"viewed": view_bool})
 
 def update_recording_notes(recording_id: str, new_notes: str):
     """
@@ -66,4 +66,3 @@ def update_recording_notes(recording_id: str, new_notes: str):
 
     if curr_data.exists:
         recording_ref.update({"notes": new_notes})
-

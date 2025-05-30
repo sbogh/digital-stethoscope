@@ -24,10 +24,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/test")
-def test():
-    return {"msg": "hello from main"}
-
 app.include_router(recording_router)
 
 app.include_router(user_router)

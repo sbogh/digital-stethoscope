@@ -1,8 +1,7 @@
 """Handles Firestore database operations for the backend."""
 
-
-from firebase_admin import credentials, initialize_app, firestore
 import os
+from firebase_admin import credentials, initialize_app, firestore
 
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "config/serviceAccountKey.json"

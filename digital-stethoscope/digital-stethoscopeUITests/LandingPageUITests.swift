@@ -5,7 +5,6 @@
 //  Created by Siya Rajpal on 5/27/25.
 //
 
-
 import XCTest
 
 final class LandingPageUITests: XCTestCase {

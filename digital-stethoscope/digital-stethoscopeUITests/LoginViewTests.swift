@@ -5,7 +5,6 @@
 //  Created by Siya Rajpal on 5/27/25.
 //
 
-
 import XCTest
 
 final class LoginViewUITests: XCTestCase {
@@ -51,4 +50,3 @@ final class LoginViewUITests: XCTestCase {
         XCTAssertTrue(error.waitForExistence(timeout: 2))
     }
 }
-

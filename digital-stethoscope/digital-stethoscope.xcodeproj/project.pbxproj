@@ -16,13 +16,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		390C87FE2DB307BC00FF152F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 390C87E52DB307BB00FF152F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 390C87EC2DB307BB00FF152F;
-			remoteInfo = "digital-stethoscope";
-		};
 		390C88082DB307BC00FF152F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 390C87E52DB307BB00FF152F /* Project object */;
@@ -34,8 +27,8 @@
 
 /* Begin PBXFileReference section */
 		390C87ED2DB307BB00FF152F /* digital-stethoscope.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "digital-stethoscope.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		390C87FD2DB307BC00FF152F /* digital-stethoscopeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "digital-stethoscopeTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		390C88072DB307BC00FF152F /* digital-stethoscopeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "digital-stethoscopeUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		394B45E72DE9660800F3075C /* digital-stethoscope.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = "digital-stethoscope.xctestplan"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -55,11 +48,6 @@
 				921B874C2DCFDE78004813B6 /* Exceptions for "digital-stethoscope" folder in "digital-stethoscope" target */,
 			);
 			path = "digital-stethoscope";
-			sourceTree = "<group>";
-		};
-		390C88002DB307BC00FF152F /* digital-stethoscopeTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "digital-stethoscopeTests";
 			sourceTree = "<group>";
 		};
 		390C880A2DB307BC00FF152F /* digital-stethoscopeUITests */ = {
@@ -83,13 +71,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		390C87FA2DB307BC00FF152F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		390C88042DB307BC00FF152F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -103,8 +84,8 @@
 		390C87E42DB307BB00FF152F = {
 			isa = PBXGroup;
 			children = (
+				394B45E72DE9660800F3075C /* digital-stethoscope.xctestplan */,
 				390C87EF2DB307BB00FF152F /* digital-stethoscope */,
-				390C88002DB307BC00FF152F /* digital-stethoscopeTests */,
 				390C880A2DB307BC00FF152F /* digital-stethoscopeUITests */,
 				390C87EE2DB307BB00FF152F /* Products */,
 			);
@@ -114,7 +95,6 @@
 			isa = PBXGroup;
 			children = (
 				390C87ED2DB307BB00FF152F /* digital-stethoscope.app */,
-				390C87FD2DB307BC00FF152F /* digital-stethoscopeTests.xctest */,
 				390C88072DB307BC00FF152F /* digital-stethoscopeUITests.xctest */,
 			);
 			name = Products;
@@ -150,29 +130,6 @@
 			productName = "digital-stethoscope";
 			productReference = 390C87ED2DB307BB00FF152F /* digital-stethoscope.app */;
 			productType = "com.apple.product-type.application";
-		};
-		390C87FC2DB307BC00FF152F /* digital-stethoscopeTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 390C88142DB307BC00FF152F /* Build configuration list for PBXNativeTarget "digital-stethoscopeTests" */;
-			buildPhases = (
-				390C87F92DB307BC00FF152F /* Sources */,
-				390C87FA2DB307BC00FF152F /* Frameworks */,
-				390C87FB2DB307BC00FF152F /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				390C87FF2DB307BC00FF152F /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				390C88002DB307BC00FF152F /* digital-stethoscopeTests */,
-			);
-			name = "digital-stethoscopeTests";
-			packageProductDependencies = (
-			);
-			productName = "digital-stethoscopeTests";
-			productReference = 390C87FD2DB307BC00FF152F /* digital-stethoscopeTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		390C88062DB307BC00FF152F /* digital-stethoscopeUITests */ = {
 			isa = PBXNativeTarget;
@@ -210,10 +167,6 @@
 					390C87EC2DB307BB00FF152F = {
 						CreatedOnToolsVersion = 16.2;
 					};
-					390C87FC2DB307BC00FF152F = {
-						CreatedOnToolsVersion = 16.2;
-						TestTargetID = 390C87EC2DB307BB00FF152F;
-					};
 					390C88062DB307BC00FF152F = {
 						CreatedOnToolsVersion = 16.2;
 						TestTargetID = 390C87EC2DB307BB00FF152F;
@@ -238,7 +191,6 @@
 			projectRoot = "";
 			targets = (
 				390C87EC2DB307BB00FF152F /* digital-stethoscope */,
-				390C87FC2DB307BC00FF152F /* digital-stethoscopeTests */,
 				390C88062DB307BC00FF152F /* digital-stethoscopeUITests */,
 			);
 		};
@@ -246,13 +198,6 @@
 
 /* Begin PBXResourcesBuildPhase section */
 		390C87EB2DB307BB00FF152F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		390C87FB2DB307BC00FF152F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -276,13 +221,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		390C87F92DB307BC00FF152F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		390C88032DB307BC00FF152F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -293,11 +231,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		390C87FF2DB307BC00FF152F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 390C87EC2DB307BB00FF152F /* digital-stethoscope */;
-			targetProxy = 390C87FE2DB307BC00FF152F /* PBXContainerItemProxy */;
-		};
 		390C88092DB307BC00FF152F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 390C87EC2DB307BB00FF152F /* digital-stethoscope */;
@@ -487,45 +420,10 @@
 			};
 			name = Release;
 		};
-		390C88152DB307BC00FF152F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "ucsd-cse-237d.digital-stethoscopeTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/digital-stethoscope.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/digital-stethoscope";
-			};
-			name = Debug;
-		};
-		390C88162DB307BC00FF152F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "ucsd-cse-237d.digital-stethoscopeTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/digital-stethoscope.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/digital-stethoscope";
-			};
-			name = Release;
-		};
 		390C88182DB307BC00FF152F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUNDLE_LOADER = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -535,6 +433,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "";
 				TEST_TARGET_NAME = "digital-stethoscope";
 			};
 			name = Debug;
@@ -542,6 +441,7 @@
 		390C88192DB307BC00FF152F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUNDLE_LOADER = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -551,6 +451,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "";
 				TEST_TARGET_NAME = "digital-stethoscope";
 			};
 			name = Release;
@@ -572,15 +473,6 @@
 			buildConfigurations = (
 				390C88122DB307BC00FF152F /* Debug */,
 				390C88132DB307BC00FF152F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		390C88142DB307BC00FF152F /* Build configuration list for PBXNativeTarget "digital-stethoscopeTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				390C88152DB307BC00FF152F /* Debug */,
-				390C88162DB307BC00FF152F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -5,10 +5,10 @@
 //  Created by Shelby Myrman on 5/20/25.
 //
 
-import SwiftUI
 import AVFoundation
 import AVKit
 import FirebaseStorage
+import SwiftUI
 
 struct FirebaseAudioPlayer: View {
     @State private var localFileURL: URL?
@@ -23,43 +23,42 @@ struct FirebaseAudioPlayer: View {
                 ProgressView("Loading audio...")
             } else if let url = localFileURL {
                 AudioPlayerView(wavFileURL: url)
-            } else if let error = error {
+            } else if let error {
                 Text("Failed to load: \(error.localizedDescription)")
                     .foregroundColor(.red)
             }
         }
         .onAppear {
             if let firebaseURL = firebasePath {
-                    downloadFromFirebase(url: firebaseURL)
-                } else {
-                    self.error = NSError(domain: "FirebaseAudioPlayer", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid Firebase URL"])
-                    self.isLoading = false
-                }
+                downloadFromFirebase(url: firebaseURL)
+            } else {
+                error = NSError(domain: "FirebaseAudioPlayer", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid Firebase URL"])
+                isLoading = false
             }
+        }
     }
 
     func downloadFromFirebase(url: URL) {
         let storage = Storage.storage()
-        
+
         // Create a reference from the gs:// or https:// URL
         let storageRef = storage.reference(forURL: url.absoluteString)
 
         let tmpDir = FileManager.default.temporaryDirectory
         let localURL = tmpDir.appendingPathComponent(UUID().uuidString + ".wav")
 
-        storageRef.write(toFile: localURL) { url, error in
+        storageRef.write(toFile: localURL) { _, error in
             DispatchQueue.main.async {
-                if let error = error {
+                if let error {
                     self.error = error
-                    self.isLoading = false
+                    isLoading = false
                 } else {
-                    self.localFileURL = localURL
-                    self.isLoading = false
+                    localFileURL = localURL
+                    isLoading = false
                 }
             }
         }
     }
-
 }
 
 struct AudioPlayerView: View {
@@ -84,7 +83,7 @@ struct AudioPlayerView: View {
                                 .frame(width: 2, height: max(1, amplitudes[i] * 50))
                         }
                     }
-                    
+
                     ZStack(alignment: .leading) {
                         // Visual red line
                         Rectangle()
@@ -101,16 +100,16 @@ struct AudioPlayerView: View {
                             .gesture(
                                 DragGesture(minimumDistance: 0)
                                     .updating($dragOffset) { value, state, _ in
-                                        state = value.location.x.clamped(to: 0...geo.size.width)
+                                        state = value.location.x.clamped(to: 0 ... geo.size.width)
                                     }
                                     .onChanged { _ in
                                         isDragging = true
                                     }
                                     .onEnded { value in
                                         let width = geo.size.width
-                                        let locationX = value.location.x.clamped(to: 0...width)
+                                        let locationX = value.location.x.clamped(to: 0 ... width)
                                         let relativePosition = locationX / width
-                                        self.progress = relativePosition
+                                        progress = relativePosition
                                         isDragging = false
 
                                         // Seek to new time
@@ -164,7 +163,7 @@ struct AudioPlayerView: View {
     // rectangle guy and so that we can drag it accross the
     // waveform
     private func trackProgress() {
-        guard let player = player else { return }
+        guard let player else { return }
 
         let interval = CMTime(seconds: 0.05, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
         timeObserverToken = player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { time in
@@ -172,7 +171,7 @@ struct AudioPlayerView: View {
             let current = time.seconds
 
             if !isDragging {
-                self.progress = CGFloat(current / duration)
+                progress = CGFloat(current / duration)
             }
         }
     }
@@ -197,7 +196,7 @@ struct AudioPlayerView: View {
                 AVLinearPCMBitDepthKey: 16,
                 AVLinearPCMIsBigEndianKey: false,
                 AVLinearPCMIsFloatKey: false,
-                AVLinearPCMIsNonInterleaved: false
+                AVLinearPCMIsNonInterleaved: false,
             ]
 
             let output = AVAssetReaderTrackOutput(track: track, outputSettings: outputSettings)
@@ -207,7 +206,8 @@ struct AudioPlayerView: View {
             var sampleData = [Int16]()
 
             while let buffer = output.copyNextSampleBuffer(),
-                  let block = CMSampleBufferGetDataBuffer(buffer) {
+                  let block = CMSampleBufferGetDataBuffer(buffer)
+            {
                 let length = CMBlockBufferGetDataLength(block)
                 var data = Data(count: length)
                 data.withUnsafeMutableBytes { rawBufferPointer in
@@ -227,21 +227,20 @@ struct AudioPlayerView: View {
             // Downsample to ~300 bars
             let downsampleFactor = max(1, sampleData.count / 300)
             let downsampled = stride(from: 0, to: sampleData.count, by: downsampleFactor).map { i -> CGFloat in
-                let slice = sampleData[i..<min(i + downsampleFactor, sampleData.count)]
+                let slice = sampleData[i ..< min(i + downsampleFactor, sampleData.count)]
                 let maxVal = slice.map { abs(Int($0)) }.max() ?? 0
                 return CGFloat(maxVal)
             }
 
             // Normalize to 0...1
-            let normalized: [CGFloat]
-            if let max = downsampled.max(), max > 0 {
-                normalized = downsampled.map { $0 / max }
+            let normalized: [CGFloat] = if let max = downsampled.max(), max > 0 {
+                downsampled.map { $0 / max }
             } else {
-                normalized = downsampled
+                downsampled
             }
 
             DispatchQueue.main.async {
-                self.amplitudes = normalized
+                amplitudes = normalized
             }
 
         } catch {
@@ -267,4 +266,3 @@ struct TestWAVPlayback: View {
 #Preview {
     TestWAVPlayback()
 }
-

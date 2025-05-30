@@ -96,21 +96,21 @@ struct RegisterDeviceView: View {
 
                 // once data validated, register user
                 Task {
-                    //print("calling authRegister with: \(userProfile.email)")
+                    // print("calling authRegister with: \(userProfile.email)")
 
                     if isUITestMode() {
-                            await MainActor.run {
-                                querySuccess = true
-                                isLoading = false
-                            }
-                        } else {
-                            let (message, success) = await authRegister(user: userProfile)
-                            await MainActor.run {
-                                querySuccess = success
-                                errorMessage = message
-                                isLoading = false
-                            }
+                        await MainActor.run {
+                            querySuccess = true
+                            isLoading = false
                         }
+                    } else {
+                        let (message, success) = await authRegister(user: userProfile)
+                        await MainActor.run {
+                            querySuccess = success
+                            errorMessage = message
+                            isLoading = false
+                        }
+                    }
                 }
 
             }) {

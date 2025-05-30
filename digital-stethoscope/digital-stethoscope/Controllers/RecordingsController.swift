@@ -16,7 +16,7 @@ func getFirebaseToken() async throws -> String {
     return token
 }
 
-func updateRecordingTitle(token: String, recordingID: String, newTitle: String) async -> (String, Bool)  {
+func updateRecordingTitle(token: String, recordingID: String, newTitle: String) async -> (String, Bool) {
     guard let url = URL(string: APIConfig.getRecordingsTitleUpdateEndpoint) else {
         return ("Invalid URL", false)
     }
@@ -25,24 +25,23 @@ func updateRecordingTitle(token: String, recordingID: String, newTitle: String) 
     request.httpMethod = "PUT"
     request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    //print("[UPDATE TITLE] Reqeust values set")
+    // print("[UPDATE TITLE] Reqeust values set")
 
-        let body: [String: Any] = [
-            "recordingID": recordingID,
-            "title": newTitle
-        ]
-    
+    let body: [String: Any] = [
+        "recordingID": recordingID,
+        "title": newTitle,
+    ]
+
     do {
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
-        
+
         let (data, response) = try await URLSession.shared.data(for: request)
-        
-        //print("[UPDATE TITLE] Request happened")
-        
-        
+
+        // print("[UPDATE TITLE] Request happened")
+
         if let httpResponse = response as? HTTPURLResponse {
-            if (200...299).contains(httpResponse.statusCode) {
-                //print("[UPDATE TITLE] success")
+            if (200 ... 299).contains(httpResponse.statusCode) {
+                // print("[UPDATE TITLE] success")
                 return ("Title updated successfully", true)
             } else {
                 let errorResponse = String(data: data, encoding: .utf8) ?? "Unknown error"
@@ -51,14 +50,13 @@ func updateRecordingTitle(token: String, recordingID: String, newTitle: String) 
         } else {
             return ("Invalid response", false)
         }
-        
+
     } catch {
         return ("Network error: \(error.localizedDescription)", false)
     }
-
 }
 
-func updateRecordingNote(token: String, recordingID: String, newNote: String) async -> (String, Bool)  {
+func updateRecordingNote(token: String, recordingID: String, newNote: String) async -> (String, Bool) {
     guard let url = URL(string: APIConfig.getRecordingsNoteUpdateEndpoint) else {
         return ("Invalid URL", false)
     }
@@ -67,24 +65,23 @@ func updateRecordingNote(token: String, recordingID: String, newNote: String) as
     request.httpMethod = "PUT"
     request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    //print("[UPDATE TITLE] Reqeust values set")
+    // print("[UPDATE TITLE] Reqeust values set")
 
-        let body: [String: Any] = [
-            "recordingID": recordingID,
-            "note": newNote
-        ]
-    
+    let body: [String: Any] = [
+        "recordingID": recordingID,
+        "note": newNote,
+    ]
+
     do {
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
-        
+
         let (data, response) = try await URLSession.shared.data(for: request)
-        
-        //print("[UPDATE NOTE] Request happened")
-        
-        
+
+        // print("[UPDATE NOTE] Request happened")
+
         if let httpResponse = response as? HTTPURLResponse {
-            if (200...299).contains(httpResponse.statusCode) {
-                //print("[UPDATE NOTE] success")
+            if (200 ... 299).contains(httpResponse.statusCode) {
+                // print("[UPDATE NOTE] success")
                 return ("Note updated successfully", true)
             } else {
                 let errorResponse = String(data: data, encoding: .utf8) ?? "Unknown error"
@@ -93,14 +90,13 @@ func updateRecordingNote(token: String, recordingID: String, newNote: String) as
         } else {
             return ("Invalid response", false)
         }
-        
+
     } catch {
         return ("Network error: \(error.localizedDescription)", false)
     }
-
 }
 
-func updateRecordingView(token: String, recordingID: String, viewBool: Bool) async -> (String, Bool)  {
+func updateRecordingView(token: String, recordingID: String, viewBool: Bool) async -> (String, Bool) {
     guard let url = URL(string: APIConfig.getRecordingsNoteUpdateViewed) else {
         return ("Invalid URL", false)
     }
@@ -111,22 +107,21 @@ func updateRecordingView(token: String, recordingID: String, viewBool: Bool) asy
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     print("[UPDATE VIEW] Reqeust values set")
 
-        let body: [String: Any] = [
-            "recordingID": recordingID,
-            "view": viewBool
-        ]
-    
+    let body: [String: Any] = [
+        "recordingID": recordingID,
+        "view": viewBool,
+    ]
+
     do {
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
-        
+
         let (data, response) = try await URLSession.shared.data(for: request)
-        
-        //print("[UPDATE VIEW] Request happened")
-        
-        
+
+        // print("[UPDATE VIEW] Request happened")
+
         if let httpResponse = response as? HTTPURLResponse {
-            if (200...299).contains(httpResponse.statusCode) {
-                //print("[UPDATE VIEW] success")
+            if (200 ... 299).contains(httpResponse.statusCode) {
+                // print("[UPDATE VIEW] success")
                 return ("View updated successfully", true)
             } else {
                 let errorResponse = String(data: data, encoding: .utf8) ?? "Unknown error"
@@ -135,30 +130,28 @@ func updateRecordingView(token: String, recordingID: String, viewBool: Bool) asy
         } else {
             return ("Invalid response", false)
         }
-        
+
     } catch {
         return ("Network error: \(error.localizedDescription)", false)
     }
-
 }
 
 func fetchRecordings(token: String) async -> ([RecordingInfo], String?) {
     guard let url = URL(string: APIConfig.getRecordingsEndpoint) else {
         return ([], "Invalid URL")
     }
-    
+
     var request = URLRequest(url: url)
     request.httpMethod = "GET"
-    //print("got url and set request method")
+    // print("got url and set request method")
     request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-    //print("set bearer methods")
-    
-    
+    // print("set bearer methods")
+
     do {
         let (data, response) = try await URLSession.shared.data(for: request)
-        //print("got data and response", data)
-        if let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) {
-            //print("response was good")
+        // print("got data and response", data)
+        if let httpResponse = response as? HTTPURLResponse, (200 ... 299).contains(httpResponse.statusCode) {
+            // print("response was good")
             do {
                 let (data, _) = try await URLSession.shared.data(for: request)
                 let decoder = JSONDecoder()
@@ -166,23 +159,18 @@ func fetchRecordings(token: String) async -> ([RecordingInfo], String?) {
                 formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
                 formatter.locale = Locale(identifier: "en_US_POSIX")
                 decoder.dateDecodingStrategy = .formatted(formatter)
-                
+
                 let recordings = try decoder.decode([RecordingInfo].self, from: data)
-                //print("[FETCH RECORDINGS] Successfully fetched recordings: \(recordings.count)")
+                // print("[FETCH RECORDINGS] Successfully fetched recordings: \(recordings.count)")
                 return (recordings, nil)
             }
-            
         }
-    }
-    catch {
+    } catch {
         print("Decoding failed:", error)
-        print("Raw response:", String(data: try! await URLSession.shared.data(for: request).0, encoding: .utf8) ?? "Unreadable or missing")
+        await print("Raw response:", String(data: try! URLSession.shared.data(for: request).0, encoding: .utf8) ?? "Unreadable or missing")
 
         return ([], "Failed to decode recordings: \(error.localizedDescription)")
     }
-    
+
     return ([], "Internal failure")
 }
-
-
-

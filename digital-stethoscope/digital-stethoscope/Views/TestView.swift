@@ -6,7 +6,6 @@
 //
 import SwiftUI
 
-
 struct TestImageView: View {
     var body: some View {
         Image("portable")

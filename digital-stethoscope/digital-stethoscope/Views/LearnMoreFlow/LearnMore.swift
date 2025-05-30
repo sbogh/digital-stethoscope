@@ -113,9 +113,9 @@ struct LearnMore: View {
         .onAppear {
             UIPageControl.appearance().currentPageIndicatorTintColor = .black
             UIPageControl.appearance().pageIndicatorTintColor = UIColor(
-                red: 191/255,
-                green: 191/255,
-                blue: 191/255,
+                red: 191 / 255,
+                green: 191 / 255,
+                blue: 191 / 255,
                 alpha: 1
             )
         }

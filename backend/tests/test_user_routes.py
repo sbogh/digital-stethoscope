@@ -66,7 +66,7 @@ def test_create_new_user(mock_firestore_functions):
     Input:
         mock_firestore_functions: Dictionary containing Firestore mocks.
     """
-    doc = mock_firestore_functions["document"]
+    doc = mock_firestore_functions["doc"]
     user_routes.create_new_user("abc123", {"name": "Siya"})
     doc.set.assert_called_once_with({"name": "Siya", "userID": "abc123"})
 
@@ -109,7 +109,7 @@ def test_update_current_user_device(mock_firestore_functions):
         mock_firestore_functions: Dictionary containing Firestore mocks.
     """
     snapshot = mock_firestore_functions["snapshot"]
-    doc = mock_firestore_functions["document"]
+    doc = mock_firestore_functions["doc"]
 
     snapshot.exists = True
     doc.update = Mock()

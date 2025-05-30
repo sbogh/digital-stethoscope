@@ -136,7 +136,7 @@ struct DeviceSelectionView: View {
         }
 
         // error message if issue with the update
-        if !cont && buttonClicked && !isLoading {
+        if !cont, buttonClicked, !isLoading {
             HStack {
                 Text(errorMessage)
                     .font(Font.custom("Roboto-Regular", size: 12))

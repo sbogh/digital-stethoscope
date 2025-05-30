@@ -40,7 +40,7 @@ struct LoginView: View {
         ScrollView {
             VStack(spacing: 20) {
                 LoginHeaderView(subtitle: "Log in below.\nSound decisions await!")
-                
+
                 // VStack = form itself
                 VStack(spacing: 15) {
                     // Email text field
@@ -52,7 +52,7 @@ struct LoginView: View {
                         .onChange(of: email) { _, newEmail in
                             isValidEmail = validateEmail(email: newEmail)
                         }
-                    
+
                     // Password field
                     SecureField("Password", text: $password)
                         .padding()
@@ -62,7 +62,7 @@ struct LoginView: View {
                         .onChange(of: password) { _, newPWord in
                             isValidPWord = validatePassword(password: newPWord)
                         }
-                    
+
                     // Error message if password/email invalid
                     if !isValidEmail || !isValidPWord {
                         HStack {
@@ -75,7 +75,7 @@ struct LoginView: View {
                             Spacer()
                         }
                     }
-                    
+
                     // Error message if any field is empty
                     if emptyField {
                         HStack {
@@ -89,7 +89,7 @@ struct LoginView: View {
                                 .accessibilityIdentifier("EmptyFieldsError")
                         }
                     }
-                    
+
                     // forgot password button
                     HStack {
                         Spacer()
@@ -106,14 +106,14 @@ struct LoginView: View {
                 .background(Color.navColor)
                 .cornerRadius(20)
                 .padding(.horizontal)
-                
+
                 // login button //
                 // button action:
                 Button(action: {
                     // variables to indicate button status
                     buttonClicked = true
                     isLoading = true
-                    
+
                     // checks if email and password are in valid form
                     if isValidEmail, isValidPWord {
                         // authenticates information inputted
@@ -124,10 +124,10 @@ struct LoginView: View {
                                 DispatchQueue.main.async {
                                     validAccount = true
                                     isLoading = false
-                                    
+
                                     // print("recieved userProfile: ", userProfile.email)
                                 }
-                                
+
                                 // if authenticateUser is not successful, set variables accordingly and get the error
                             } catch {
                                 DispatchQueue.main.async {
@@ -142,7 +142,7 @@ struct LoginView: View {
                     else {
                         isLoading = false
                     }
-                    
+
                     // Button Text:
                 }) {
                     Text("Log In")
@@ -155,20 +155,20 @@ struct LoginView: View {
                         .foregroundColor(Color.primary)
                         .cornerRadius(10)
                 }.padding()
-                 .accessibilityIdentifier("LogInButton")
-                // TODO: change to correct page
+                    .accessibilityIdentifier("LogInButton")
+                    // TODO: change to correct page
                     .navigationDestination(isPresented: $validAccount) {
                         DeviceSelectionView().environmentObject(userProfile)
                     }
-                
+
                 // loading icon when processing log in
                 if isLoading {
                     ProgressView("Logging in...")
                         .padding()
                 }
-                
+
                 // error message if issue with log in
-                if !validAccount && buttonClicked && !isLoading {
+                if !validAccount, buttonClicked, !isLoading {
                     HStack {
                         Text("Oops! Something went wrong. Error: \(errorMessage)")
                             .font(Font.custom("Roboto-Regular", size: 12))
@@ -178,7 +178,7 @@ struct LoginView: View {
                         Spacer()
                     }
                 }
-                
+
                 // Learn More link
                 Button(action: {
                     // TODO: add route to learn more

@@ -22,7 +22,7 @@ struct AccountSetupView: View {
 
     // TODO: We don't need PDT and PST, MST and MDT etc, we should choose based on time of year
     // handles time zone inputs
-    var timeZones = ["PDT", "MDT","CDT","EDT", "HDT", "AKDT"]
+    var timeZones = ["PDT", "MDT", "CDT", "EDT", "HDT", "AKDT"]
     var zoneEmpty: Bool {
         userProfile.timeZone.isEmpty
     }
@@ -65,7 +65,7 @@ struct AccountSetupView: View {
                             Text(timezone)
                         }
                     }
-                }label: {
+                } label: {
                     HStack {
                         Text(userProfile.timeZone.isEmpty ? "Timezone" : userProfile.timeZone)
                             .foregroundColor(userProfile.timeZone.isEmpty ? .gray : .black)

@@ -5,7 +5,7 @@
 //  Created by Shelby Myrman on 5/20/25.
 //
 
-// TODO: (FOR SIYA) in this file you're going to write to firebase a lot i think 
+// TODO: (FOR SIYA) in this file you're going to write to firebase a lot i think
 import SwiftUI
 
 /*
@@ -21,21 +21,21 @@ struct SessionOverview: View {
 
     var recording: RecordingInfo
     var defaultTitle: String
-    
+
     @State private var messageTitle = ""
     @State private var successTitle = false
     @State private var hasTriggeredOnPlay = false
-    
+
     var onPlay: (() -> Void)? = nil
 
     init(sessionTitle: String, recording: RecordingInfo, onPlay: (() -> Void)? = nil) {
         self.recording = recording
-        self.defaultTitle = sessionTitle
+        defaultTitle = sessionTitle
         self.onPlay = onPlay
         _editedTitle = State(initialValue: sessionTitle)
         _notes = State(initialValue: recording.notes)
     }
-    
+
     var body: some View {
         VStack {
             HStack {
@@ -45,19 +45,17 @@ struct SessionOverview: View {
                     .foregroundColor(.CTA2)
                     .accessibilityIdentifier("SessionTitle")
                     .onChange(of: editedTitle) { _, newTitle in
-                    Task {
-                        await changeTitle(recordingID: recording.id, newTitle: newTitle)
-                    }
-                            //TODO: add more error checking/a message for when there was an error with the update
+                        Task {
+                            await changeTitle(recordingID: recording.id, newTitle: newTitle)
+                        }
+                        // TODO: add more error checking/a message for when there was an error with the update
                     }
                 Spacer()
-                
+
                 // TODO: (FOR SIYA) when the user engages with this button for the first time, we should mark it as viewed and send that to DB. Or we could do it a different way where if they press the play button we mark it as viewed? Idk but I think going based on this button would be easiest
                 Button(action: {
-                    
                     withAnimation {
-                        
-                        if isExpanded && !recording.viewed {
+                        if isExpanded, !recording.viewed {
                             Task {
                                 await changeView(recordingID: recording.id, viewBool: true)
                             }
@@ -65,15 +63,14 @@ struct SessionOverview: View {
                         }
                         isExpanded.toggle()
                     }
-                    
-                    
+
                 }) {
                     Image(systemName: isExpanded ? "xmark" : "chevron.down")
                         .foregroundColor(.CTA2)
                 }
                 .accessibilityIdentifier("ExpandSessionButton")
             }
-            
+
             HStack {
                 Text(recording.sessionTime)
                     .font(
@@ -87,7 +84,7 @@ struct SessionOverview: View {
                     .foregroundColor(.CTA2)
                 Spacer()
             }
-            
+
             if isExpanded {
                 Divider()
 
@@ -112,7 +109,7 @@ struct SessionOverview: View {
                     }
                     .padding(.bottom, 2)
                 }
-                
+
                 HStack {
                     Text("Session Notes:")
                         .font(.custom("Roboto-Medium", size: 14))
@@ -131,11 +128,10 @@ struct SessionOverview: View {
                         Task {
                             await changeNote(recordingID: recording.id, newNote: newNotes)
                         }
-                        
-                        //TODO: more robust error checking??
+
+                        // TODO: more robust error checking??
                     }
             }
-            
         }
         .frame(maxWidth: 500)
         .padding()
@@ -149,51 +145,51 @@ struct SessionOverview: View {
         .padding(.horizontal)
         .padding(.bottom, 3)
     }
-    
+
     func changeTitle(recordingID: String, newTitle: String) async {
         do {
             let token = try await getFirebaseToken()
-            //print("[CHANGE TITLE] Got token: \(token)")
+            // print("[CHANGE TITLE] Got token: \(token)")
             let (message, success) = await updateRecordingTitle(
                 token: token,
                 recordingID: recordingID,
                 newTitle: newTitle
             )
-            //print("[CHANGE TITLE] got response: \(message), \(success)")
+            // print("[CHANGE TITLE] got response: \(message), \(success)")
             DispatchQueue.main.async {
                 if success {
                     print("Title updated: \(message)")
                 } else {
                     print("Failed to update: \(message)")
-
                 }
             }
         } catch {
-           print("Auth error: \(error.localizedDescription)")
+            print("Auth error: \(error.localizedDescription)")
         }
     }
+
     func changeNote(recordingID: String, newNote: String) async {
         do {
             let token = try await getFirebaseToken()
-            //print("[CHANGE Note] Got token: \(token)")
+            // print("[CHANGE Note] Got token: \(token)")
             let (message, success) = await updateRecordingNote(
                 token: token,
                 recordingID: recordingID,
                 newNote: newNote
             )
-            //print("[CHANGE NOTE] got response: \(message), \(success)")
+            // print("[CHANGE NOTE] got response: \(message), \(success)")
             DispatchQueue.main.async {
                 if success {
                     print("Note updated: \(message)")
                 } else {
                     print("Failed to update: \(message)")
-
                 }
             }
         } catch {
-           print("Auth error: \(error.localizedDescription)")
+            print("Auth error: \(error.localizedDescription)")
         }
     }
+
     func changeView(recordingID: String, viewBool: Bool) async {
         do {
             let token = try await getFirebaseToken()
@@ -201,18 +197,18 @@ struct SessionOverview: View {
             let (message, success) = await updateRecordingView(
                 token: token,
                 recordingID: recordingID,
-                viewBool: viewBool)
+                viewBool: viewBool
+            )
             print("[CHANGE VIEW BOOL] got response: \(message), \(success)")
             DispatchQueue.main.async {
                 if success {
                     print("View Bool updated: \(message)")
                 } else {
                     print("Failed to update: \(message)")
-
                 }
             }
         } catch {
-           print("Auth error: \(error.localizedDescription)")
+            print("Auth error: \(error.localizedDescription)")
         }
     }
 }
@@ -224,7 +220,7 @@ struct RecordingsView: View {
     var type: String
     var recordings: [RecordingInfo]
     var onPlay: ((RecordingInfo) -> Void)? = nil
-    
+
     var body: some View {
         HStack {
             Text(type)
@@ -237,20 +233,19 @@ struct RecordingsView: View {
             Spacer()
         }
         .frame(maxWidth: .infinity)
-        
-        
+
         ForEach(recordings) { recording in
             let sessionTitle = recording.sessionTitle.isEmpty
-            ? (recording.viewed ? "Viewed Session" : "New Session")
-                    : recording.sessionTitle
-            
+                ? (recording.viewed ? "Viewed Session" : "New Session")
+                : recording.sessionTitle
+
             SessionOverview(
-                    sessionTitle: sessionTitle,
-                    recording: recording,
-                    onPlay: {
-                        onPlay?(recording)
-                    }
-                )
+                sessionTitle: sessionTitle,
+                recording: recording,
+                onPlay: {
+                    onPlay?(recording)
+                }
+            )
         }
     }
 }

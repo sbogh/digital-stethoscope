@@ -54,11 +54,11 @@ struct LandingPage: View {
                     .background(Color.CTA1)
                     .cornerRadius(10)
             }
-                .padding(.bottom)
-                .accessibilityIdentifier("CreateAccountButton")
-                .navigationDestination(isPresented: $navCreateAcc) {
-                    CreateAccountView().environmentObject(userProfile)
-                }
+            .padding(.bottom)
+            .accessibilityIdentifier("CreateAccountButton")
+            .navigationDestination(isPresented: $navCreateAcc) {
+                CreateAccountView().environmentObject(userProfile)
+            }
 
             // Log in Button
             Button(action: {
@@ -75,11 +75,11 @@ struct LandingPage: View {
                             .stroke(Color.CTA1, lineWidth: 4)
                     )
             }
-                .padding(.bottom)
-                .accessibilityIdentifier("LandingLoginButton")
-                .navigationDestination(isPresented: $navLogin) {
-                    LoginView().environmentObject(userProfile)
-                }
+            .padding(.bottom)
+            .accessibilityIdentifier("LandingLoginButton")
+            .navigationDestination(isPresented: $navLogin) {
+                LoginView().environmentObject(userProfile)
+            }
 
             // Learn More link
             Button(action: {

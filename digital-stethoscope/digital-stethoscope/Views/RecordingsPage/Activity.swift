@@ -15,109 +15,105 @@ struct Activity: View {
     @State private var goToLoading = false
 
     var body: some View {
-            VStack {
-                ScrollView {
-                    VStack(spacing: 5) {
-                        Image("Logo")
-                            .resizable()
-                            .frame(width: 62.46876, height: 87, alignment: .top)
-                            .padding(.top)
-                            .accessibilityIdentifier("ActivityLogo")
+        VStack {
+            ScrollView {
+                VStack(spacing: 5) {
+                    Image("Logo")
+                        .resizable()
+                        .frame(width: 62.46876, height: 87, alignment: .top)
+                        .padding(.top)
+                        .accessibilityIdentifier("ActivityLogo")
 
-                        Text("Activity")
-                            .font(Font.custom("Roboto-ExtraBold", size: 40).weight(.heavy))
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(Color.CTA2)
-                            .frame(width: 248, alignment: .top)
-                            .accessibilityLabel("ActivityTitle")
+                    Text("Activity")
+                        .font(Font.custom("Roboto-ExtraBold", size: 40).weight(.heavy))
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(Color.CTA2)
+                        .frame(width: 248, alignment: .top)
+                        .accessibilityLabel("ActivityTitle")
 
-                        Text("Unassigned sessions will clear after 24 hours.")
-                            .font(Font.custom("Roboto-Regular", size: 16))
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(Color.CTA2)
-                            .accessibilityIdentifier("ActivitySubtitle")
+                    Text("Unassigned sessions will clear after 24 hours.")
+                        .font(Font.custom("Roboto-Regular", size: 16))
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(Color.CTA2)
+                        .accessibilityIdentifier("ActivitySubtitle")
 
-                        if NewRecordings.count > 0 {
-                            RecordingsView(
+                    if NewRecordings.count > 0 {
+                        RecordingsView(
                             type: "New",
                             recordings: NewRecordings,
                             onPlay: { recording in
-                                   if let index = NewRecordings.firstIndex(of: recording) {
-                                       var updated = recording
-                                       updated.viewed = true
-                                       NewRecordings.remove(at: index)
-                                       ViewedRecordings.append(updated)
-                                   }
-                               }
-                            )
-                        }
+                                if let index = NewRecordings.firstIndex(of: recording) {
+                                    var updated = recording
+                                    updated.viewed = true
+                                    NewRecordings.remove(at: index)
+                                    ViewedRecordings.append(updated)
+                                }
+                            }
+                        )
+                    }
 
-                        if ViewedRecordings.count > 0 {
-                            RecordingsView(type: "Viewed", recordings: ViewedRecordings)
-                        }
-                    }
-                    .padding(.top)
-                    .background(Color.primary)
-                    .accessibilityElement(children: .contain)
-                }
-                .onAppear {
-                    if isUITestMode() {
-                        NewRecordings = [RecordingInfo.mock(id: "1", title: "Mock Session", viewed: false)]
-                        ViewedRecordings = []
-                    } else {
-                        Task { await loadRecordings() }
+                    if ViewedRecordings.count > 0 {
+                        RecordingsView(type: "Viewed", recordings: ViewedRecordings)
                     }
                 }
-                
-                Button(action: {
-                    goToLoading = true
-                }) {
-                    Text("Load New Sessions")
-                        .font(Font.custom("Roboto-Bold", size: 18))
-                        .padding()
-                        .background(Color.CTA1)
-                        .foregroundColor(Color.primary)
-                        .cornerRadius(12)
-                        .padding([.horizontal, .bottom])
+                .padding(.top)
+                .background(Color.primary)
+                .accessibilityElement(children: .contain)
+            }
+            .onAppear {
+                if isUITestMode() {
+                    NewRecordings = [RecordingInfo.mock(id: "1", title: "Mock Session", viewed: false)]
+                    ViewedRecordings = []
+                } else {
+                    Task { await loadRecordings() }
                 }
             }
-            .accessibilityElement(children: .contain)
-            .background(Color.primary)
-            .navigationDestination(isPresented: $goToLoading) {
-                Loading(
-                        newRecordings: $NewRecordings,
-                        viewedRecordings: $ViewedRecordings,
-                        goBack: $goToLoading
-                    )
-                    .environmentObject(userProfile)
+
+            Button(action: {
+                goToLoading = true
+            }) {
+                Text("Load New Sessions")
+                    .font(Font.custom("Roboto-Bold", size: 18))
+                    .padding()
+                    .background(Color.CTA1)
+                    .foregroundColor(Color.primary)
+                    .cornerRadius(12)
+                    .padding([.horizontal, .bottom])
+            }
+        }
+        .accessibilityElement(children: .contain)
+        .background(Color.primary)
+        .navigationDestination(isPresented: $goToLoading) {
+            Loading(
+                newRecordings: $NewRecordings,
+                viewedRecordings: $ViewedRecordings,
+                goBack: $goToLoading
+            )
+            .environmentObject(userProfile)
         }
     }
-    
+
     func loadRecordings() async {
-        
         do {
             let token = try await getFirebaseToken()
-            //print("token recieved")
+            // print("token recieved")
             let (recordings, error) = await fetchRecordings(token: token)
 
             DispatchQueue.main.async {
-                if let error = error {
-                    self.errorMessage = error
+                if let error {
+                    errorMessage = error
                 } else {
-                    self.NewRecordings = recordings.filter { !$0.viewed }
-                    self.ViewedRecordings = recordings.filter { $0.viewed }
-                    
-                    //print("new recordings: ", NewRecordings)
-                    //print("viewed recordings: ", ViewedRecordings)
+                    NewRecordings = recordings.filter { !$0.viewed }
+                    ViewedRecordings = recordings.filter(\.viewed)
+
+                    // print("new recordings: ", NewRecordings)
+                    // print("viewed recordings: ", ViewedRecordings)
                 }
             }
         } catch {
-            self.errorMessage = "Auth error: \(error.localizedDescription)"
+            errorMessage = "Auth error: \(error.localizedDescription)"
         }
-
     }
-
-    
 }
 
 #Preview {

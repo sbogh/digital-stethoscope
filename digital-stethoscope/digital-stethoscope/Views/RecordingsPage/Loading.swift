@@ -5,18 +5,15 @@
 //  Created by Shelby Myrman on 5/19/25.
 //
 
-
 // TODO: (FOR SIYA) Once recordings are loaded, we'll want to go to the activity page. We may even want to set some sort of timer that waits like 2 mins if no new recordings are appearing, since it can take a while to get the data from the device? Idk up to you what the best way to handle it is
 import SwiftUI
 
 struct Loading: View {
-    
     @EnvironmentObject var userProfile: UserProfile
     @Binding var newRecordings: [RecordingInfo]
     @Binding var viewedRecordings: [RecordingInfo]
     @Binding var goBack: Bool
-    
-    
+
     var body: some View {
         VStack(spacing: 5) {
             Image("Logo")
@@ -38,23 +35,20 @@ struct Loading: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color.CTA2)
                 .lineLimit(nil)
-            
+
             // TODO: (FOR SIYA) should we leave this spinny thing? i think it looks
             // good but idk if we should choose that or the image
             ProgressView()
                 .progressViewStyle(CircularProgressViewStyle(tint: Color.secondary))
-                  .scaleEffect(2.0, anchor: .center)
-                  .padding()
-            
+                .scaleEffect(2.0, anchor: .center)
+                .padding()
+
             Image("loading")
                 .resizable()
                 .frame(width: 150,
                        height: 150,
                        alignment: .top)
                 .padding(.top)
-            
-            
-            
         }
         .onAppear {
             Task {
@@ -62,28 +56,28 @@ struct Loading: View {
             }
         }
     }
-    
+
     func loadAndReturn() async {
         if isUITestMode() {
             try? await Task.sleep(nanoseconds: 5_000_000_000)
         }
-        
+
         do {
             let token = try await getFirebaseToken()
-            //print(" [LOAD AND RETURN] token recieved")
+            // print(" [LOAD AND RETURN] token recieved")
             let (recordings, error) = await fetchRecordings(token: token)
-            //print(" [LOAD AND RETURN]  recordings recieved")
-            
+            // print(" [LOAD AND RETURN]  recordings recieved")
+
             DispatchQueue.main.async {
-                if let error = error {
+                if let error {
                     print(" [LOAD AND RETURN] Fetch error:", error)
                 } else {
                     newRecordings = recordings.filter { !$0.viewed }
-                    viewedRecordings = recordings.filter { $0.viewed }
+                    viewedRecordings = recordings.filter(\.viewed)
                     goBack = false
                 }
             }
-            
+
         } catch {
             print("[LOAD AND RETURN] Auth error:", error.localizedDescription)
         }
@@ -92,9 +86,9 @@ struct Loading: View {
 
 #Preview {
     Loading(
-            newRecordings: .constant([]),
-            viewedRecordings: .constant([]),
-            goBack: .constant(true)
-        )
-        .environmentObject(UserProfile())
+        newRecordings: .constant([]),
+        viewedRecordings: .constant([]),
+        goBack: .constant(true)
+    )
+    .environmentObject(UserProfile())
 }

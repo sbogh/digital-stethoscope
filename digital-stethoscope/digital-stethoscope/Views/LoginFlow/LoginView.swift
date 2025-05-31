@@ -37,155 +37,177 @@ struct LoginView: View {
     }
 
     var body: some View {
-        VStack(spacing: 20) {
-            LoginHeaderView(subtitle: "Log in below.\nSound decisions await!")
+        ScrollView {
+            VStack(spacing: 20) {
+                LoginHeaderView(subtitle: "Log in below.\nSound decisions await!")
 
-            // VStack = form itself
-            VStack(spacing: 15) {
-                // Email text field
-                TextField("Email", text: $email)
-                    .padding()
-                    .background(Color.primary)
-                    .cornerRadius(10)
-                    .onChange(of: email) { _, newEmail in
-                        isValidEmail = validateEmail(email: newEmail)
-                    }
+                // VStack = form itself
+                VStack(spacing: 15) {
+                    // Email text field
+                    TextField("Email", text: $email)
+                        .padding()
+                        .background(Color.primary)
+                        .cornerRadius(10)
+                        .accessibilityIdentifier("Email")
+                        .onChange(of: email) { _, newEmail in
+                            isValidEmail = validateEmail(email: newEmail)
+                        }
 
-                // Password field
-                SecureField("Password", text: $password)
-                    .padding()
-                    .background(Color.primary)
-                    .cornerRadius(10)
-                    .onChange(of: password) { _, newPWord in
-                        isValidPWord = validatePassword(password: newPWord)
-                    }
-
-                // Error message if password/email invalid
-                if !isValidEmail || !isValidPWord {
-                    HStack {
-                        Text("Invalid Email or Password")
-                            .font(Font.custom("Roboto-Regular", size: 13))
-                            .foregroundColor(.red)
-                            .padding(.horizontal)
-                            .multilineTextAlignment(.center)
-                        Spacer()
-                    }
-                }
-
-                // Error message if any field is empty
-                if emptyField {
-                    HStack {
-                        Spacer()
-                        Spacer()
-                        Text("All fields are required")
-                            .font(Font.custom("Roboto-Regular", size: 13))
-                            .foregroundColor(.red)
-                            .padding(.horizontal)
-                            .multilineTextAlignment(.center)
-                    }
-                }
-
-                // forgot password button
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        // TODO: forgot password action
-                    }) {
-                        Text("Forgot password?")
-                            .font(.footnote)
-                            .foregroundColor(.black)
-                    }
-                }
-            }
-            .padding()
-            .background(Color.navColor)
-            .cornerRadius(20)
-            .padding(.horizontal)
-
-            // login button //
-            // button action:
-            Button(action: {
-                // variables to indicate button status
-                buttonClicked = true
-                isLoading = true
-
-                // checks if email and password are in valid form
-                if isValidEmail, isValidPWord {
-                    // authenticates information inputted
-                    Task {
-                        do {
-                            // if autneticateUser is successful, wait for it to finish and set variables accordingly
-                            try await authLogin(email: email, password: password, user: userProfile)
-                            DispatchQueue.main.async {
-                                validAccount = true
-                                isLoading = false
-
-                                // print("recieved userProfile: ", userProfile.email)
+                    // Password field
+                    if isUITestMode() {
+                        TextField("Password", text: $password)
+                            .accessibilityIdentifier("Password")
+                            .textContentType(.none)
+                            .autocorrectionDisabled(true)
+                            .padding()
+                            .background(Color.primary)
+                            .cornerRadius(10)
+                            .onChange(of: password) { _, newPWord in
+                                isValidPWord = validatePassword(password: newPWord)
                             }
-
-                            // if authenticateUser is not successful, set variables accordingly and get the error
-                        } catch {
-                            DispatchQueue.main.async {
-                                validAccount = false
-                                isLoading = false
-                                errorMessage = error.localizedDescription
+                    } else {
+                        SecureField("Password", text: $password)
+                            .padding()
+                            .background(Color.primary)
+                            .cornerRadius(10)
+                            .accessibilityIdentifier("Password")
+                            .autocorrectionDisabled(true)
+                            .textInputAutocapitalization(.never)
+                            .onChange(of: password) { _, newPWord in
+                                isValidPWord = validatePassword(password: newPWord)
                             }
+                    }
+
+                    // Error message if password/email invalid
+                    if !isValidEmail || !isValidPWord {
+                        HStack {
+                            Text("Invalid Email or Password")
+                                .font(Font.custom("Roboto-Regular", size: 13))
+                                .foregroundColor(.red)
+                                .padding(.horizontal)
+                                .multilineTextAlignment(.center)
+                                .accessibilityIdentifier("InvalidCredentialsError")
+                            Spacer()
+                        }
+                    }
+
+                    // Error message if any field is empty
+                    if emptyField {
+                        HStack {
+                            Spacer()
+                            Spacer()
+                            Text("All fields are required")
+                                .font(Font.custom("Roboto-Regular", size: 13))
+                                .foregroundColor(.red)
+                                .padding(.horizontal)
+                                .multilineTextAlignment(.center)
+                                .accessibilityIdentifier("EmptyFieldsError")
+                        }
+                    }
+
+                    // forgot password button
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            // TODO: forgot password action
+                        }) {
+                            Text("Forgot password?")
+                                .font(.footnote)
+                                .foregroundColor(.black)
                         }
                     }
                 }
-                // sets isLoading to false b/c no loading to do if email password are invalid
-                else {
-                    isLoading = false
+                .padding()
+                .background(Color.navColor)
+                .cornerRadius(20)
+                .padding(.horizontal)
+
+                // login button //
+                // button action:
+                Button(action: {
+                    // variables to indicate button status
+                    buttonClicked = true
+                    isLoading = true
+
+                    // checks if email and password are in valid form
+                    if isValidEmail, isValidPWord {
+                        // authenticates information inputted
+                        Task {
+                            do {
+                                // if autneticateUser is successful, wait for it to finish and set variables accordingly
+                                try await authLogin(email: email, password: password, user: userProfile)
+                                DispatchQueue.main.async {
+                                    validAccount = true
+                                    isLoading = false
+
+                                    // print("recieved userProfile: ", userProfile.email)
+                                }
+
+                                // if authenticateUser is not successful, set variables accordingly and get the error
+                            } catch {
+                                DispatchQueue.main.async {
+                                    validAccount = false
+                                    isLoading = false
+                                    errorMessage = error.localizedDescription
+                                }
+                            }
+                        }
+                    }
+                    // sets isLoading to false b/c no loading to do if email password are invalid
+                    else {
+                        isLoading = false
+                    }
+
+                    // Button Text:
+                }) {
+                    Text("Log In")
+                        .font(Font.custom("Roboto-ExtraBold", size: 22)
+                        )
+                        .fontWeight(.bold)
+                        .frame(width: 206)
+                        .padding()
+                        .background(Color.CTA1)
+                        .foregroundColor(Color.primary)
+                        .cornerRadius(10)
+                }.padding()
+                    .accessibilityIdentifier("LogInButton")
+                    // TODO: change to correct page
+                    .navigationDestination(isPresented: $validAccount) {
+                        DeviceSelectionView().environmentObject(userProfile)
+                    }
+
+                // loading icon when processing log in
+                if isLoading {
+                    ProgressView("Logging in...")
+                        .padding()
                 }
 
-                // Button Text:
-            }) {
-                Text("Log In")
-                    .font(Font.custom("Roboto-ExtraBold", size: 22)
-                    )
-                    .fontWeight(.bold)
-                    .frame(width: 206)
-                    .padding()
-                    .background(Color.CTA1)
-                    .foregroundColor(Color.primary)
-                    .cornerRadius(10)
-            }.padding()
-                // TODO: change to correct page
-                .navigationDestination(isPresented: $validAccount) {
-                    DeviceSelectionView().environmentObject(userProfile)
+                // error message if issue with log in
+                if !validAccount, buttonClicked, !isLoading {
+                    HStack {
+                        Text("Oops! Something went wrong. Error: \(errorMessage)")
+                            .font(Font.custom("Roboto-Regular", size: 12))
+                            .foregroundColor(.red)
+                            .padding(.horizontal)
+                            .multilineTextAlignment(.center)
+                        Spacer()
+                    }
                 }
 
-            // loading icon when processing log in
-            if isLoading {
-                ProgressView("Logging in...")
-                    .padding()
+                // Learn More link
+                Button(action: {
+                    // TODO: add route to learn more
+                }) {
+                    Text("Learn More")
+                        .font(Font.custom("Roboto-ExtraBold", size: 18)
+                        )
+                        .fontWeight(.bold)
+                        .foregroundColor(Color.CTA1)
+                        .underline(true, color: .CTA1)
+                }.padding(.bottom)
             }
-
-            // error message if issue with log in
-            if !validAccount && buttonClicked && !isLoading {
-                HStack {
-                    Text("Oops! Something went wrong. Error: \(errorMessage)")
-                        .font(Font.custom("Roboto-Regular", size: 12))
-                        .foregroundColor(.red)
-                        .padding(.horizontal)
-                        .multilineTextAlignment(.center)
-                    Spacer()
-                }
-            }
-
-            // Learn More link
-            Button(action: {
-                // TODO: add route to learn more
-            }) {
-                Text("Learn More")
-                    .font(Font.custom("Roboto-ExtraBold", size: 18)
-                    )
-                    .fontWeight(.bold)
-                    .foregroundColor(Color.CTA1)
-                    .underline(true, color: .CTA1)
-            }.padding(.bottom)
+            Spacer()
         }
-        Spacer()
     }
 
     /// Validates user inputs a valid email

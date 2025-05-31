@@ -36,7 +36,7 @@ func registerUser(token: String, user: UserProfile) async throws -> (String, Boo
         "timeZone": user.timeZone,
         "deviceIDs": user.deviceIds,
         "deviceNicknames": user.deviceNicknames,
-        "currentDeviceID": "",
+        "currentDeviceID": user.currentDeviceID,
     ]
 
     request.httpBody = try? JSONSerialization.data(withJSONObject: body)

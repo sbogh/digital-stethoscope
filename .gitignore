@@ -13,7 +13,7 @@ xcuserdata/
 /*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
 # Firebase service account key
-/backend/config/serviceAccountKey.json
+backend/config/serviceAccountKey.json
 
 # Python cache files
 __pycache__/

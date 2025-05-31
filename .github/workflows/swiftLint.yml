@@ -16,27 +16,17 @@ on:
       - '.github/workflows/swiftLint.yml'
 
 jobs:
-  build:
-
+  lint:
     runs-on: macos-15
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    # - name: Install SwiftLint
-    #   run: brew install swiftlint
 
     - name: Resolve Swift package dependencies
       working-directory: digital-stethoscope
       run: xcodebuild -resolvePackageDependencies -project digital-stethoscope.xcodeproj
 
-      # OR if using a workspace:
-      # run: xcodebuild -resolvePackageDependencies -workspace YourWorkspaceName.xcworkspace -scheme YourSchemeName
-
     - name: SwiftFormat
       run: swiftformat . --lint
-      
-    # - name: SwiftLint
-    #   run: swiftlint lint --strict
 

@@ -54,14 +54,29 @@ struct LoginView: View {
                         }
 
                     // Password field
-                    SecureField("Password", text: $password)
-                        .padding()
-                        .background(Color.primary)
-                        .cornerRadius(10)
-                        .accessibilityIdentifier("Password")
-                        .onChange(of: password) { _, newPWord in
-                            isValidPWord = validatePassword(password: newPWord)
-                        }
+                    if isUITestMode() {
+                        TextField("Password", text: $password)
+                            .accessibilityIdentifier("Password")
+                            .textContentType(.none)
+                            .autocorrectionDisabled(true)
+                            .padding()
+                            .background(Color.primary)
+                            .cornerRadius(10)
+                            .onChange(of: password) { _, newPWord in
+                                isValidPWord = validatePassword(password: newPWord)
+                            }
+                    } else {
+                        SecureField("Password", text: $password)
+                            .padding()
+                            .background(Color.primary)
+                            .cornerRadius(10)
+                            .accessibilityIdentifier("Password")
+                            .autocorrectionDisabled(true)
+                            .textInputAutocapitalization(.never)
+                            .onChange(of: password) { _, newPWord in
+                                isValidPWord = validatePassword(password: newPWord)
+                            }
+                    }
 
                     // Error message if password/email invalid
                     if !isValidEmail || !isValidPWord {

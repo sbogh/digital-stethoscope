@@ -13,6 +13,7 @@ final class LoginViewUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
         app = XCUIApplication()
+        app.launchArguments.append("--uitest")
         app.launch()
     }
 
@@ -40,7 +41,10 @@ final class LoginViewUITests: XCTestCase {
         emailField.tap()
         emailField.typeText("not-an-email")
 
-        let passwordField = app.secureTextFields["Password"]
+        sleep(1)
+        app.swipeUp()
+
+        let passwordField = app.textFields["Password"]
         passwordField.tap()
         passwordField.typeText("ValidPassw0rd!")
 

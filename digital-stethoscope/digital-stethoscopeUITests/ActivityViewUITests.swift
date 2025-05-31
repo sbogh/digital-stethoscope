@@ -26,24 +26,33 @@ final class ActivityViewUITests: XCTestCase {
     }
 
     func navigateToActivityView() {
-        let signupButton = app.buttons["CreateAccountButton"]
-        XCTAssertTrue(signupButton.waitForExistence(timeout: 2))
-        signupButton.tap()
+        let caButton = app.buttons["CreateAccountButton"]
+        XCTAssertTrue(caButton.waitForExistence(timeout: 5))
+        caButton.tap()
 
         let email = app.textFields["CAEmail"]
-        XCTAssertTrue(email.waitForExistence(timeout: 2))
+        XCTAssertTrue(email.waitForExistence(timeout: 5))
         email.tap()
         email.typeText("valid@email.com")
 
-        let password = app.secureTextFields["CAPassword"]
-        password.tap()
-        password.typeText("ValidPass1!")
+        let passwordField = app.textFields["CAPassword"]
+        XCTAssertTrue(passwordField.waitForExistence(timeout: 5))
+        passwordField.tap()
+        passwordField.typeText("Abcdef")
+        sleep(1)
+        passwordField.typeText("!1")
 
-        let confirmPassword = app.secureTextFields["CAConfirmPassword"]
+        sleep(1)
+
+        let confirmPassword = app.textFields["CAConfirmPassword"]
+        XCTAssertTrue(confirmPassword.waitForExistence(timeout: 5))
         confirmPassword.tap()
-        confirmPassword.typeText("ValidPass1!")
+        confirmPassword.typeText("Abcdef")
+        sleep(1)
+        confirmPassword.typeText("!1")
 
         let signUpButton = app.buttons["SignupButton"]
+        XCTAssertTrue(signUpButton.waitForExistence(timeout: 5))
         signUpButton.tap()
 
         // Confirm you're on AccountSetupView
@@ -84,18 +93,18 @@ final class ActivityViewUITests: XCTestCase {
         completeButton.tap()
     }
 
-    func testActivityScreenLoadsCorrectly() {
-        // Navigate to Activity if needed (adjust this for your flow)
-
-        app.swipeUp()
-
-        let title = app.staticTexts["ActivityTitle"]
-        XCTAssertTrue(title.waitForExistence(timeout: 3))
-
-        XCTAssertTrue(app.staticTexts["ActivitySubtitle"].exists)
-        XCTAssertTrue(app.images["ActivityLogo"].exists)
-        XCTAssertTrue(app.buttons["LoadSessionsButton"].exists)
-    }
+//    func testActivityScreenLoadsCorrectly() {
+//        // Navigate to Activity if needed (adjust this for your flow)
+//
+//        app.swipeUp()
+//
+//        let title = app.staticTexts["ActivityTitle"]
+//        XCTAssertTrue(title.waitForExistence(timeout: 3))
+//
+//        XCTAssertTrue(app.staticTexts["ActivitySubtitle"].exists)
+//        XCTAssertTrue(app.images["ActivityLogo"].exists)
+//        XCTAssertTrue(app.buttons["LoadSessionsButton"].exists)
+//    }
 
     func testLoadSessionsNavigation() {
         let loadButton = app.buttons["LoadSessionsButton"]

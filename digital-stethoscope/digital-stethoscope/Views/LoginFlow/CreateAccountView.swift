@@ -47,14 +47,29 @@ struct CreateAccountView: View {
                     }
 
                 // Password field
-                SecureField("Password", text: $userProfile.password)
-                    .padding()
-                    .background(Color.primary)
-                    .cornerRadius(10)
-                    .accessibilityIdentifier("CAPassword")
-                    .onChange(of: userProfile.password) { _, newPWord in
-                        isValidPWord = validatePassword(password: newPWord)
-                    }
+                if isUITestMode() {
+                    TextField("Password", text: $userProfile.password)
+                        .accessibilityIdentifier("CAPassword")
+                        .textContentType(.none)
+                        .autocorrectionDisabled(true)
+                        .padding()
+                        .background(Color.primary)
+                        .cornerRadius(10)
+                        .onChange(of: userProfile.password) { _, newPWord in
+                            isValidPWord = validatePassword(password: newPWord)
+                        }
+                } else {
+                    SecureField("Password", text: $userProfile.password)
+                        .padding()
+                        .textContentType(isUITestMode() ? .none : .password)
+                        .autocorrectionDisabled(isUITestMode())
+                        .background(Color.primary)
+                        .cornerRadius(10)
+                        .accessibilityIdentifier("CAPassword")
+                        .onChange(of: userProfile.password) { _, newPWord in
+                            isValidPWord = validatePassword(password: newPWord)
+                        }
+                }
 
                 // Error message if password/email invalid
                 if !isValidEmail || !isValidPWord {
@@ -69,14 +84,29 @@ struct CreateAccountView: View {
                 }
 
                 // Confirm Password field
-                SecureField("Confirm Password", text: $confirmedPw)
-                    .padding()
-                    .background(Color.primary)
-                    .cornerRadius(10)
-                    .accessibilityIdentifier("CAConfirmPassword")
-                    .onChange(of: confirmedPw) { _, newPWord in
-                        pWordsMatch = validatePasswordsMatch(password: userProfile.password, confirmedPw: newPWord)
-                    }
+                if isUITestMode() {
+                    TextField("Confirm Password", text: $confirmedPw)
+                        .accessibilityIdentifier("CAConfirmPassword")
+                        .textContentType(.none)
+                        .autocorrectionDisabled(true)
+                        .padding()
+                        .background(Color.primary)
+                        .cornerRadius(10)
+                        .onChange(of: confirmedPw) { _, newPWord in
+                            pWordsMatch = validatePasswordsMatch(password: userProfile.password, confirmedPw: newPWord)
+                        }
+                } else {
+                    SecureField("Confirm Password", text: $confirmedPw)
+                        .padding()
+                        .textContentType(isUITestMode() ? .none : .password)
+                        .autocorrectionDisabled(isUITestMode())
+                        .background(Color.primary)
+                        .cornerRadius(10)
+                        .accessibilityIdentifier("CAConfirmPassword")
+                        .onChange(of: confirmedPw) { _, newPWord in
+                            pWordsMatch = validatePasswordsMatch(password: userProfile.password, confirmedPw: newPWord)
+                        }
+                }
 
                 // Error message if passwords don't match
                 if !pWordsMatch {

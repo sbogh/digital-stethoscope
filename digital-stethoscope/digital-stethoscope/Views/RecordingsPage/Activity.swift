@@ -80,6 +80,7 @@ struct Activity: View {
                     .cornerRadius(12)
                     .padding([.horizontal, .bottom])
             }
+            .accessibilityIdentifier("LoadSessionsButton")
         }
         .accessibilityElement(children: .contain)
         .background(Color.primary)

@@ -1,9 +1,40 @@
 # ScopeFace: Digital Stethoscope
 
-## Frontend
+## Introduction
+**ScopeFace** is a portable digital stethoscope system designed to amplify, record, and replay heart and lung sounds. Built for healthcare providers, our tool enables seamless session logging and audio playback through an intuitive mobile interface.
+
+## Features
+- Session-based `.wav` recording and playback  
+- Waveform visualization  
+- Session renaming and note-taking  
+- Firebase integration for storage and authentication
+
+## Team
+
+## System Design
+
+### Architecture
+- **Frontend**: SwiftUI-based iOS app tailored for clinician workflow (see [frontend ADR here](https://github.com/sbogh/digital-stethoscope/blob/main/admin/ADRs/042125-Swift.md))
+- **Backend**: Python FastAPI service to support future device integrations and analytics (see [backend ADR here](https://github.com/sbogh/digital-stethoscope/blob/main/admin/ADRs/042125-Python-FastAPI.md))
+- **Database**: Firebase Firestore and Authentication for secure session tracking (see [database ADR here](https://github.com/sbogh/digital-stethoscope/blob/main/admin/ADRs/042125-Firebase.md)) 
+- **Hardware**: Custom stethoscope device with onboard mic and amplifier circuitry
+
+### UI/UX
+
+
+### System Diagrams
+We created 2 sets of system diagrams: our MVP system and our ideal full product system.
+- **MVP System**: See our [MVP System Diagram here](https://github.com/sbogh/digital-stethoscope/blob/main/admin/mvp-product-diagrams/mvp-system-diagram.pdf) and our [MVP Database Schema Diagram here](https://github.com/sbogh/digital-stethoscope/blob/main/admin/mvp-product-diagrams/mvp-database-schema.pdf)
+- **Full System**: See our [Full System Diagram here](https://github.com/sbogh/digital-stethoscope/blob/main/admin/full-product-diagrams/reach-system-diagram.pdf) and our [Full Database Schema Diagram here](https://github.com/sbogh/digital-stethoscope/blob/main/admin/full-product-diagrams/reach-database-schema.pdf)
+
+For clearer views of our system diagrams, visit our [Miro board here](https://miro.com/app/board/uXjVI8VBn7o=/?share_link_id=259432345089).
+
+## Software
+
+### Frontend
 The frontend is contained in /digital-stethoscope. Please do not change the filename!
 
-### Frontend Setup:
+#### Frontend Setup:
 1. Make sure you have Xcode downloaded on your computer.
 2. The app is nested in folders of the same name. When you clone the respository, be sure to open digital-stethoscope/digital-stethoscope
 3. Firebase SDK: You must install the Firebase SDK on your own machine.
@@ -20,7 +51,7 @@ The frontend is contained in /digital-stethoscope. Please do not change the file
 5. Then you should be good to go!
 
 
-## Backend
+### Backend
 1. Make sure to have FastAPI installed
 2. Take a look at main.py to get an idea of how everything works.
 3. use ```uvicorn main:app --reload``` to run the server

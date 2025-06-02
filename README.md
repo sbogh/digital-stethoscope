@@ -158,6 +158,19 @@ Make sure your virtual environment is activated and all dependencies from requir
 - Data validation
 - Utility functions
 
+#### Frontend (SwiftUI + XCTest)
+Frontend tests were written using XCTest in Xcode.
+
+To run frontend tests:
+1. Open the Xcode project at digital-stethoscope/digital-stethoscope
+2. In the Xcode menu, go to Product > Test
+
+**Test coverage includes:**
+- UI behavior of major views
+- State updates and view model logic
+
+All tests are located in the Tests group within the Xcode project navigator.
+
 ### Running the App
 To run ScopeFace locally, start by launching the backend server and then run the iOS app through Xcode.
 1. Install dependencies from the `requirements.txt` file:

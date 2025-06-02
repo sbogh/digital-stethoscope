@@ -77,38 +77,40 @@ For clearer views of our system diagrams, visit our [Miro board here](https://mi
 - **Hardware**: Custom stethoscope device with onboard mic and amplifier circuitry
 
 ## Repo Structure
+
+```text
 digital-stethoscope/
 │
-├── .github/ # GitHub configuration files
-│ └── workflows/ # CI/CD pipeline setup (e.g., test and deploy scripts)
+├── .github/                        # GitHub configuration files
+│   └── workflows/                  # CI/CD pipeline setup (e.g., test and deploy scripts)
 │
-├── admin/ # Documentation, planning assets, and research
-│ ├── ADRs/ # Architectural Decision Records
-│ ├── full-product-diagrams/ # Diagrams for long-term vision of the system
-│ ├── initial-diagrams/ # Early conceptual or low-fidelity diagrams
-│ ├── mvp-product-diagrams/ # Diagrams focused on MVP system architecture
-│ └── user-research/ # Notes and transcripts from stakeholder interviews
+├── admin/                          # Documentation, planning assets, and research
+│   ├── ADRs/                       # Architectural Decision Records
+│   ├── full-product-diagrams/     # Diagrams for long-term vision of the system
+│   ├── initial-diagrams/          # Early conceptual or low-fidelity diagrams
+│   ├── mvp-product-diagrams/      # Diagrams focused on MVP system architecture
+│   └── user-research/             # Notes and transcripts from stakeholder interviews
 │
-├── backend/ # FastAPI backend services (e.g., API endpoints, auth)
-│ ├── main.py # Entry point for the FastAPI app
-│ └── ... # Additional modules, routes, and utilities
+├── backend/                        # FastAPI backend services (e.g., API endpoints, auth)
+│   ├── main.py                     # Entry point for the FastAPI app
+│   └── ...                         # Additional modules, routes, and utilities
 │
-├── hardware/ # Embedded systems and electronics
-│ ├── modules/ # Modular firmware for sensors, audio processing, etc.
-│ └── ... # Circuit schematics, board configurations
+├── hardware/                       # Embedded systems and electronics
+│   ├── modules/                    # Modular firmware for sensors, audio processing, etc.
+│   └── ...                         # Circuit schematics, board configurations
 │
-├── digital-stethoscope/ # SwiftUI iOS app (Xcode project root)
-│ └── digital-stethoscope/ # Main app source folder
-│   ├── Config/ # Environment settings, constants, Firebase setup
-│   ├── Controllers/ # ViewModels and state management logic
-│   ├── Extensions/ # Swift extensions for common utilities
-│   ├── Models/ # Data structures for recordings, sessions, user state
-│   └── Views/ # SwiftUI interface components
-│       ├── LearnMoreFlow/ # "Learn More" educational flow
-│       ├── LoginFlow/ # Sign-in and account setup screens
-│       └── RecordingsPage/ # Session list, audio playback, and note-taking
+├── digital-stethoscope/           # SwiftUI iOS app (Xcode project root)
+│   └── digital-stethoscope/       # Main app source folder
+│       ├── Config/                # Environment settings, constants, Firebase setup
+│       ├── Controllers/           # ViewModels and state management logic
+│       ├── Extensions/            # Swift extensions for common utilities
+│       ├── Models/                # Data structures for recordings, sessions, user state
+│       └── Views/                 # SwiftUI interface components
+│           ├── LearnMoreFlow/     # "Learn More" educational flow
+│           ├── LoginFlow/         # Sign-in and account setup screens
+│           └── RecordingsPage/    # Session list, audio playback, and note-taking
 │
-└── README.md # Project overview and documentation
+└── README.md                       # Project overview and documentation
 
 ## Software
 

@@ -4,33 +4,43 @@
 //
 //  Created by Siya Rajpal on 5/2/25.
 //
+//  Allows the user to register a new ScopeFace device during sign-up.
+//  Collects the device ID and a user-defined nickname, adds them to the user profile,
+//  and then completes account registration by communicating with Firebase and the backend.
+//
 
 import FirebaseAuth
 import SwiftUI
 
+// MARK: - RegisterDeviceView
+
+/// A SwiftUI view for registering a device during the sign-up process.
+/// Users input a device ID and nickname, which are added to their profile.
 struct RegisterDeviceView: View {
-    // current user profile - with data from past pages saved
-    @EnvironmentObject var userProfile: UserProfile
+    // MARK: - Environment and State
 
-    // device id and name inputted by user
-    @State private var deviceID: String = ""
+    @EnvironmentObject var userProfile: UserProfile // User profile context from previous views
 
-    @State private var deviceName: String = ""
+    @State private var deviceID: String = "" // Device ID input
+    @State private var deviceName: String = "" // Device nickname input
 
-    // checks if fields are left empty
+    /// Determines whether either input field is empty
     var emptyField: Bool {
         deviceID.isEmpty || deviceName.isEmpty
     }
 
-    // handles and validates backend call
-    @State private var querySuccess = false
-    @State private var errorMessage = ""
-    @State private var buttonClick = false
-    @State private var isLoading = false
+    @State private var querySuccess = false // Flag for successful registration
+    @State private var errorMessage = "" // Error message if registration fails
+    @State private var buttonClick = false // Tracks whether button was tapped
+    @State private var isLoading = false // Shows loading spinner during signup
+
+    // MARK: - View Body
 
     var body: some View {
         VStack(spacing: 15) {
-            // Small Logo at Top
+            // MARK: - Header
+
+            // logo
             Image("Logo")
                 .resizable()
                 .frame(width: 62.46876, height: 87, alignment: .top)
@@ -52,7 +62,8 @@ struct RegisterDeviceView: View {
                 .foregroundColor(Color.CTA2)
                 .lineLimit(nil)
 
-            // Device form
+            // MARK: - Device Input Form
+
             VStack(spacing: 10) {
                 // DeviceId text field
                 TextField("Device Id", text: $deviceID)
@@ -85,19 +96,19 @@ struct RegisterDeviceView: View {
             .cornerRadius(20)
             .padding(.horizontal)
 
-            // complete sign up button
+            // MARK: - Complete Sign Up Button
+
             Button(action: {
                 buttonClick = true
                 isLoading = true
-                // checks if any fields are empty, & adds devices to user obj
+
+                // Save device if valid
                 if !emptyField {
                     addDevices(deviceId: deviceID, deviceName: deviceName)
                 }
 
-                // once data validated, register user
+                // Trigger Firebase + backend account registration
                 Task {
-                    // print("calling authRegister with: \(userProfile.email)")
-
                     if isUITestMode() {
                         await MainActor.run {
                             querySuccess = true
@@ -126,12 +137,12 @@ struct RegisterDeviceView: View {
             }
             .padding(.bottom)
             .accessibilityIdentifier("SignupCompleteButton")
-            // TODO: route to proper page
             .navigationDestination(isPresented: $querySuccess) {
                 Activity().environmentObject(userProfile)
             }
 
-            // loading icon when processing sign up
+            // MARK: - Feedback
+
             if isLoading {
                 ProgressView("Please wait while your account is being created...")
                     .padding()
@@ -151,6 +162,13 @@ struct RegisterDeviceView: View {
         Spacer()
     }
 
+    // MARK: - Helper Methods
+
+    /// Adds device data to the user's profile before registration.
+    ///
+    /// - Parameters:
+    ///   - deviceId: Raw device ID string entered by user.
+    ///   - deviceName: User-chosen nickname for the device.
     func addDevices(deviceId: String, deviceName: String) {
         print("user email: ", userProfile.email)
         print("user pasword: ", userProfile.password)
@@ -166,6 +184,8 @@ struct RegisterDeviceView: View {
         print("device registered with id: ", deviceID, "and name: ", deviceName)
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     RegisterDeviceView().environmentObject(UserProfile())

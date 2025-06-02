@@ -4,18 +4,28 @@
 //
 //  Created by Shelby Myrman on 5/19/25.
 //
+//  Displays a loading screen while fetching new and viewed
+//  recording sessions from the backend. Includes a progress indicator
+//  and triggers an asynchronous fetch operation on appear.
+//
 
-// TODO: (FOR SIYA) Once recordings are loaded, we'll want to go to the activity page. We may even want to set some sort of timer that waits like 2 mins if no new recordings are appearing, since it can take a while to get the data from the device? Idk up to you what the best way to handle it is
 import SwiftUI
 
+// MARK: - Loading View
+
+/// Displays a loading animation and triggers data fetch for new/viewed recordings
 struct Loading: View {
     @EnvironmentObject var userProfile: UserProfile
+
+    /// Bindings for storing fetched recordings and navigation control
     @Binding var newRecordings: [RecordingInfo]
     @Binding var viewedRecordings: [RecordingInfo]
     @Binding var goBack: Bool
 
     var body: some View {
         VStack(spacing: 5) {
+            // MARK: - Logo and Title
+
             Image("Logo")
                 .resizable()
                 .frame(width: 62.46876, height: 87, alignment: .top)
@@ -36,8 +46,8 @@ struct Loading: View {
                 .foregroundColor(Color.CTA2)
                 .lineLimit(nil)
 
-            // TODO: (FOR SIYA) should we leave this spinny thing? i think it looks
-            // good but idk if we should choose that or the image
+            // MARK: - Spinner and Animation
+
             ProgressView()
                 .progressViewStyle(CircularProgressViewStyle(tint: Color.secondary))
                 .scaleEffect(2.0, anchor: .center)
@@ -57,6 +67,16 @@ struct Loading: View {
         }
     }
 
+    // MARK: - loadAndReturn
+
+    /// Loads recordings from backend and updates binding variables
+    ///
+    /// This function performs the following:
+    /// - Waits briefly in test mode to simulate loading delay
+    /// - Fetches Firebase authentication token
+    /// - Sends token to backend and retrieves recordings
+    /// - Updates `newRecordings` and `viewedRecordings`
+    /// - Dismisses this view by setting `goBack = false`
     func loadAndReturn() async {
         if isUITestMode() {
             try? await Task.sleep(nanoseconds: 5_000_000_000)
@@ -83,6 +103,8 @@ struct Loading: View {
         }
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     Loading(

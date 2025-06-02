@@ -4,10 +4,16 @@
 //
 //  Created by Shelby Myrman on 5/20/25.
 //
+//  Defines the `SessionOverview` view that displays information about
+//  an individual recording session, including title, date, time, audio playback,
+//  and session notes. It also includes a `RecordingsView` to render lists of these.
+//
 
-// TODO: (FOR SIYA) in this file you're going to write to firebase a lot i think
 import SwiftUI
 
+// MARK: - SessionOverview
+
+/// View representing a single session card with title, notes, audio player, and metadata.
 /*
  This takes in individual recording sessions and displays
  title, notes, date, time, waveform, and play button.
@@ -28,6 +34,7 @@ struct SessionOverview: View {
 
     var onPlay: (() -> Void)? = nil
 
+    /// Custom initializer to bind recording data to UI
     init(sessionTitle: String, recording: RecordingInfo, onPlay: (() -> Void)? = nil) {
         self.recording = recording
         defaultTitle = sessionTitle
@@ -38,8 +45,9 @@ struct SessionOverview: View {
 
     var body: some View {
         VStack {
+            // MARK: - Header with editable title and expand button
+
             HStack {
-                // TODO: (FOR SIYA) we need to send the editedTitle to the database. In theory we'll do this once they're done editing, ig we can add a save button tho if needed?
                 TextField("Session Title", text: $editedTitle)
                     .font(.custom("Roboto-Medium", size: 18))
                     .foregroundColor(.CTA2)
@@ -52,9 +60,9 @@ struct SessionOverview: View {
                     }
                 Spacer()
 
-                // TODO: (FOR SIYA) when the user engages with this button for the first time, we should mark it as viewed and send that to DB. Or we could do it a different way where if they press the play button we mark it as viewed? Idk but I think going based on this button would be easiest
                 Button(action: {
                     withAnimation {
+                        // If expanding for the first time, mark session as viewed
                         if isExpanded, !recording.viewed {
                             Task {
                                 await changeView(recordingID: recording.id, viewBool: true)
@@ -71,6 +79,8 @@ struct SessionOverview: View {
                 .accessibilityIdentifier("ExpandSessionButton")
             }
 
+            // MARK: - Date & Time
+
             HStack {
                 Text(recording.sessionTime)
                     .font(
@@ -85,11 +95,13 @@ struct SessionOverview: View {
                 Spacer()
             }
 
+            // MARK: - Expanded View Content
+
             if isExpanded {
                 Divider()
 
-                // TODO: (FOR SIYA) ok so I tested this and this should work as long as we have the correct data type in here
-                // Look at TestWAVPlayback struct in audioplayer file to see correct formatting
+                // MARK: Audio Player
+
                 if let url = recording.wavFileURL {
                     VStack(alignment: .leading) {
                         FirebaseAudioPlayer(firebasePath: url)
@@ -109,6 +121,8 @@ struct SessionOverview: View {
                     }
                     .padding(.bottom, 2)
                 }
+
+                // MARK: Notes Section
 
                 HStack {
                     Text("Session Notes:")
@@ -146,6 +160,13 @@ struct SessionOverview: View {
         .padding(.bottom, 3)
     }
 
+    // MARK: - Backend Update Helpers
+
+    /// Updates the session title for a specific recording in the backend.
+    ///
+    /// - Parameters:
+    ///   - recordingID: The unique identifier for the recording to update.
+    ///   - newTitle: The new title string to assign.
     func changeTitle(recordingID: String, newTitle: String) async {
         do {
             let token = try await getFirebaseToken()
@@ -168,6 +189,11 @@ struct SessionOverview: View {
         }
     }
 
+    /// Updates the session notes for a specific recording in the backend.
+    ///
+    /// - Parameters:
+    ///   - recordingID: The unique identifier for the recording to update.
+    ///   - newNote: The updated session notes to store.
     func changeNote(recordingID: String, newNote: String) async {
         do {
             let token = try await getFirebaseToken()
@@ -190,6 +216,11 @@ struct SessionOverview: View {
         }
     }
 
+    /// Marks the recording as viewed or unviewed in the backend.
+    ///
+    /// - Parameters:
+    ///   - recordingID: The unique identifier of the recording to update.
+    ///   - viewBool: A Boolean flag indicating whether the session has been viewed.
     func changeView(recordingID: String, viewBool: Bool) async {
         do {
             let token = try await getFirebaseToken()
@@ -213,9 +244,11 @@ struct SessionOverview: View {
     }
 }
 
-// This takes in a list of recordings and turns them into sessionoverviews.
-// The input for these should be separated into a list of
-// viewed sessions and a list of new sessions. Don't input them together
+// MARK: - RecordingsView
+
+/// This takes in a list of recordings and turns them into sessionoverviews.
+/// The input for these should be separated into a list of
+/// viewed sessions and a list of new sessions. Don't input them together
 struct RecordingsView: View {
     var type: String
     var recordings: [RecordingInfo]
@@ -223,6 +256,7 @@ struct RecordingsView: View {
 
     var body: some View {
         HStack {
+            // Section Title
             Text(type)
                 .font(
                     Font.custom("Roboto-ExtraBold", size: 30)
@@ -234,6 +268,7 @@ struct RecordingsView: View {
         }
         .frame(maxWidth: .infinity)
 
+        // List of Sessions
         ForEach(recordings) { recording in
             let sessionTitle = recording.sessionTitle.isEmpty
                 ? (recording.viewed ? "Viewed Session" : "New Session")

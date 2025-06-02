@@ -2,6 +2,7 @@
 //  APIConfig.swift
 //  digital-stethoscope
 //
+//  Defines all the URL's needed to communicate with the backend
 //  Created by Siya Rajpal on 5/2/25.
 //
 

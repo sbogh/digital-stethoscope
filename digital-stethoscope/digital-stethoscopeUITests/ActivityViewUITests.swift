@@ -4,18 +4,30 @@
 //
 //  Created by Siya Rajpal on 5/27/25.
 //
+//  UI tests for the ActivityView screen, verifying navigation, session playback,
+//  note editing, and title updating behaviors.
+//
 
 import XCTest
 
+// MARK: - URL Extension for Mock WAV File
+
 extension URL {
     static var testHeartbeatURL: URL? {
+        /// Returns the local URL for a test heartbeat WAV file bundled with the test target.
         Bundle(for: ActivityViewUITests.self).url(forResource: "frontend-test-heartbeat", withExtension: "wav")
     }
 }
 
+// MARK: - ActivityViewUITests
+
 final class ActivityViewUITests: XCTestCase {
     var app: XCUIApplication!
 
+    // MARK: - Setup
+
+    /// Sets up the test environment before each test runs.
+    /// Initializes the app instance, adds launch arguments for UI testing, and navigates to the ActivityView.
     override func setUpWithError() throws {
         continueAfterFailure = false
         app = XCUIApplication()
@@ -25,6 +37,8 @@ final class ActivityViewUITests: XCTestCase {
         navigateToActivityView()
     }
 
+    /// Simulates the full onboarding flow to reach the Activity screen.
+    /// Includes account creation, timezone selection, and device registration.
     func navigateToActivityView() {
         let caButton = app.buttons["CreateAccountButton"]
         XCTAssertTrue(caButton.waitForExistence(timeout: 5))
@@ -106,6 +120,14 @@ final class ActivityViewUITests: XCTestCase {
 //        XCTAssertTrue(app.buttons["LoadSessionsButton"].exists)
 //    }
 
+    // MARK: - Test: Load Sessions Navigation
+
+    /// Verifies that tapping the "Load Sessions" button transitions the user to the loading screen.
+    ///
+    /// Steps:
+    /// - Waits for the "LoadSessionsButton" to appear.
+    /// - Taps the button.
+    /// - Asserts that the "LoadingTitle" is now visible.
     func testLoadSessionsNavigation() {
         let loadButton = app.buttons["LoadSessionsButton"]
         XCTAssertTrue(loadButton.waitForExistence(timeout: 3))
@@ -115,6 +137,12 @@ final class ActivityViewUITests: XCTestCase {
         XCTAssertTrue(loadingTitle.waitForExistence(timeout: 3))
     }
 
+    // MARK: - Test: Expand and Play Session
+
+    /// Verifies that a session can be expanded and the audio player appears (or displays fallback text).
+    ///
+    /// Assumes:
+    /// - At least one "New" session is present.
     func testOpenRecordingSessionAndPlay() throws {
         // Assumes there is at least one New recording session
 
@@ -130,6 +158,14 @@ final class ActivityViewUITests: XCTestCase {
         XCTAssertTrue(audioPlayer.waitForExistence(timeout: 2))
     }
 
+    // MARK: - Test: Edit Session Notes
+
+    /// Verifies that notes can be edited within a session.
+    ///
+    /// Steps:
+    /// - Expands a session.
+    /// - Asserts that the "NoteField" appears.
+    /// - Types text into the field.
     func testOpenRecordingSessionAndEditNote() throws {
         // Assumes there is at least one New recording session
 
@@ -152,6 +188,13 @@ final class ActivityViewUITests: XCTestCase {
         noteField.typeText("This patient has a murmur. Sad.")
     }
 
+    // MARK: - Test: Edit Session Title
+
+    /// Verifies that the session title field accepts new input.
+    ///
+    /// Steps:
+    /// - Locates the session title text field.
+    /// - Types new text into it.
     func testEditRecordingTitle() throws {
         // Assumes there is at least one New recording session
 

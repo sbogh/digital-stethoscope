@@ -9,6 +9,8 @@
 import Combine
 import Foundation
 
+/// A user profile model that conforms to `ObservableObject` for use in SwiftUI.
+/// Stores user credentials, personal info, and device-related metadata.
 class UserProfile: ObservableObject {
     @Published var email: String = ""
     @Published var password: String = ""

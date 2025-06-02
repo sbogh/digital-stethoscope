@@ -2,13 +2,18 @@
 //  RecordingsController.swift
 //  digital-stethoscope
 //
+//  Controlls calls to the backend for all recording interactions
 //  Created by Siya Rajpal on 5/22/25.
 //
 
 import FirebaseAuth
 
+/// Retrieves the current Firebase user's ID token asynchronously.
+/// - Returns: A valid Firebase ID token as a `String`.
+/// - Throws: An error if there is no authenticated user or token retrieval fails.
 func getFirebaseToken() async throws -> String {
     guard let user = Auth.auth().currentUser else {
+        // Throw an error if the user is not authenticated
         throw NSError(domain: "FirebaseAuth", code: 401, userInfo: [NSLocalizedDescriptionKey: "No authenticated user"])
     }
 
@@ -16,32 +21,38 @@ func getFirebaseToken() async throws -> String {
     return token
 }
 
+/// Sends a PUT request to update the title of a specific recording.
+/// - Parameters:
+///   - token: Firebase auth token for authorization.
+///   - recordingID: The unique ID of the recording to update.
+///   - newTitle: The new title to be set.
+/// - Returns: A tuple with a status message and a success flag.
 func updateRecordingTitle(token: String, recordingID: String, newTitle: String) async -> (String, Bool) {
     guard let url = URL(string: APIConfig.getRecordingsTitleUpdateEndpoint) else {
         return ("Invalid URL", false)
     }
 
+    // Construct HTTP PUT request
     var request = URLRequest(url: url)
     request.httpMethod = "PUT"
     request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    // print("[UPDATE TITLE] Reqeust values set")
 
+    // Request body
     let body: [String: Any] = [
         "recordingID": recordingID,
         "title": newTitle,
     ]
 
     do {
+        // Convert request body to JSON and send request
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
 
         let (data, response) = try await URLSession.shared.data(for: request)
 
-        // print("[UPDATE TITLE] Request happened")
-
+        // Cast response to HTTPURLResponse and handle the output
         if let httpResponse = response as? HTTPURLResponse {
             if (200 ... 299).contains(httpResponse.statusCode) {
-                // print("[UPDATE TITLE] success")
                 return ("Title updated successfully", true)
             } else {
                 let errorResponse = String(data: data, encoding: .utf8) ?? "Unknown error"
@@ -56,16 +67,22 @@ func updateRecordingTitle(token: String, recordingID: String, newTitle: String) 
     }
 }
 
+/// Sends a PUT request to update the note of a specific recording.
+/// - Parameters:
+///   - token: Firebase auth token for authorization.
+///   - recordingID: The unique ID of the recording to update.
+///   - newNote: The new note to be set.
+/// - Returns: A tuple with a status message and a success flag.
 func updateRecordingNote(token: String, recordingID: String, newNote: String) async -> (String, Bool) {
     guard let url = URL(string: APIConfig.getRecordingsNoteUpdateEndpoint) else {
         return ("Invalid URL", false)
     }
 
+    // Setup HTTP request
     var request = URLRequest(url: url)
     request.httpMethod = "PUT"
     request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    // print("[UPDATE TITLE] Reqeust values set")
 
     let body: [String: Any] = [
         "recordingID": recordingID,
@@ -73,15 +90,14 @@ func updateRecordingNote(token: String, recordingID: String, newNote: String) as
     ]
 
     do {
+        // Convert request body to JSON and send request
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
 
         let (data, response) = try await URLSession.shared.data(for: request)
 
-        // print("[UPDATE NOTE] Request happened")
-
+        // Cast response to HTTPURLResponse and handle the output
         if let httpResponse = response as? HTTPURLResponse {
             if (200 ... 299).contains(httpResponse.statusCode) {
-                // print("[UPDATE NOTE] success")
                 return ("Note updated successfully", true)
             } else {
                 let errorResponse = String(data: data, encoding: .utf8) ?? "Unknown error"
@@ -96,11 +112,18 @@ func updateRecordingNote(token: String, recordingID: String, newNote: String) as
     }
 }
 
+/// Sends a PUT request to update the view status of a specific recording.
+/// - Parameters:
+///   - token: Firebase auth token for authorization.
+///   - recordingID: The unique ID of the recording to update.
+///   - viewBool: A Boolean indicating the new viewed status.
+/// - Returns: A tuple with a status message and a success flag.
 func updateRecordingView(token: String, recordingID: String, viewBool: Bool) async -> (String, Bool) {
     guard let url = URL(string: APIConfig.getRecordingsNoteUpdateViewed) else {
         return ("Invalid URL", false)
     }
 
+    // Setup HTTP PUT request
     var request = URLRequest(url: url)
     request.httpMethod = "PUT"
     request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
@@ -113,12 +136,12 @@ func updateRecordingView(token: String, recordingID: String, viewBool: Bool) asy
     ]
 
     do {
+        // Convert request body to JSON and send request
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
 
         let (data, response) = try await URLSession.shared.data(for: request)
 
-        // print("[UPDATE VIEW] Request happened")
-
+        // Cast response to HTTPURLResponse and handle the output
         if let httpResponse = response as? HTTPURLResponse {
             if (200 ... 299).contains(httpResponse.statusCode) {
                 // print("[UPDATE VIEW] success")
@@ -136,24 +159,27 @@ func updateRecordingView(token: String, recordingID: String, viewBool: Bool) asy
     }
 }
 
+/// Fetches all recordings for the current user.
+/// - Parameter token: Firebase auth token for authorization.
+/// - Returns: A tuple containing an array of `RecordingInfo` and an optional error message.
 func fetchRecordings(token: String) async -> ([RecordingInfo], String?) {
     guard let url = URL(string: APIConfig.getRecordingsEndpoint) else {
         return ([], "Invalid URL")
     }
 
+    // Setup HTTP GET request
     var request = URLRequest(url: url)
     request.httpMethod = "GET"
-    // print("got url and set request method")
     request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-    // print("set bearer methods")
 
     do {
+        // Send request and wait for response
         let (data, response) = try await URLSession.shared.data(for: request)
-        // print("got data and response", data)
+
+        // error checking: look for successful status code
         if let httpResponse = response as? HTTPURLResponse, (200 ... 299).contains(httpResponse.statusCode) {
-            // print("response was good")
             do {
-                let (data, _) = try await URLSession.shared.data(for: request)
+                // format data to display properly
                 let decoder = JSONDecoder()
                 let formatter = DateFormatter()
                 formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
@@ -161,7 +187,6 @@ func fetchRecordings(token: String) async -> ([RecordingInfo], String?) {
                 decoder.dateDecodingStrategy = .formatted(formatter)
 
                 let recordings = try decoder.decode([RecordingInfo].self, from: data)
-                // print("[FETCH RECORDINGS] Successfully fetched recordings: \(recordings.count)")
                 return (recordings, nil)
             }
         }

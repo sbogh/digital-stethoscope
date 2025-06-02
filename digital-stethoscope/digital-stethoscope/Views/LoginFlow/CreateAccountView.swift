@@ -4,37 +4,56 @@
 //
 //  Created by Siya Rajpal on 4/28/25.
 //
+//  Handles account creation in the digital stethoscope app.
+//  Users input their email, password, and confirmation password.
+//  Performs validation for email format, password strength, and password matching,
+//  then proceeds to the account setup view upon successful input.
+//
 import SwiftUI
 
+// MARK: - CreateAccountView
+
+/// A SwiftUI view that allows users to create an account by entering their email and password.
+/// Validates input fields and navigates to `AccountSetupView` if all inputs are valid.
+
 struct CreateAccountView: View {
-    // user data object
+    // MARK: - Environment and State
+
+    /// Shared user profile object containing account info
     @EnvironmentObject var userProfile: UserProfile
 
-    // email format validation variables
+    /// Email format validation flag
     @State private var isValidEmail = true
 
-    // password format validation variables
+    /// Password format validation flag
     @State private var isValidPWord = true
 
-    // passwords match validation variables
+    /// Password confirmation input
     @State private var confirmedPw: String = ""
+
+    /// Password match validation flag
     @State private var pWordsMatch = true
 
-    // checks that all required fields are filled out and valid
-    // @State private var validNewAccount = false
+    /// Checks if any of the required fields are empty
     var emptyField: Bool {
         userProfile.email.isEmpty || userProfile.password.isEmpty || confirmedPw.isEmpty
     }
 
-    // signup validation variables
+    /// Navigation trigger to continue signup
     @State private var continueSignup = false
+
+    @State private var navLearnMore = false // Tracks whether to navigate to Learn More page
+
+    // MARK: - View Body
 
     var body: some View {
         VStack(spacing: 5) {
+            // Branding header
             LoginHeaderView(subtitle: "Sign up below\nto start listening")
                 .padding(.bottom)
 
-            // Create account form
+            // MARK: - Form Inputs
+
             VStack(spacing: 5) {
                 // Email text field
                 TextField("Email", text: $userProfile.email)
@@ -46,7 +65,7 @@ struct CreateAccountView: View {
                         isValidEmail = validateEmail(email: newEmail)
                     }
 
-                // Password field
+                // Password input (SecureField or TextField for testing)
                 if isUITestMode() {
                     TextField("Password", text: $userProfile.password)
                         .accessibilityIdentifier("CAPassword")
@@ -148,11 +167,12 @@ struct CreateAccountView: View {
             .cornerRadius(20)
             .padding(.horizontal)
 
-            // sign up button
+            // MARK: - Sign Up Button
+
             Button(action: {
+                // Proceed if all validations pass
                 if isValidEmail, isValidPWord, pWordsMatch, !emptyField {
                     continueSignup = true
-                    // print("sigining up with email: ", userProfile.email)
                 }
 
             }) {
@@ -172,9 +192,10 @@ struct CreateAccountView: View {
                 AccountSetupView().environmentObject(userProfile)
             }
 
-            // Learn More link
+            // MARK: - Learn More Link
+
             Button(action: {
-                // TODO: add route to learn more
+                navLearnMore = true
             }) {
                 Text("Learn More")
                     .font(Font.custom("Roboto-ExtraBold", size: 18)
@@ -183,9 +204,14 @@ struct CreateAccountView: View {
                     .foregroundColor(Color.CTA1)
                     .underline(true, color: .CTA1)
             }.padding(.bottom)
+                .navigationDestination(isPresented: $navLearnMore) {
+                    LearnMore()
+                }
         }
-        Spacer()
+        Spacer() // Push content to top
     }
+
+    // MARK: - Validation Helpers
 
     /// Validates user inputs a valid email
     ///
@@ -241,6 +267,8 @@ struct CreateAccountView: View {
         return true
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     CreateAccountView().environmentObject(UserProfile())

@@ -4,20 +4,38 @@
 //
 //  Created by Siya Rajpal on 4/27/25.
 //
+//  Main landing screen for the app. From here, users can either:
+//  - Create a new account
+//  - Log into an existing account
+//  - Learn more about the product
+//  Navigation is handled via SwiftUI's state-driven navigationDestination.
+//
 
 import SwiftUI
 
-struct LandingPage: View {
-    @State private var navLogin = false
-    @State private var navCreateAcc = false
+// MARK: - LandingPage View
 
-    @State private var navLearnMore = false
+/// The landing screen shown to users on app launch.
+/// Offers navigation to account creation, login, and product information.
+
+struct LandingPage: View {
+    // MARK: - Navigation State
+
+    @State private var navLogin = false // Tracks whether to navigate to login
+    @State private var navCreateAcc = false // Tracks whether to navigate to create account
+    @State private var navLearnMore = false // Tracks whether to navigate to Learn More page
+
+    // Shared user profile environment object
     @EnvironmentObject var userProfile: UserProfile
 
+    // MARK: - Body
+
     var body: some View {
-        // Aligns content in the middle vertically
+        // Vertically stacked content
         VStack(alignment: .center, spacing: 5) {
-            // Heading
+            // MARK: - Branding
+
+            // App name header
             Text("ScopeFace")
                 .font(
                     Font.custom("Roboto-ExtraBold", size: 40)
@@ -40,6 +58,8 @@ struct LandingPage: View {
                 .frame(width: 135, height: 188)
                 .padding(.bottom, 30)
                 .accessibilityIdentifier("LandingLogo")
+
+            // MARK: - Buttons
 
             // Create Account button
             Button(action: {
@@ -99,6 +119,8 @@ struct LandingPage: View {
         }
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     LandingPage().environmentObject(UserProfile())

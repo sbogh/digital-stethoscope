@@ -4,30 +4,43 @@
 //
 //  Created by Siya Rajpal on 4/28/25.
 //
-
-// TODO: Alter existing functions to query DB and ensure password is correct
+//  Allows users to log into their account. Includes real-time validation
+//  for email and password, Firebase authentication, and a call to the backend to retrieve
+//  user profile data once authenticated.
+//
 
 import FirebaseAuth
 import SwiftUI
 
+// MARK: - LoginView
+
+/// A SwiftUI view for user login. It validates credentials, authenticates with Firebase,
+/// and fetches user profile data from the backend
+
 struct LoginView: View {
+    // MARK: - Form State
+
     @State private var email: String = ""
     @State private var isValidEmail = true
 
     @State private var password: String = ""
     @State private var isValidPWord = true
 
+    /// Returns `true` if either email or password is empty
     var emptyField: Bool {
         email.isEmpty || password.isEmpty
     }
 
-    @State private var validAccount = false
-    @State private var buttonClicked = false
-    @State private var isLoading = false
-    @State private var errorMessage = ""
+    // MARK: - Control Flow State
 
-    @EnvironmentObject var userProfile: UserProfile
+    @State private var validAccount = false // Triggers navigation on successful login
+    @State private var buttonClicked = false // Tracks if user has attempted to log in
+    @State private var isLoading = false // Controls display of loading spinner
+    @State private var errorMessage = "" // Holds error messages
 
+    @EnvironmentObject var userProfile: UserProfile // Shared app-wide user state
+
+    // Temporary model for decoding backend user data
     struct DecodedUserProfile: Codable {
         let email: String
         let firstName: String
@@ -36,12 +49,18 @@ struct LoginView: View {
         let deviceNicknames: [String: String]
     }
 
+    @State private var navLearnMore = false // Tracks whether to navigate to Learn More page
+
+    // MARK: - View Body
+
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
+                // App logo + subtitle
                 LoginHeaderView(subtitle: "Log in below.\nSound decisions await!")
 
-                // VStack = form itself
+                // MARK: - Login Form
+
                 VStack(spacing: 15) {
                     // Email text field
                     TextField("Email", text: $email)
@@ -53,7 +72,7 @@ struct LoginView: View {
                             isValidEmail = validateEmail(email: newEmail)
                         }
 
-                    // Password field
+                    // Password field (text or secure depending on test mode)
                     if isUITestMode() {
                         TextField("Password", text: $password)
                             .accessibilityIdentifier("Password")
@@ -78,7 +97,9 @@ struct LoginView: View {
                             }
                     }
 
-                    // Error message if password/email invalid
+                    // MARK: - Inline Error Messages
+
+                    // Invalid credentials error message
                     if !isValidEmail || !isValidPWord {
                         HStack {
                             Text("Invalid Email or Password")
@@ -91,7 +112,7 @@ struct LoginView: View {
                         }
                     }
 
-                    // Error message if any field is empty
+                    // Empty fields error message
                     if emptyField {
                         HStack {
                             Spacer()
@@ -105,7 +126,7 @@ struct LoginView: View {
                         }
                     }
 
-                    // forgot password button
+                    // forgot password placeholder
                     HStack {
                         Spacer()
                         Button(action: {
@@ -122,8 +143,8 @@ struct LoginView: View {
                 .cornerRadius(20)
                 .padding(.horizontal)
 
-                // login button //
-                // button action:
+                // MARK: - Login Button
+
                 Button(action: {
                     // variables to indicate button status
                     buttonClicked = true
@@ -131,7 +152,7 @@ struct LoginView: View {
 
                     // checks if email and password are in valid form
                     if isValidEmail, isValidPWord {
-                        // authenticates information inputted
+                        // Attempt login
                         Task {
                             do {
                                 // if autneticateUser is successful, wait for it to finish and set variables accordingly
@@ -171,12 +192,12 @@ struct LoginView: View {
                         .cornerRadius(10)
                 }.padding()
                     .accessibilityIdentifier("LogInButton")
-                    // TODO: change to correct page
                     .navigationDestination(isPresented: $validAccount) {
                         DeviceSelectionView().environmentObject(userProfile)
                     }
 
-                // loading icon when processing log in
+                // MARK: - Feedback (Loading + Errors)
+
                 if isLoading {
                     ProgressView("Logging in...")
                         .padding()
@@ -194,9 +215,10 @@ struct LoginView: View {
                     }
                 }
 
-                // Learn More link
+                // MARK: - Learn More
+
                 Button(action: {
-                    // TODO: add route to learn more
+                    navLearnMore = true
                 }) {
                     Text("Learn More")
                         .font(Font.custom("Roboto-ExtraBold", size: 18)
@@ -205,10 +227,15 @@ struct LoginView: View {
                         .foregroundColor(Color.CTA1)
                         .underline(true, color: .CTA1)
                 }.padding(.bottom)
+                    .navigationDestination(isPresented: $navLearnMore) {
+                        LearnMore()
+                    }
             }
             Spacer()
         }
     }
+
+    // MARK: - Validation Functions
 
     /// Validates user inputs a valid email
     ///
@@ -248,6 +275,8 @@ struct LoginView: View {
         }
         return true
     }
+
+    // MARK: - Firebase & Backend Integration
 
     /// Authenticates user and grabs user profile by communicating with the backend
     ///
@@ -295,6 +324,8 @@ struct LoginView: View {
         }
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     LoginView().environmentObject(UserProfile())

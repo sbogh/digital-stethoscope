@@ -3,31 +3,46 @@
 //  digital-stethoscope
 //
 //  Created by Siya Rajpal on 5/11/25.
+//  Allows the user to select their current ScopeFace device
+//  from a list of registered devices. Updates the user's profile
+//  in the backend with the selected device and navigates to the main activity screen.
 //
 
 import FirebaseAuth
 import SwiftUI
 
+// MARK: - DeviceSelectionView
+
+/// A SwiftUI view that prompts the user to select their current device and sends that choice to the backend.
+/// Once a device is selected and confirmed, the app proceeds to the Activity screen.
+
 struct DeviceSelectionView: View {
-    // current user profile
+    // MARK: - Environment and State
+
+    /// Shared user data
     @EnvironmentObject var userProfile: UserProfile
 
-    // determines whether to nav to next page
+    /// Triggers navigation to the next page
     @State private var cont: Bool = false
 
-    // determines whether user has selected a device
+    /// Flag to track if no device has been selected
     var noDeviceSelected: Bool {
         userProfile.currentDeviceID.isEmpty
     }
 
-    // manages the button click and API requests
+    /// Backend error message (if any)
     @State private var errorMessage: String = ""
+    /// Tracks if the user attempted to proceed
     @State private var buttonClicked: Bool = false
+    /// Controls the display of the loading spinner
     @State private var isLoading: Bool = false
+
+    // MARK: - View Body
 
     var body: some View {
         VStack(spacing: 15) {
-            // Small Logo at Top
+            // MARK: - Branding Header
+
             Image("Logo")
                 .resizable()
                 .frame(width: 62.46876, height: 87, alignment: .top)
@@ -49,9 +64,10 @@ struct DeviceSelectionView: View {
                 .foregroundColor(Color.CTA2)
                 .lineLimit(nil)
 
-            // add info field
+            // MARK: - Device Selection Form
+
             VStack(spacing: 10) {
-                // device drop down: with device nicknames
+                // Device dropdown with nicknames
                 Menu {
                     ForEach(Array(userProfile.deviceNicknames.values), id: \.self) { device in
                         Button(action: {
@@ -76,7 +92,7 @@ struct DeviceSelectionView: View {
                 }
                 .accessibilityIdentifier("DeviceDropdown")
 
-                // Error handling if no device is selected
+                /// Inline error message if device not selected
                 if noDeviceSelected {
                     HStack {
                         Text("Selecting your current device is required")
@@ -94,7 +110,8 @@ struct DeviceSelectionView: View {
             .padding(.horizontal)
         }
 
-        // continue button
+        // MARK: - Continue Button
+
         Button(action: {
             if !noDeviceSelected {
                 buttonClicked = true
@@ -129,7 +146,8 @@ struct DeviceSelectionView: View {
             Activity().environmentObject(userProfile)
         }
 
-        // loading icon when processing backend call
+        // MARK: - Loading and Error State
+
         if isLoading {
             ProgressView("Updating current device...")
                 .padding()
@@ -149,11 +167,12 @@ struct DeviceSelectionView: View {
         Spacer()
     }
 
-    /// Communicates with backend to update user profile with current device
+    // MARK: - Backend Function
+
+    /// Sends a request to the backend to update the user's current device ID.
     ///
-    /// - Parameters:
-    ///   - currentUserDevice: The user's selected device
-    /// - Returns: Indicates success or not.
+    /// - Parameter currentUserDevice: The device ID or nickname selected by the user.
+    /// - Throws: An error if the network call fails or the server returns an error.
     func updateDevice(currentUserDevice: String) async throws {
         guard let url = URL(string: APIConfig.deviceUpdateEndpoint) else {
             throw URLError(.badURL)
@@ -165,19 +184,24 @@ struct DeviceSelectionView: View {
         }
 
         do {
+            // Retrieve Firebase auth token
             let token = try await user.getIDToken()
             print("Firebase ID token: \(token)")
 
+            // Construct request
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
+            // JSON body
             let body: [String: String] = ["currentDeviceID": currentUserDevice]
             request.httpBody = try JSONEncoder().encode(body)
 
+            // Send request
             let (data, response) = try await URLSession.shared.data(for: request)
 
+            // Validate server response
             guard let httpResponse = response as? HTTPURLResponse else {
                 throw URLError(.badServerResponse)
             }
@@ -193,6 +217,8 @@ struct DeviceSelectionView: View {
         }
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     DeviceSelectionView().environmentObject(UserProfile())

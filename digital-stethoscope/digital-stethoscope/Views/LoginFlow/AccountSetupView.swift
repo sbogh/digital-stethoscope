@@ -4,38 +4,49 @@
 //
 //  Created by Siya Rajpal on 4/28/25.
 //
+//  Handles account setup by allowing the user to enter their name
+//  and select a time zone before continuing to the device registration step.
+//  Includes input validation
+//
 
 import SwiftUI
 
-// TODO: Save information and send to DB
+// MARK: - AccountSetupView
 
-// TODO: checking provider ID's - how, REQUIRE ID
+/// A SwiftUI view for setting up user information (name and time zone) after authentication.
+/// On valid input, the user is navigated to the device registration view.
 
 struct AccountSetupView: View {
-    // user data object
+    // MARK: - Environment & State
+
+    /// Shared user profile object for storing name and time zone.
     @EnvironmentObject var userProfile: UserProfile
 
-    // handles changes in name
+    /// Boolean indicating whether the name field is empty.
     var nameEmpty: Bool {
         userProfile.firstName.isEmpty
     }
 
-    // TODO: We don't need PDT and PST, MST and MDT etc, we should choose based on time of year
-    // handles time zone inputs
+    /// Supported U.S. time zones (daylight savings only; should be seasonal).
     var timeZones = ["PDT", "MDT", "CDT", "EDT", "HDT", "AKDT"]
+    /// Boolean indicating whether the time zone field is empty.
     var zoneEmpty: Bool {
         userProfile.timeZone.isEmpty
     }
 
-    // determines if user can move to next page
+    /// Controls navigation to the next page.
     @State private var cont = false
+
+    // MARK: - View Body
 
     var body: some View {
         VStack(spacing: 5) {
+            // App branding and page subtitle
             LoginHeaderView(subtitle: "Don’t miss a beat.")
                 .padding(.bottom)
 
-            // Account Info form
+            // MARK: - Form Section
+
             VStack(spacing: 10) {
                 // Name text field
                 TextField("Name", text: $userProfile.firstName)
@@ -44,7 +55,7 @@ struct AccountSetupView: View {
                     .accessibilityLabel("Name")
                     .cornerRadius(10)
 
-                // Error handling for name
+                // Inline name validation message
                 if nameEmpty {
                     HStack {
                         Text("Name is required")
@@ -56,8 +67,10 @@ struct AccountSetupView: View {
                     }
                 }
 
-                // Time zone drop down
+                // MARK: - Time Zone Picker
+
                 Menu {
+                    // Dropdown options for time zones
                     ForEach(timeZones, id: \.self) { timezone in
                         Button(action: {
                             userProfile.timeZone = timezone
@@ -78,7 +91,7 @@ struct AccountSetupView: View {
                     .cornerRadius(10)
                 }
 
-                // Error handling for time zone
+                // Inline time zone validation message
                 if zoneEmpty {
                     HStack {
                         Text("Time Zone is required")
@@ -96,11 +109,12 @@ struct AccountSetupView: View {
             .cornerRadius(20)
             .padding(.horizontal)
 
-            // continue button
+            // MARK: - Continue Button
+
             Button(action: {
+                // Only allow navigation if both fields are filled
                 if !nameEmpty, !zoneEmpty {
                     cont = true
-                    // print("going to device page with name: ", userProfile.firstName, "and time zone: ", userProfile.timeZone)
                 }
 
             }) {
@@ -121,9 +135,11 @@ struct AccountSetupView: View {
                 RegisterDeviceView().environmentObject(userProfile)
             }
         }
-        Spacer()
+        Spacer() // Push content to top
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     AccountSetupView().environmentObject(UserProfile())

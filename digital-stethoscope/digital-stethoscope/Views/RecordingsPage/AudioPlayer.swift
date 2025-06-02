@@ -4,18 +4,24 @@
 //
 //  Created by Shelby Myrman on 5/20/25.
 //
-
+//  Defines two SwiftUI views:
+//  - `FirebaseAudioPlayer`: Downloads an audio file from Firebase and displays a player.
+//  - `AudioPlayerView`: Displays waveform and allows basic playback/seek functionality.
+//
 import AVFoundation
 import AVKit
 import FirebaseStorage
 import SwiftUI
 
+// MARK: - FirebaseAudioPlayer
+
+/// Handles downloading an audio file from Firebase and rendering a waveform audio player
 struct FirebaseAudioPlayer: View {
     @State private var localFileURL: URL?
     @State private var isLoading = true
     @State private var error: Error?
 
-    var firebasePath: URL? // e.g. "audio/frontend-test-heartbeat.wav"
+    var firebasePath: URL? // Firebase Storage path to .wav file
 
     var body: some View {
         VStack {
@@ -29,6 +35,7 @@ struct FirebaseAudioPlayer: View {
             }
         }
         .onAppear {
+            // Attempt to download file if URL is valid
             if let firebaseURL = firebasePath {
                 downloadFromFirebase(url: firebaseURL)
             } else {
@@ -38,6 +45,9 @@ struct FirebaseAudioPlayer: View {
         }
     }
 
+    // MARK: - Download from Firebase
+
+    /// Downloads file from Firebase Storage and saves it locally
     func downloadFromFirebase(url: URL) {
         let storage = Storage.storage()
 
@@ -61,6 +71,9 @@ struct FirebaseAudioPlayer: View {
     }
 }
 
+// MARK: - AudioPlayerView
+
+/// Displays waveform visualization and supports basic audio playback + seek
 struct AudioPlayerView: View {
     let wavFileURL: URL
 
@@ -73,9 +86,11 @@ struct AudioPlayerView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            // Waveform with red playback indicator
+            // MARK: Waveform Display
+
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
+                    // Waveform bars
                     HStack(spacing: 2) {
                         ForEach(amplitudes.indices, id: \.self) { i in
                             Capsule()
@@ -84,6 +99,7 @@ struct AudioPlayerView: View {
                         }
                     }
 
+                    // Scrubber and drag gesture
                     ZStack(alignment: .leading) {
                         // Visual red line
                         Rectangle()
@@ -126,7 +142,8 @@ struct AudioPlayerView: View {
             .background(Color.primary.opacity(0.1))
             .cornerRadius(8)
 
-            // Play button
+            // MARK: Play Button
+
             HStack {
                 Spacer()
                 Button("Play") {
@@ -144,6 +161,7 @@ struct AudioPlayerView: View {
             loadWaveform()
         }
         .onDisappear {
+            // Cleanup time observer on exit
             if let token = timeObserverToken {
                 player?.removeTimeObserver(token)
                 timeObserverToken = nil
@@ -151,7 +169,9 @@ struct AudioPlayerView: View {
         }
     }
 
-    // plays audio obviously lol
+    // MARK: - Playback Controls
+
+    /// Begins audio playback and tracks progress
     private func playAudio() {
         let player = AVPlayer(url: wavFileURL)
         self.player = player
@@ -159,9 +179,7 @@ struct AudioPlayerView: View {
         trackProgress()
     }
 
-    // this is so that we know where we are with our little
-    // rectangle guy and so that we can drag it accross the
-    // waveform
+    /// Periodically updates playback progress bar
     private func trackProgress() {
         guard let player else { return }
 
@@ -176,9 +194,9 @@ struct AudioPlayerView: View {
         }
     }
 
-    // This displays the waveform. I know we get a warning
-    // for this but I could not figure out how to make it
-    // work without getting a warning so... here we are
+    // MARK: - Waveform Extraction
+
+    /// Extracts audio sample amplitudes and prepares a normalized waveform
     private func loadWaveform() {
         let asset = AVURLAsset(url: wavFileURL)
 
@@ -224,7 +242,7 @@ struct AudioPlayerView: View {
                 sampleData.append(contentsOf: samples)
             }
 
-            // Downsample to ~300 bars
+            // Downsample for performance
             let downsampleFactor = max(1, sampleData.count / 300)
             let downsampled = stride(from: 0, to: sampleData.count, by: downsampleFactor).map { i -> CGFloat in
                 let slice = sampleData[i ..< min(i + downsampleFactor, sampleData.count)]
@@ -232,7 +250,7 @@ struct AudioPlayerView: View {
                 return CGFloat(maxVal)
             }
 
-            // Normalize to 0...1
+            // Normalize bar heights to 0...1
             let normalized: [CGFloat] = if let max = downsampled.max(), max > 0 {
                 downsampled.map { $0 / max }
             } else {
@@ -249,6 +267,9 @@ struct AudioPlayerView: View {
     }
 }
 
+// MARK: - TestWAVPlayback
+
+/// Preview helper to test audio playback using a bundled .wav file
 struct TestWAVPlayback: View {
     var body: some View {
         VStack {

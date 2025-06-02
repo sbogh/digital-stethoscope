@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "3D08D7AA-DE3B-4B3E-92D1-21745F51EF6D",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:digital-stethoscope.xcodeproj",
+      "identifier" : "390C87EC2DB307BB00FF152F",
+      "name" : "digital-stethoscope"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:digital-stethoscope.xcodeproj",
+        "identifier" : "390C88062DB307BC00FF152F",
+        "name" : "digital-stethoscopeUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

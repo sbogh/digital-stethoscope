@@ -12,4 +12,8 @@ enum APIConfig {
     static let registerEndpoint = "\(baseURL)/register"
     static let loginEndpoint = "\(baseURL)/login"
     static let deviceUpdateEndpoint = "\(baseURL)/user/update-device"
+    static let getRecordingsEndpoint = "\(baseURL)/recordings/compile"
+    static let getRecordingsTitleUpdateEndpoint = "\(baseURL)/recordings/update-title"
+    static let getRecordingsNoteUpdateEndpoint = "\(baseURL)/recordings/update-notes"
+    static let getRecordingsNoteUpdateViewed = "\(baseURL)/recordings/update-view"
 }

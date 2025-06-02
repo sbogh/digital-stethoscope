@@ -17,5 +17,12 @@ extension Color {
 }
 
 extension Image {
-    static let logo = Image("Logo")
+//    static let logo = Image("Logo")
+    static let portable = Image("portable")
+}
+
+extension Comparable {
+    func clamped(to range: ClosedRange<Self>) -> Self {
+        min(max(self, range.lowerBound), range.upperBound)
+    }
 }

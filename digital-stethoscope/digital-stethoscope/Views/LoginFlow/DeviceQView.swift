@@ -76,6 +76,8 @@ struct DeviceQView: View {
                 PlaceholderView()
             }
 
+        // TODO: do we want to just get rid of the device q portion and go straight to device selection? otherwise we'll have to add the acct setup pg
+
         // loading icon when processing sign up
         if isLoading {
             ProgressView("Please wait while your account is being created...")

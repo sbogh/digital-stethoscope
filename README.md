@@ -200,6 +200,18 @@ To run ScopeFace locally, start by launching the backend server and then run the
 4. Navigate to Firebase to playback audio
 
 ### Creating the case (3D Printing)
+You will need the following parts to create this design:
+- PET-G (or PLA)
+- XIAO ESP32-S3
+- Stethoscope Diaphragm Cover
+- 350 mAh Lipo Battery
+- Male to Female Connector for Lipo Battery to XIAO ESP32-S3
+- Low Profile Momentary Push Button
+- 2x M2-0.4 x 12 mm bolts
+- 2x M2-0.4 x 25 mm bolts
+- 4x M2 x 0.4 mm Thread Size, 4.8 mm Installed Length Brass Tapered Heat-Set Inserts for Plastic
+
+Please see the BOM in the /hardware/design folder for more information. Next, we can discuss assembling the product: 
 1. Download the CAD files from our repo (/hardware/design)
 2. Upload to your slicer and select 100% infill with a material like PET-G (possible with PLA but not as effective)
 3. Ensure the parts are oriented so that specific surfaces like the mic mounting area and the diaphragm surface are left with minimal support

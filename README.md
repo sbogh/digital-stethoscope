@@ -100,6 +100,7 @@ digital-stethoscope/
 │   └── ...                         # Circuit schematics, board configurations
 │
 ├── digital-stethoscope/           # SwiftUI iOS app (Xcode project root)
+│   └── digital-stethoscopeUITests # SwiftUI testing
 │   └── digital-stethoscope/       # Main app source folder
 │       ├── Config/                # Environment settings, constants, Firebase setup
 │       ├── Controllers/           # ViewModels and state management logic
@@ -136,6 +137,26 @@ digital-stethoscope/
 2. Make sure to have FastAPI installed
 3. Take a look at main.py to get an idea of how everything works.
 4. use ```uvicorn main:app --reload``` to run the server
+
+### Testing
+
+We used separate testing frameworks for the backend and frontend to ensure reliability across the system.
+
+#### Backend (FastAPI + pytest)
+
+All backend logic is tested using `pytest`.
+
+To run backend tests:
+    ```bash
+    cd backend
+    pytest
+
+Make sure your virtual environment is activated and all dependencies from requirements.txt are installed.
+
+**Test coverage includes:**
+- Endpoint behavior
+- Data validation
+- Utility functions
 
 ### Running the App
 To run ScopeFace locally, start by launching the backend server and then run the iOS app through Xcode.

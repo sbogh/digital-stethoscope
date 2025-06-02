@@ -194,8 +194,8 @@ To run ScopeFace locally, start by launching the backend server and then run the
 
 ### Hardware Operation
 1. Wait for upload to complete and check for initialization success (serial monitor will display WiFi connected, Firebase connected)
-2. Press button to record 30 seconds of audio (onboard LED will be on)
-3. Wait for Firebase upload to complete (onboard LED will be on)
+2. Press button to record 30 seconds of audio (LED will be red)
+3. Wait for Firebase upload to complete (LED will be green)
 4. Navigate to Firebase to playback audio
 
 ## Known Limitations

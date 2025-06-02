@@ -111,6 +111,7 @@ digital-stethoscope/
 │           └── RecordingsPage/    # Session list, audio playback, and note-taking
 │
 └── README.md                       # Project overview and documentation
+```
 
 ## Software
 

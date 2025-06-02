@@ -1,7 +1,32 @@
 # ScopeFace: Digital Stethoscope
 
+## Table of Contents
+- [Introduction](#introduction)
+- [Features](#features)
+- [Team](#team)
+- [UX Research](#ux-research)
+- [System Design](#system-design)
+  - [UI Prototypes](#ui-prototypes)
+  - [System Diagrams](#system-diagrams)
+  - [Architecture](#architecture)
+- [Repo Structure](#repo-structure)
+- [Software](#software)
+  - [Frontend](#frontend)
+  - [Backend](#backend)
+  - [Running the App](#running-the-app)
+- [Hardware](#hardware)
+  - [Hardware Setup](#hardware-setup)
+  - [Hardware Operation](#hardware-operation)
+- [Known Limitations](#known-limitations)
+- [Future Work](#future-work)
+
 ## Introduction
-**ScopeFace** is a portable digital stethoscope system designed to amplify, record, and replay heart and lung sounds. Built for healthcare providers, our tool enables seamless session logging and audio playback through an intuitive mobile interface. Check out our [external web presence here](https://myrmanshelby.github.io/digital-stethoscope-landing-page/) (external web presence [repo linked here](https://github.com/myrmanshelby/digital-stethoscope-landing-page)).
+**ScopeFace** is a portable digital stethoscope system developed over 10 weeks as part of UC San Diego's CSE 237D Embedded Systems Project course (Spring 2025). Our goal was to prototype a clinician-focused tool that amplifies, records, and replays heart and lung sounds through a streamlined mobile interface.
+
+Designed with input from nurses, PAs, and doctors, the app supports session-based `.wav` recording, waveform visualization, note-taking, and Firebase-backed data storage. The hardware component captures sound using a custom-built stethoscope device, while the SwiftUI app allows users to review and annotate sessions in real time.
+
+Check out our [external web presence here](https://myrmanshelby.github.io/digital-stethoscope-landing-page/)  
+(External web presence [repo linked here](https://github.com/myrmanshelby/digital-stethoscope-landing-page)).
 
 ## Features
 - Session-based `.wav` recording and playback  
@@ -88,8 +113,6 @@ digital-stethoscope/
 ## Software
 
 ### Frontend
-
-#### Frontend Setup:
 1. Make sure you have Xcode downloaded on your computer.
 2. The app is nested in folders of the same name. When you clone the respository, be sure to open digital-stethoscope/digital-stethoscope
 3. Firebase SDK: You must install the Firebase SDK on your own machine.
@@ -138,6 +161,13 @@ To run ScopeFace locally, start by launching the backend server and then run the
 3. Wait for Firebase upload to complete (onboard LED will be on)
 4. Navigate to Firebase to playback audio
 
+## Known Limitations
+
+- Currently runs only on the iOS simulator (no physical deployment)
+- No patient or date search functionality
+- No HIPAA compliance implemented
+- ML diagnostics and patient profiles are not yet developed
+
 ## Future Work
 
 While our MVP successfully supports audio recording and playback through a mobile interface, we do not plan to continue developing this product beyond the scope of our course. However, if we were to bring the app to market, the following areas represent logical extensions based on our prototypes and system design:
@@ -179,3 +209,6 @@ Currently, the app can only be run on a simulator due to the cost of an Apple De
 ---
 
 These potential extensions align with the user needs captured in our [User Interviews](https://github.com/sbogh/digital-stethoscope/blob/main/admin/user-research/user-research-summary.md) and the architecture outlined in our [Miro board](https://miro.com/app/board/uXjVI8VBn7o=/?share_link_id=259432345089).
+
+## Contributing
+This project is no longer actively maintained, but if you'd like to fork or reuse components, feel free to open issues or pull requests.

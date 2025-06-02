@@ -4,10 +4,33 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Promises (Playground).xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>digital-stethoscope.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>390C87EC2DB307BB00FF152F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>390C87FC2DB307BC00FF152F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>390C88062DB307BC00FF152F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

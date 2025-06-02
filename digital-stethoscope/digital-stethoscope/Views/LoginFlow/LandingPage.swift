@@ -11,6 +11,7 @@ struct LandingPage: View {
     @State private var navLogin = false
     @State private var navCreateAcc = false
 
+    @State private var navLearnMore = false
     @EnvironmentObject var userProfile: UserProfile
 
     var body: some View {
@@ -24,6 +25,7 @@ struct LandingPage: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color.CTA2)
                 .frame(width: 248, alignment: .top)
+                .accessibilityIdentifier("LandingTitle")
 
             // Tagline
             Text("Don’t miss a beat.")
@@ -31,11 +33,13 @@ struct LandingPage: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color.CTA2)
                 .frame(width: 243, height: 35, alignment: .top)
+                .accessibilityIdentifier("LandingTagline")
 
             // Logo
             Image("Logo")
                 .frame(width: 135, height: 188)
                 .padding(.bottom, 30)
+                .accessibilityIdentifier("LandingLogo")
 
             // Create Account button
             Button(action: {
@@ -49,10 +53,12 @@ struct LandingPage: View {
                     .frame(width: 206, height: 50)
                     .background(Color.CTA1)
                     .cornerRadius(10)
-            }.padding(.bottom)
-                .navigationDestination(isPresented: $navCreateAcc) {
-                    CreateAccountView().environmentObject(userProfile)
-                }
+            }
+            .padding(.bottom)
+            .accessibilityIdentifier("CreateAccountButton")
+            .navigationDestination(isPresented: $navCreateAcc) {
+                CreateAccountView().environmentObject(userProfile)
+            }
 
             // Log in Button
             Button(action: {
@@ -68,22 +74,28 @@ struct LandingPage: View {
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(Color.CTA1, lineWidth: 4)
                     )
-            }.padding(.bottom)
-                .navigationDestination(isPresented: $navLogin) {
-                    LoginView().environmentObject(userProfile)
-                }
+            }
+            .padding(.bottom)
+            .accessibilityIdentifier("LandingLoginButton")
+            .navigationDestination(isPresented: $navLogin) {
+                LoginView().environmentObject(userProfile)
+            }
 
             // Learn More link
             Button(action: {
-                // TODO: add route to learn more
+                navLearnMore = true
             }) {
                 Text("Learn More")
-                    .font(Font.custom("Roboto-ExtraBold", size: 18)
-                    )
+                    .font(Font.custom("Roboto-ExtraBold", size: 18))
                     .fontWeight(.bold)
                     .foregroundColor(Color.CTA1)
                     .underline(true, color: .CTA1)
-            }.padding(.bottom)
+            }
+            .padding(.bottom)
+            .accessibilityIdentifier("LearnMoreButton")
+            .navigationDestination(isPresented: $navLearnMore) {
+                LearnMore()
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
 """
-main.py
+user_routes.py
 
 Defines all routes needed to communicate with Firestore database
 """
@@ -52,3 +52,22 @@ def update_current_user_device(user_id: str, device: str):
 
     if curr_data.exists:
         user_reference.update({"currentDeviceID": device})
+
+
+def get_current_user_device(user_id: str):
+    """
+        Gets the 'currentDeviceID' field of the specified user's document in Firestore.
+
+        Input:
+            user_id (str): The Firebase UID of the user.
+
+        Output:
+            currentDeviceID (str): The user's current device 
+    """
+    user_reference = users.document(user_id)
+    curr_data = user_reference.get()
+
+    if curr_data.exists:
+        data = curr_data.to_dict()
+        return data.get("currentDeviceID")
+    return None

@@ -16,8 +16,8 @@ Now we can put together the parts:
 6. Place the XIAO ESP32-S3 into the ESP32 Mount. It should slide in and be held in place. Solder the mic evaluation board WS, SCK, and Data cables (see the wiring diagram for specific pins).
 7. Take Casing Cover and slide the push button into its slot.
 8. Solder the 3.3V power to the microphone board cable (VDD) and the push button NEGATIVE lead.
-9. Solder the push button POSITIVE lead to its GPIO pin (see [wiring diagram](https://github.com/sbogh/digital-stethoscope/blob/hardware/hardware/design/Wiring%20Diagram.png)).
-10. Slide the LED into its slot. Solder the red and green pins to their respective GPIO ports (see [wiring diagram](https://github.com/sbogh/digital-stethoscope/blob/hardware/hardware/design/Wiring%20Diagram.png)).
+9. Solder the push button POSITIVE lead to its GPIO pin (see [wiring diagram](https://github.com/sbogh/digital-stethoscope/blob/main/hardware/design/Wiring%20Diagram.png)).
+10. Slide the LED into its slot. Solder the red and green pins to their respective GPIO ports (see [wiring diagram](https://github.com/sbogh/digital-stethoscope/blob/main/hardware/design/Wiring%20Diagram.png)).
 11. Solder GND to the microphone board (GND) and the LED common ground pin.
 12. Attach the antenna to the XIAO ESP32-S3. ([link](https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/#installation-of-antenna))
 13. Line up the USB-C opening on the Casing Cover to the XIAO ESP32-S3 port (the button should be opposite to this face) and slide the cover on. It will be tight so be careful to ensure no pinched wires.

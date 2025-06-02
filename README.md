@@ -74,7 +74,7 @@ For clearer views of our system diagrams, visit our [Miro board here](https://mi
 - **Frontend**: SwiftUI-based iOS app tailored for clinician workflow (see [frontend ADR here](https://github.com/sbogh/digital-stethoscope/blob/main/admin/ADRs/042125-Swift.md))
 - **Backend**: Python FastAPI service to support future device integrations and analytics (see [backend ADR here](https://github.com/sbogh/digital-stethoscope/blob/main/admin/ADRs/042125-Python-FastAPI.md))
 - **Database**: Firebase Firestore and Authentication for secure session tracking (see [database ADR here](https://github.com/sbogh/digital-stethoscope/blob/main/admin/ADRs/042125-Firebase.md)) 
-- **Hardware**: Custom stethoscope device with onboard mic and amplifier circuitry
+- **Hardware**: Custom stethoscope device with onboard mic and embedded microcontroller
 
 ## Repo Structure
 
@@ -97,6 +97,7 @@ digital-stethoscope/
 │
 ├── hardware/                       # Embedded systems and electronics
 │   ├── modules/                    # Modular firmware for sensors, audio processing, etc.
+│   ├── design/                     # CAD design files for the hardware device casing
 │   └── ...                         # Circuit schematics, board configurations
 │
 ├── digital-stethoscope/           # SwiftUI iOS app (Xcode project root)
@@ -197,6 +198,12 @@ To run ScopeFace locally, start by launching the backend server and then run the
 2. Press button to record 30 seconds of audio (LED will be red)
 3. Wait for Firebase upload to complete (LED will be green)
 4. Navigate to Firebase to playback audio
+
+### Creating the case (3D Printing)
+1. Download the CAD files from our repo (/hardware/design)
+2. Upload to your slicer and select 100% infill with a material like PET-G (possible with PLA but not as effective)
+3. Ensure the parts are oriented so that specific surfaces like the mic mounting area and the diaphragm surface are left with minimal support
+4. Print the device and assemble based on instructions found in the design folder
 
 ## Known Limitations
 

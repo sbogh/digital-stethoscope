@@ -16,9 +16,9 @@
   - [Backend](#backend)
   - [Running the App](#running-the-app)
 - [Hardware](#hardware)
-  - [Hardware Setup](#hardware-setup)
-  - [Hardware Operation](#hardware-operation)
-  - [Hardware Assembly](#hardware-assembly)
+  - [Setup](#setup)
+  - [Operation](#operation)
+  - [Assembly](#assembly)
 - [Known Limitations](#known-limitations)
 - [Future Work](#future-work)
 
@@ -197,20 +197,20 @@ To run ScopeFace locally, start by launching the backend server and then run the
 
 ## Hardware
 
-### Hardware Setup
+### Setup
 1. Using the Arduino IDE, plug in your XIAO ESP32-S3
 2. Go to Tools -> PSRAM and enable "OPI PSRAM"
 3. Add WiFi SSID and Password Information where specified in instruction comments
 4. Add Firebase API Key and double check bucket and user authentication information
 5. Compile and upload to microcontroller
 
-### Hardware Operation
+### Operation
 1. Wait for upload to complete and check for initialization success (serial monitor will display WiFi connected, Firebase connected)
 2. Press button to record 30 seconds of audio (LED will be red)
 3. Wait for Firebase upload to complete (LED will be green)
 4. Navigate to Firebase to playback audio
 
-### Hardware Assembly
+### Assembly
 Please see the BOM [here](https://github.com/sbogh/digital-stethoscope/blob/main/hardware/design/ScopeFace%20BOM.xlsx) for information on the parts you need. See the README [here](https://github.com/sbogh/digital-stethoscope/tree/main/hardware/design#readme) for instructions on creating and assembling the device.
 
 ## Known Limitations

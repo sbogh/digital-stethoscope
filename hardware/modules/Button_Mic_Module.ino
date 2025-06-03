@@ -17,7 +17,8 @@ Button -> 21
 #define I2S_SCK 4
 #define I2S_PORT I2S_NUM_0
 
-#define BUTTON_PIN 21
+#define BUTTON_PIN 2
+#define RED 9
 
 #define RECORD_TIME 10
 
@@ -69,13 +70,11 @@ void setup() {
 
   delay(500);
 
-  #ifdef RGB_BUILTIN
-    pinMode(RGB_BUILTIN, OUTPUT);
-    rgbLedWrite(RGB_BUILTIN, 0, 0, 0); // Ensure LED starts off
-    Serial.println("RGB LED initialized");
-  #else
-    Serial.println("RGB_BUILTIN not defined for this board");
-  #endif
+  pinMode(RED, OUTPUT);
+
+  delay(500);
+
+  digitalWrite(RED, 0);
 
   delay(500);
 }
@@ -90,7 +89,7 @@ void loop() {
     while (millis() - starttime <= RECORD_TIME * 1000)
     {
       // Enable LED
-      rgbLedWrite(RGB_BUILTIN, RGB_BRIGHTNESS, 0, 0);
+      digitalWrite(RED, HIGH);
 
       Serial.println(digitalRead(BUTTON_PIN));
       Serial.print(" ");
@@ -123,7 +122,7 @@ void loop() {
     }
 
     // Disable LED
-    rgbLedWrite(RGB_BUILTIN, 0, 0, 0);
+    digitalWrite(RED, 0);
   } 
   
   delay(1000);

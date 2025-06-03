@@ -1,10 +1,10 @@
 #include <Arduino.h>
 
 /*
-* Attach GPIO Pin 21 to one lead of button and 3.3V to other lead (diagonal leads)
+* Attach GPIO Pin 2 to one lead of button and 3.3V to other lead (diagonal leads)
 */
 
-#define BUTTON_PIN 21
+#define BUTTON_PIN 2
 
 void setup() {
   Serial.begin(115200);

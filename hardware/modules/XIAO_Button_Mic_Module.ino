@@ -5,7 +5,7 @@
 #define I2S_SCK 4
 #define I2S_PORT I2S_NUM_0
 
-#define BUTTON_PIN 1
+#define BUTTON_PIN 2
 
 #define RECORD_TIME 10
 

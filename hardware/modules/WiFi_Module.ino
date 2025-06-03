@@ -4,6 +4,8 @@
 #define wifiPW "PASSWORD"
 
 void setup() {
+  Serial.begin(115200);
+  
   WiFi.begin(SSID, wifiPW);
 
   Serial.print("Connecting to Wi-Fi");

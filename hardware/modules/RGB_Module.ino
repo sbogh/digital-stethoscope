@@ -1,29 +1,27 @@
 #define RED 9
 #define GREEN 8
-#define BLUE 7
 
 void setup() {
-  pinMode(redPin, OUTPUT);
-  pinMode(greenPin, OUTPUT);
-  pinMode(bluePin, OUTPUT);
+  pinMode(RED, OUTPUT);
+  pinMode(GREEN, OUTPUT);
 }
 
 void loop() {
   // RGB Red
-  digitalWrite(redPin, 255);
+  digitalWrite(RED, 255);
 
   delay(1000);
 
   // RGB Off
-  digitalWrite(redPin, 0);
+  digitalWrite(RED, 0);
 
   // RGB Green
-  digitalWrite(greenPin, 255);
+  digitalWrite(GREEN, 255);
 
   delay(1000);
 
   // RGB Off
-  digitalWrite(greenPin, 0);
+  digitalWrite(GREEN, 0);
 
   delay(1000);
 }

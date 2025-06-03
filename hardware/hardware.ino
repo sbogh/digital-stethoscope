@@ -213,9 +213,15 @@ void init_WiFi() {
   WiFi.begin(SSID, wifiPW);
 
   Serial.print("Connecting to Wi-Fi");
-  while (WiFi.status() != WL_CONNECTED) {
+  unsigned long starttime = millis();
+  while (WiFi.status() != WL_CONNECTED && millis() - starttime < 40 * 1000) {
       Serial.print(".");
       delay(300);
+  }
+
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("WiFi connection timeout. Restarting device...");
+    ESP.restart();
   }
 
   Serial.println("\nWiFi connected. IP address: ");

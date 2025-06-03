@@ -18,6 +18,7 @@
 - [Hardware](#hardware)
   - [Hardware Setup](#hardware-setup)
   - [Hardware Operation](#hardware-operation)
+  - [Hardware Assembly](#hardware-assembly)
 - [Known Limitations](#known-limitations)
 - [Future Work](#future-work)
 
@@ -209,7 +210,7 @@ To run ScopeFace locally, start by launching the backend server and then run the
 3. Wait for Firebase upload to complete (LED will be green)
 4. Navigate to Firebase to playback audio
 
-### Creating the Device
+### Hardware Assembly
 Please see the BOM [here](https://github.com/sbogh/digital-stethoscope/blob/main/hardware/design/ScopeFace%20BOM.xlsx) for information on the parts you need. See the README [here](https://github.com/sbogh/digital-stethoscope/tree/main/hardware/design#readme) for instructions on creating and assembling the device.
 
 ## Known Limitations

@@ -42,7 +42,10 @@ Check out our [external web presence here](https://myrmanshelby.github.io/digita
 - [Shayan Boghani](https://www.linkedin.com/in/shayan-b/): hardware engineer
 
 ## Class Assignments
-As part of UCSD's CSE 237D course, we created the following artifacts
+As part of UCSD's CSE 237D course, we created the following project artifacts:
+- [Project Proposal](https://github.com/sbogh/digital-stethoscope/blob/main/admin/class-assignments/CSE_237D_Milestone_Report.pdf): A document detailing our project goals, MVP, and timeline
+- [Milestone Report](https://github.com/sbogh/digital-stethoscope/blob/main/admin/class-assignments/CSE_237D_Milestone_Report.pdf): A document created halfway through the quarter to update our MVP and timeline
+- [Project Update](https://github.com/sbogh/digital-stethoscope/blob/main/admin/class-assignments/ScopeFace%20Project%20Update-2.pdf): Our midquarter presentation updating the class on our progress
 
 ## UX Research
 Before developing, we conducted user research interviews to gauge user needs. We then looked at app design inspiration and mapped in-app customer journeys. See our UX artifacts below:

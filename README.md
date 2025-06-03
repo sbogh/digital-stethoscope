@@ -82,7 +82,7 @@ For clearer views of our system diagrams, visit our [Miro board here](https://mi
 - **Frontend**: SwiftUI-based iOS app tailored for clinician workflow (see [frontend ADR here](https://github.com/sbogh/digital-stethoscope/blob/main/admin/ADRs/042125-Swift.md))
 - **Backend**: Python FastAPI service to support future device integrations and analytics (see [backend ADR here](https://github.com/sbogh/digital-stethoscope/blob/main/admin/ADRs/042125-Python-FastAPI.md))
 - **Database**: Firebase Firestore and Authentication for secure session tracking (see [database ADR here](https://github.com/sbogh/digital-stethoscope/blob/main/admin/ADRs/042125-Firebase.md)) 
-- **Hardware**: Custom stethoscope device with onboard mic and embedded microcontroller
+- **Hardware**: Custom stethoscope device with onboard mic and embedded microcontroller (see [all HW ADRs](https://github.com/sbogh/digital-stethoscope/tree/main/admin/ADRs))
 
 ## Repo Structure
 

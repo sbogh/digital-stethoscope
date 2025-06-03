@@ -4,6 +4,7 @@
 - [Introduction](#introduction)
 - [Features](#features)
 - [Team](#team)
+- [Class Assignments](#class-assignments)
 - [UX Research](#ux-research)
 - [System Design](#system-design)
   - [UI Prototypes](#ui-prototypes)
@@ -39,6 +40,9 @@ Check out our [external web presence here](https://myrmanshelby.github.io/digita
 - [Shelby Myrman](https://www.linkedin.com/in/shelby-myrman/): ux design/frontend engineer
 - [Amrita Moturi](https://www.linkedin.com/in/amrita-moturi/): hardware engineer
 - [Shayan Boghani](https://www.linkedin.com/in/shayan-b/): hardware engineer
+
+## Class Assignments
+As part of UCSD's CSE 237D course, we created the following artifacts
 
 ## UX Research
 Before developing, we conducted user research interviews to gauge user needs. We then looked at app design inspiration and mapped in-app customer journeys. See our UX artifacts below:
@@ -86,6 +90,7 @@ digital-stethoscope/
 │
 ├── admin/                          # Documentation, planning assets, and research
 │   ├── ADRs/                       # Architectural Decision Records
+│   ├── class-assignments/         # Assignments submitted as part of CSE 237D
 │   ├── full-product-diagrams/     # Diagrams for long-term vision of the system
 │   ├── initial-diagrams/          # Early conceptual or low-fidelity diagrams
 │   ├── mvp-product-diagrams/      # Diagrams focused on MVP system architecture
@@ -98,20 +103,21 @@ digital-stethoscope/
 ├── hardware/                       # Embedded systems and electronics
 │   ├── modules/                    # Modular firmware for sensors, audio processing, etc.
 │   ├── design/                     # Hardware design related information
-│       ├── printing-files/         # CAD design files
+│   │   ├── printing-files/         # CAD design files
 │   └── ...                         # Circuit diagram, BOM, README for assembly instructions
 │
 ├── digital-stethoscope/           # SwiftUI iOS app (Xcode project root)
 │   └── digital-stethoscopeUITests # SwiftUI testing
-│   └── digital-stethoscope/       # Main app source folder
-│       ├── Config/                # Environment settings, constants, Firebase setup
-│       ├── Controllers/           # ViewModels and state management logic
-│       ├── Extensions/            # Swift extensions for common utilities
-│       ├── Models/                # Data structures for recordings, sessions, user state
-│       └── Views/                 # SwiftUI interface components
-│           ├── LearnMoreFlow/     # "Learn More" educational flow
-│           ├── LoginFlow/         # Sign-in and account setup screens
-│           └── RecordingsPage/    # Session list, audio playback, and note-taking
+│   ├── digital-stethoscope/       # Main app source folder
+│   │   ├── Config/                # Environment settings, constants, Firebase setup
+│   │   ├── Controllers/           # ViewModels and state management logic
+│   │   ├── Extensions/            # Swift extensions for common utilities
+│   │   ├── Models/                # Data structures for recordings, sessions, user state
+│   │   └── Views/                 # SwiftUI interface components
+│   │       ├── LearnMoreFlow/     # "Learn More" educational flow
+│   │       ├── LoginFlow/         # Sign-in and account setup screens
+│   │       └── RecordingsPage/    # Session list, audio playback, and note-taking
+│   └── ...                        # Additional files for assets, userdata etc.
 │
 └── README.md                       # Project overview and documentation
 ```

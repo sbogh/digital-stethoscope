@@ -12,7 +12,7 @@ The design requires mechanical stability and access to GPIO features (e.g., butt
 During this phase of development, we are rapidly iterating on layout, sizing, and component placement. A CAD model of the initial design was created and tested as part of the integrated pipeline.
 ## 2. Decision
 
-We decided to 3D print the device enclosure using PLA material for prototyping and testing phases. We also tested PETG filaments.
+We decided to 3D print the device enclosure using PETG material for prototyping and testing phases. We also tested PLA filaments.
 
 
 ## 3. Rationale
@@ -40,7 +40,7 @@ Negative outcomes:
 
 - Inconsistent print quality between different 3D printers and filament types can result in slight dimensional variances, affecting part fit and assembly precision.
 
-- PLA material is less durable and heat-resistant than final production materials.
+- PETG material is less durable and heat-resistant than final production materials.
 
 - Printed parts may not provide long-term mechanical stability or tight tolerances.
 

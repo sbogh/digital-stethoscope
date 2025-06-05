@@ -7,6 +7,7 @@ Defines all fast API routes for all user functions necessary
 from fastapi import APIRouter, Request, HTTPException
 from auth_utils import verify_token
 import user_routes
+from firestore import sync_new_files
 
 router = APIRouter()
 
@@ -15,6 +16,8 @@ async def register_user(request: Request):
     """
     Registers a new user in Firestore using the provided data and Firebase Auth token.
     """
+    sync_new_files()
+    
     user_id = verify_token(request)
     body = await request.json()
 
@@ -37,6 +40,8 @@ async def get_profile(request: Request):
     """
     Retrieves the current user's profile from Firestore based on their Firebase Auth token.
     """
+    sync_new_files()
+
     uid = verify_token(request)
     profile = user_routes.get_user(uid)
     if not profile:

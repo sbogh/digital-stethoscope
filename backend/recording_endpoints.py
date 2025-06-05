@@ -8,6 +8,7 @@ from fastapi import APIRouter, Request, HTTPException
 from auth_utils import verify_token
 from user_routes import get_current_user_device
 import recording_routes
+from firestore import sync_new_files
 
 router = APIRouter()
 
@@ -22,6 +23,8 @@ async def get_user_recordings(request: Request):
     Output:
     - All recordings for the current device
     """
+
+    sync_new_files()
 
     user_id = verify_token(request)
     device_id = get_current_user_device(user_id)
